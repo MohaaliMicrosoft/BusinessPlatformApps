@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <!--*-->
-    <id>$id$</id>
-    <!--*-->
+    <id>Microsoft.Deployment.Common</id>
     <version>1.0</version>
     <title>
+      Microsoft Business Platform Common
     </title>
     <!--*-->
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>Microsoft Business Platform Team</authors>
+    <owners>Microsoft</owners>
     <!--
     <licenseUrl></licenseUrl>
     <projectUrl></projectUrl>
@@ -17,10 +16,10 @@
 -->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <!--*-->
-    <description>$description$</description>
+    <description>The Microsoft Business Platform Common library which contains all the utils needed to build actions</description>
     <!--*-->
-    <releaseNotes>Initial&amp;#x0020;Version</releaseNotes>
-    <copyright>$copyright$</copyright>
+    <releaseNotes>Initial Version</releaseNotes>
+    <copyright>Microsoft Corporation 2016</copyright>
     <tags>
     </tags>
     <dependencies>
