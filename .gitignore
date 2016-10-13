@@ -5,3 +5,5 @@
 /Source/Common/packages
 /Source/Common/Microsoft.Deployment.Common/bin/Debug
 /Source/Common/Microsoft.Deployment.Common/obj/Debug
+/Source/Common/Microsoft.Deployment.Common/obj/Release
+*.nupkg
