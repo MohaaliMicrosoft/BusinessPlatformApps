@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Microsoft.Deployment.Common</id>
-     <version>$version$</version>
+    <version>1.0.0-dev</version>
     <title>
       Microsoft Business Platform Common
     </title>
