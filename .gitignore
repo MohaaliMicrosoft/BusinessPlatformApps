@@ -9,3 +9,6 @@
 *.nupkg
 /Source/Common/Microsoft.Deployment.Common/bin/Release
 /Source/Common/Microsoft.Deployment.Common.Test/obj/Release
+/Source/**/bin/**/*
+/Source/**/obj/**/*
+/Source/**/packages/**/*
