@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.CommonActions.PBI
+namespace Microsoft.Deployment.Actions.Common.PBI
 {
     [Export(typeof(IAction))]
     public class WranglePBI : BaseAction

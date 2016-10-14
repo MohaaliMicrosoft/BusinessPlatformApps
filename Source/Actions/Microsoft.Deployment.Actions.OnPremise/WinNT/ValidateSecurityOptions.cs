@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.Composition;
-
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32;
 
-namespace Microsoft.Bpst.Actions.OnPremiseActions.WinNT
+namespace Microsoft.Deployment.Actions.OnPremise.WinNT
 {
     // Should not run impersonated
     [Export(typeof(IAction))]

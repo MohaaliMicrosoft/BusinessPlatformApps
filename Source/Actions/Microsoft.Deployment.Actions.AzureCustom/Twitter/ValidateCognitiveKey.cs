@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Dynamic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
-using System.Text;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.Twitter
+namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 {
     [Export(typeof(IAction))]
     public class ValidateCognitiveKey : BaseAction
@@ -34,15 +30,8 @@ namespace Microsoft.Bpst.Actions.AzureActions.Twitter
                 var obj = JsonUtility.GetJObjectFromJsonString(responseString);
             }
 
-            //new request
 
-
-            var sentimentResponse = client.PostAsync(uri, content).Result;
-
-
-            var sentimentResponseBody = sentimentResponse.Content.ReadAsStringAsync().Result;
-
-            return new ActionResponse(ActionStatus.Success, JsonUtility.GetJObjectFromObject(response));
+            return new ActionResponse(ActionStatus.Success);
         }
     }
 }

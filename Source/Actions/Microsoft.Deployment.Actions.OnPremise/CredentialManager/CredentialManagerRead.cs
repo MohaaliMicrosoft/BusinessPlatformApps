@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.Composition;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
+﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
+using Microsoft.Deployment.Common.Actions;
 using Newtonsoft.Json.Linq;
 using Simple.CredentialManager;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 
-namespace Microsoft.Bpst.Actions.OnPremiseActions.CredentialManager
+namespace Microsoft.Deployment.Actions.OnPremise.CredentialManager
 {
     [Export(typeof(IAction))]
     public class CredentialManagerRead : BaseAction

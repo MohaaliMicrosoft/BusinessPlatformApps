@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.Composition;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Enums;
-using Microsoft.Bpst.Shared.Helpers;
-using Microsoft.Bpst.Shared.Model;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Enums;
+using Microsoft.Deployment.Common.Helpers;
+using Microsoft.Deployment.Common.Model;
 
-namespace Microsoft.Bpst.Actions.DatabaseActions
+namespace Microsoft.Deployment.Actions.SQL
 {
     [Export(typeof(IAction))]
     public class GetSqlConnectionString : BaseAction

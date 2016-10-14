@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
-
-namespace Microsoft.Bpst.Actions.DatabaseActions
+namespace Microsoft.Deployment.Actions.SQL
 {
     [Export(typeof(IAction))]
     public class InstallSqlTools : BaseAction

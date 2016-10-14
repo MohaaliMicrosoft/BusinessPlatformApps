@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Bpst.Actions.CustomActions.SAP
+namespace Microsoft.Deployment.Actions.Custom.SAP
 {
     [Export(typeof(IAction))]
     public class WriteSAPJson : BaseAction

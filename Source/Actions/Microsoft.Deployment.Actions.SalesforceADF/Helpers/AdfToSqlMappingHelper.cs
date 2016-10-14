@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions.MappingHelpers
+namespace Microsoft.Deployment.Actions.SalesforceADF.Helpers
 {
     public static class AdfToSqlMappingHelper
     {

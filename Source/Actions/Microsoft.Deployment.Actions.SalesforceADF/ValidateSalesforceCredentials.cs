@@ -1,11 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Net;
-using Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP;
-using Microsoft.Bpst.Shared.Actions;
+using Microsoft.Deployment.Common.Actions;
 
-
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     public class ValidateSalesforceCredentials : BaseAction

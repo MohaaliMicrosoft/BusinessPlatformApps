@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions.MappingHelpers
+namespace Microsoft.Deployment.Actions.SalesforceADF.Helpers
 {
     static class SalesforceConcurrencyMapper
     {

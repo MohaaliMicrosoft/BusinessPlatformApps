@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
-using System.Threading;
 using Microsoft.Azure;
 using Microsoft.Azure.Management.Resources;
-using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
-
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
 //NOT NEEDED
-namespace Microsoft.Bpst.Actions.AzureActions.Twitter
+namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 {
     [Export(typeof(IAction))]
     public class DeployHistoricalTwitterFunction : BaseAction

@@ -1,18 +1,19 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Microsoft Corp.">
+// <copyright file="DeployArmTemplate.cs" company="Microsoft Corp.">
 //     Copyright (c) Microsoft Corp. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Microsoft.Bpst.Actions.AzureActions.Arm
+
+namespace Microsoft.Deployment.Actions.AzureCustom.Arm
 {
     using System.ComponentModel.Composition;
     using System.Threading;
     using Microsoft.Azure;
     using Microsoft.Azure.Management.Resources;
     using Microsoft.Azure.Management.Resources.Models;
-    using Microsoft.Bpst.Shared.Actions;
-    using Microsoft.Bpst.Shared.ErrorCode;
-    using Microsoft.Bpst.Shared.Helpers;
+    using Microsoft.Deployment.Common.Actions;
+    using Microsoft.Deployment.Common.ErrorCode;
+    using Microsoft.Deployment.Common.Helpers;
 
     [Export(typeof(IAction))]
     public class DeployArmTemplate : BaseAction

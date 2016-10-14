@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Threading;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.CommonActions.Test
+namespace Microsoft.Deployment.Actions.Common.Test
 {
     [Export(typeof(IAction))]
     public class TestAction : BaseAction

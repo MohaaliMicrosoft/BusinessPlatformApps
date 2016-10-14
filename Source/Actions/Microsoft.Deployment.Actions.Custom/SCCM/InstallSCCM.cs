@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.CustomActions.SCCM
+namespace Microsoft.Deployment.Actions.Custom.SCCM
 {
     [Export(typeof(IAction))]
     public class InstallSCCM : BaseAction

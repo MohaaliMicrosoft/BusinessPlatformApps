@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.DirectoryServices.AccountManagement;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
-
-namespace Microsoft.Bpst.Actions.OnPremiseActions.WinNT
+namespace Microsoft.Deployment.Actions.OnPremise.WinNT
 {
     [Export(typeof(IAction))]
     public class ValidateNtCredential : BaseAction

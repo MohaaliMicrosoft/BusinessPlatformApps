@@ -4,12 +4,12 @@ using System.ComponentModel.Composition;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using Microsoft.Bpst.Shared;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Bpst.Actions.AzureActions.AzureToken
+namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
 {
     [Export(typeof(IAction))]
     [Export(typeof(IActionRequestInterceptor))]

@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Azure;
-using Microsoft.Azure.Management.DataFactories;
-using Microsoft.Azure.Management.DataFactories.Models;
-using Microsoft.Azure.Management.Resources;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
-using Newtonsoft.Json;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     class ADFSliceStatus : BaseAction

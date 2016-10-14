@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.Dynamic;
 using System.Net.Http;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.Twitter
+namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 {
     [Export(typeof(IAction))]
     public class ConsentTwitterConnectionToLogicApp : BaseAction

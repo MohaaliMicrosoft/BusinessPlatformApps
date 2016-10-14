@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Enums;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.DatabaseActions
+namespace Microsoft.Deployment.Actions.SQL
 {
     [Export(typeof(IAction))]
     public class CheckSQLVersion : BaseAction
@@ -13,7 +14,7 @@ namespace Microsoft.Bpst.Actions.DatabaseActions
         {
             string connectionString = request.Message["SqlConnectionString"][1].ToString();
 
-            DataTable result = SqlUtility.RunCommand(connectionString, "SELECT SERVERPROPERTY('ProductVersion') AS SqlVersion, SERVERPROPERTY('IsLocalDB') AS IsLocalDB, SERVERPROPERTY('Edition') AS SqlEdition", Shared.Enums.SqlCommandType.ExecuteWithData);
+            DataTable result = SqlUtility.RunCommand(connectionString, "SELECT SERVERPROPERTY('ProductVersion') AS SqlVersion, SERVERPROPERTY('IsLocalDB') AS IsLocalDB, SERVERPROPERTY('Edition') AS SqlEdition", SqlCommandType.ExecuteWithData);
             string serverVersion =(string)result.Rows[0]["SqlVersion"];
             int majorServerVersion = int.Parse(serverVersion.Substring(0, serverVersion.IndexOf('.')));
 

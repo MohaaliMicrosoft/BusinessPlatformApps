@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.Bpst.Shared.Actions;
+using Microsoft.Deployment.Common.Actions;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions.Helpers
+namespace Microsoft.Deployment.Actions.SalesforceADF.Helpers
 {
     class DeploymentHelper
     {

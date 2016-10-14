@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hyak.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Hyak.Common.1.1.0\lib\net45\Hyak.Common.dll</HintPath>
+      <HintPath>..\packages\Hyak.Common.1.1.0\lib\net45\Hyak.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
@@ -63,35 +63,39 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Common, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Azure.Common.2.1.0\lib\net45\Microsoft.Azure.Common.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Common.2.1.0\lib\net45\Microsoft.Azure.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Common.NetFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Azure.Common.2.1.0\lib\net45\Microsoft.Azure.Common.NetFramework.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Common.2.1.0\lib\net45\Microsoft.Azure.Common.NetFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Management.DataFactories, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Azure.Management.DataFactories.4.11.0\lib\net45\Microsoft.Azure.Management.DataFactories.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Management.DataFactories.4.11.0\lib\net45\Microsoft.Azure.Management.DataFactories.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.ResourceManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Azure.Management.Resources.2.20.1-preview\lib\net40\Microsoft.Azure.ResourceManager.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Management.Resources.2.20.1-preview\lib\net40\Microsoft.Azure.ResourceManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Deployment.Common">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.1.1.43-dev\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -99,11 +103,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
@@ -115,336 +119,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PartnerServiceWSDL\partner.xml" />
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.convertLeadResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.createResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DebuggingInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.deleteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DeleteResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeAllTabsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeAppMenuItem.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeAppMenuResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeApprovalLayout.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeApprovalLayoutResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeAvailableQuickActionResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeAvailableQuickActionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeCompactLayout.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeCompactLayoutsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeCompactLayoutsResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeDataCategoryGroupResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeDataCategoryGroupsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeDataCategoryGroupStructureResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeDataCategoryGroupStructuresResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeFlexiPageResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeFlexiPagesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeGlobalResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeGlobalResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeGlobalTheme.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeGlobalThemeResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeKnowledgeSettingsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeLayoutResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeLayoutResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeNounResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeNounsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribePathAssistant.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describePathAssistantsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describePrimaryCompactLayoutsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeQuickActionResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeQuickActionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSearchableEntitiesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSearchableEntityResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSearchLayoutResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSearchLayoutsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSearchScopeOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSearchScopeOrderResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSObjectListViewsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSObjectResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSObjectResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSObjectsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSoftphoneLayoutResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSoftphoneLayoutResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeSoqlListView.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeSoqlListViewsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeTab.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeTabSetResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeTabsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeThemeItem.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeThemeResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.describeVisualForceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.DescribeVisualForceResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.emptyRecycleBinResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.EmptyRecycleBinResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.executeListViewResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.ExecuteListViewResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.getDeletedResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.GetDeletedResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.getServerTimestampResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.GetServerTimestampResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.getUpdatedResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.GetUpdatedResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.getUserInfoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.GetUserInfoResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.invalidateSessionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.InvalidateSessionsResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.KnowledgeSettings.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.LeadConvertResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.LimitInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.loginResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.LoginResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.logoutResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.mergeResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.MergeResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.PerformQuickActionResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.performQuickActionsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.processResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.ProcessResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.queryAllResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.queryMoreResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.queryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.QueryResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.QuickActionTemplateResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.renderEmailTemplateResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.RenderEmailTemplateResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.resetPasswordResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.ResetPasswordResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.retrieveQuickActionTemplatesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.retrieveResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.SaveResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.searchResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.SearchResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.sendEmailMessageResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.sendEmailResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.SendEmailResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.setPasswordResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.SetPasswordResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.sObject.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.undeleteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.UndeleteResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.updateResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.upsertResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP.UpsertResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\SalesforceSOAP\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\SalesforceSOAP\configuration.svcinfo" />
-    <None Include="Service References\SalesforceSOAP\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\SharedVersion.cs">
@@ -464,44 +138,30 @@
     <Compile Include="RetrieveSalesforceSubscriptionType.cs" />
     <Compile Include="SalesforceGetObjectMetadata.cs" />
     <Compile Include="SalesforceSqlArtefacts.cs" />
-    <Compile Include="Service References\SalesforceSOAP\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="ValidateSalesforceCredentials.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Microsoft.Bpst.Shared.csproj">
-      <Project>{646ade07-1971-4904-9296-437d299c1871}</Project>
-      <Name>Microsoft.Bpst.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Deployment.Actions.AzureCustom\Microsoft.Deployment.Actions.AzureCustom.csproj">
-      <Project>{0b8db384-f28c-4c1d-9e21-b0957aa9a736}</Project>
-      <Name>AzureActions</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\SalesforceSOAP\partner.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\SalesforceSOAP\" />
+    <ProjectReference Include="..\Microsoft.Deployment.Actions.AzureCustom\Microsoft.Deployment.Actions.AzureCustom.csproj">
+      <Project>{0b8db384-f28c-4c1d-9e21-b0957aa9a736}</Project>
+      <Name>Microsoft.Deployment.Actions.AzureCustom</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
-
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32.TaskScheduler;
 
-namespace Microsoft.Bpst.Actions.OnPremiseActions.TaskScheduler
+namespace Microsoft.Deployment.Actions.OnPremise.TaskScheduler
 {
     [Export(typeof(IAction))]
     public class RunTask : BaseAction

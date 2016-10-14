@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Enums;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.CustomActions.SCCM
+namespace Microsoft.Deployment.Actions.Custom.SCCM
 {
     [Export(typeof(IAction))]
     public class CheckSCCMVersion : BaseAction
@@ -16,12 +17,12 @@ namespace Microsoft.Bpst.Actions.CustomActions.SCCM
             string connectionString = request.Message["SqlConnectionString"][0].ToString();
 
             // Check if the Sites table exists. If not this isn't a SCCM database
-            DataTable result = SqlUtility.RunCommand(connectionString, "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='Sites' AND TABLE_TYPE='BASE TABLE' AND TABLE_SCHEMA='dbo'", Shared.Enums.SqlCommandType.ExecuteWithData);
+            DataTable result = SqlUtility.RunCommand(connectionString, "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='Sites' AND TABLE_TYPE='BASE TABLE' AND TABLE_SCHEMA='dbo'", SqlCommandType.ExecuteWithData);
             if (result == null || result.Rows.Count == 0)
                 return new ActionResponse(ActionStatus.Failure, JsonUtility.GetEmptyJObject(), "NotSccmDB");
 
             // Retrieve SCCM version
-            result = SqlUtility.RunCommand(connectionString, " SELECT [Version] FROM dbo.Sites WHERE ReportToSite='' ", Shared.Enums.SqlCommandType.ExecuteWithData);
+            result = SqlUtility.RunCommand(connectionString, " SELECT [Version] FROM dbo.Sites WHERE ReportToSite='' ", SqlCommandType.ExecuteWithData);
             
             // If the version is not there, report and exit
             if (result == null || result.Rows.Count == 0 || result.Rows[0]["Version"] == DBNull.Value)

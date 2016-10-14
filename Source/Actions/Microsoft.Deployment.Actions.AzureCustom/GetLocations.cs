@@ -5,9 +5,9 @@ using System.Threading;
 using Hyak.Common;
 using Microsoft.Azure;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Bpst.Shared.Actions;
+using Microsoft.Deployment.Common.Actions;
 
-namespace Microsoft.Bpst.Actions.AzureActions
+namespace Microsoft.Deployment.Actions.AzureCustom
 {
     [Export(typeof(IAction))]
     public class GetLocations : BaseAction

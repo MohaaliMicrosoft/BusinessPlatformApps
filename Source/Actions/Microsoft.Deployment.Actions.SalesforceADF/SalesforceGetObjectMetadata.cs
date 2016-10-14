@@ -5,10 +5,9 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
-using Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP;
-using Microsoft.Bpst.Shared.Actions;
+using Microsoft.Deployment.Common.Actions;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     class SalesforceGetObjectMetadata : BaseAction

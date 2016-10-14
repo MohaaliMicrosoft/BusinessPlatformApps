@@ -5,12 +5,12 @@ using System.Threading;
 using Hyak.Common;
 using Microsoft.Azure;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Bpst.Actions.AzureActions
+namespace Microsoft.Deployment.Actions.AzureCustom
 {
     [Export(typeof(IAction))]
     public class GetAzureSubscriptions : BaseAction

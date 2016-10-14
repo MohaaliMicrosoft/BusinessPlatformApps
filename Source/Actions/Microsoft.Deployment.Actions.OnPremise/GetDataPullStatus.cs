@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data;
-using System.Dynamic;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.OnPremiseActions
+namespace Microsoft.Deployment.Actions.OnPremise
 {
     [Export(typeof(IAction))]
     public class GetDataPullStatus : BaseAction

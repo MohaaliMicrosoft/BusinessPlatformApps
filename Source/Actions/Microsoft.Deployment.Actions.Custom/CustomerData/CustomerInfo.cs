@@ -1,6 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Microsoft.Bpst.Actions.CustomActions.CustomerData
+namespace Microsoft.Deployment.Actions.Custom.CustomerData
 {
     public class CustomerInfoSimplement : TableEntity
     {

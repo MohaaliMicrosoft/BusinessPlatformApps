@@ -2,11 +2,11 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.CustomActions.SAP
+namespace Microsoft.Deployment.Actions.Custom.SAP
 {
     [Export(typeof(IAction))]
     public class ValidateSAP : BaseAction

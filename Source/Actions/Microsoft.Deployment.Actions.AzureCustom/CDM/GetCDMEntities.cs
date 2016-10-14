@@ -1,16 +1,9 @@
-﻿using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
+﻿using System.ComponentModel.Composition;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.CDM
+namespace Microsoft.Deployment.Actions.AzureCustom.CDM
 {
     [Export(typeof(IAction))]
     public class GetCDMEntities : BaseAction

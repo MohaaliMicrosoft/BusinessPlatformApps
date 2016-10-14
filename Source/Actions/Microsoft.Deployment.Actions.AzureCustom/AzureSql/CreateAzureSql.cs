@@ -1,19 +1,18 @@
-﻿namespace Microsoft.Bpst.Actions.AzureActions.AzureSql
+﻿using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using Microsoft.Azure;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Enums;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
+using Microsoft.Deployment.Common.Model;
+
+namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
 {
-    using System.ComponentModel.Composition;
-    using System.IO;
-    using System.Linq;
-    using System.Threading;
-
-    using Microsoft.Azure;
-    using Microsoft.Azure.Management.Resources;
-    using Microsoft.Azure.Management.Resources.Models;
-    using Microsoft.Bpst.Shared.Actions;
-    using Microsoft.Bpst.Shared.Enums;
-    using Microsoft.Bpst.Shared.ErrorCode;
-    using Microsoft.Bpst.Shared.Helpers;
-    using Microsoft.Bpst.Shared.Model;
-
     [Export(typeof(IAction))]
     public class CreateAzureSql : BaseAction
     {

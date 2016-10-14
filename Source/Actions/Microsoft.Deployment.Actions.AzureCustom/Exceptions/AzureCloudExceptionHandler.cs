@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Hyak.Common;
-using Microsoft.Bpst.Actions.AzureActions.AzureToken;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Actions.AzureCustom.AzureToken;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.Exceptions
+namespace Microsoft.Deployment.Actions.AzureCustom.Exceptions
 {
     [Export(typeof(IActionExceptionHandler))]
     public class AzureCloudExceptionHandler : IActionExceptionHandler

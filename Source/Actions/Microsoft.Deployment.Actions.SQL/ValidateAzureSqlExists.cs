@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.Dynamic;
 using System.Net.Http;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.DatabaseActions
+namespace Microsoft.Deployment.Actions.SQL
 {
     [Export(typeof(IAction))]
     public class ValidateAzureSqlExists : BaseAction

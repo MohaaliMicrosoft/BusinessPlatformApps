@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.Composition;
 using System.Dynamic;
-using System.Linq;
-using System.Net.Http;
-using System.Xml.Linq;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
 using System.IO;
+using System.Net.Http;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Bpst.Actions.AzureActions.Twitter
+namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 {
     [Export(typeof(IAction))]
     public class DeployTwitterCSharpFunctionAssets : BaseAction

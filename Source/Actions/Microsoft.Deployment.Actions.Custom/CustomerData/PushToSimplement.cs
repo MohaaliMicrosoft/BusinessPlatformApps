@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Microsoft.Bpst.Actions.CustomActions.CustomerData
+namespace Microsoft.Deployment.Actions.Custom.CustomerData
 {
     [Export(typeof(IAction))]
     public class PushToSimplement : BaseAction

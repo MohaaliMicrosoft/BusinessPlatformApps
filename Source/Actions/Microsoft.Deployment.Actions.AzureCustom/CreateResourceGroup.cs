@@ -3,9 +3,9 @@ using System.Threading;
 using Microsoft.Azure;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.Bpst.Shared.Actions;
+using Microsoft.Deployment.Common.Actions;
 
-namespace Microsoft.Bpst.Actions.AzureActions
+namespace Microsoft.Deployment.Actions.AzureCustom
 {
     [Export(typeof(IAction))]
     public class CreateResourceGroup: BaseAction

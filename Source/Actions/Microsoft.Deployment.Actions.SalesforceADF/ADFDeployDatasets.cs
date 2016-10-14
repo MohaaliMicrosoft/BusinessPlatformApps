@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.Bpst.Actions.SalesforceActions.Helpers;
-using Microsoft.Bpst.Actions.SalesforceActions.Models;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Actions.SalesforceADF.Helpers;
+using Microsoft.Deployment.Actions.SalesforceADF.Models;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     class ADFDeployDatasets : BaseAction

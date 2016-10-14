@@ -4,11 +4,11 @@ using System.Threading;
 using Microsoft.Azure;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.Twitter
+namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 {
     [Export(typeof(IAction))]
     public class DeployTwitterLogicApp : BaseAction

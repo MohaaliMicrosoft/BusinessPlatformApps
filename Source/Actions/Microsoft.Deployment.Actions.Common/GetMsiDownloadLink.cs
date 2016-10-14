@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
 
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.ErrorCode;
-using Microsoft.Bpst.Shared.Helpers;
-
-namespace Microsoft.Bpst.Actions.CommonActions
+namespace Microsoft.Deployment.Actions.Common
 {
     [Export(typeof(IAction))]
     public class GetMsiDownloadLink : BaseAction

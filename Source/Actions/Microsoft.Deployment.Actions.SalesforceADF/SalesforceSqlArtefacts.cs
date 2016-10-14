@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Dynamic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using Microsoft.Bpst.Actions.SalesforceActions.Helpers;
-using Microsoft.Bpst.Actions.SalesforceActions.MappingHelpers;
-using Microsoft.Bpst.Actions.SalesforceActions.Models;
-using Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Actions.SalesforceADF.Helpers;
+using Microsoft.Deployment.Actions.SalesforceADF.Models;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     public class SalesforceSqlArtefacts : BaseAction

@@ -1,10 +1,11 @@
-﻿namespace Microsoft.Bpst.Actions.AzureActions.Arm
+﻿
+namespace Microsoft.Deployment.Actions.AzureCustom.Arm
 {
     using System.ComponentModel.Composition;
     using System.Threading;
     using Microsoft.Azure;
     using Microsoft.Azure.Management.Resources;
-    using Microsoft.Bpst.Shared.Actions;
+    using Microsoft.Deployment.Common.Actions;
 
     [Export(typeof(IAction))]
     public class GetArmDeploymentStatus : BaseAction

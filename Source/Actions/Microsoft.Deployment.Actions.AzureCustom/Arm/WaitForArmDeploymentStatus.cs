@@ -1,12 +1,15 @@
-﻿namespace Microsoft.Bpst.Actions.AzureActions.Arm
+﻿
+
+
+namespace Microsoft.Deployment.Actions.AzureCustom.Arm
 {
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Threading;
     using Microsoft.Azure;
     using Microsoft.Azure.Management.Resources.Models;
-    using Microsoft.Bpst.Shared.Actions;
-    using ResourceManagementClient = Microsoft.Azure.Management.Resources.ResourceManagementClient;
+    using ResourceManagementClient = Azure.Management.Resources.ResourceManagementClient;
+    using Microsoft.Deployment.Common.Actions;
 
     [Export(typeof(IAction))]
     public class WaitForArmDeploymentStatus : BaseAction
@@ -19,7 +22,7 @@
             var deploymentName = request.Message["DeploymentName"].ToString();
 
             SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, token);
-            Microsoft.Azure.Management.Resources.ResourceManagementClient client = new ResourceManagementClient(creds);
+            ResourceManagementClient client = new ResourceManagementClient(creds);
             
             while (true)
             {

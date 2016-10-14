@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bpst.Actions.SalesforceActions.Models
+﻿namespace Microsoft.Deployment.Actions.SalesforceADF.Models
 {
     public class ADFField
     {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
-using Microsoft.Bpst.Shared;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.AzureActions.AzureToken
+namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
 {
     [Export(typeof(IAction))]
     public class GetAzureAuthUri : BaseAction

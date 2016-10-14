@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.ServiceModel;
-using Microsoft.Bpst.Actions.SalesforceActions.SalesforceSOAP;
-using Microsoft.Bpst.Shared.Actions;
-using Microsoft.Bpst.Shared.Helpers;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Helpers;
 
-namespace Microsoft.Bpst.Actions.SalesforceActions
+namespace Microsoft.Deployment.Actions.SalesforceADF
 {
     [Export(typeof(IAction))]
     public class RetrieveSalesforceSubscriptionType : BaseAction

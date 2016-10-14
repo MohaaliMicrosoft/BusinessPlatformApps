@@ -1,17 +1,17 @@
-﻿namespace Microsoft.Bpst.Actions.AzureActions.AzureToken
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using Microsoft.Bpst.Shared;
-    using Microsoft.Bpst.Shared.Actions;
-    using Microsoft.Bpst.Shared.ErrorCode;
-    using Microsoft.Bpst.Shared.Helpers;
-    using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.ErrorCode;
+using Microsoft.Deployment.Common.Helpers;
+using Newtonsoft.Json.Linq;
 
+namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
+{
     [Export(typeof(IAction))]
     public class GetAzureToken : BaseAction
     {

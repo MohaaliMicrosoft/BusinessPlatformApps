@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Bpst.Actions.OnPremiseActions.CredentialManager
+﻿namespace Microsoft.Deployment.Actions.OnPremise.CredentialManager
 {
     public class CredentialManagerEntry
     {

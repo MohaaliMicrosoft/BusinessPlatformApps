@@ -2,13 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Source/Common/packages
-/Source/Common/Microsoft.Deployment.Common/bin/Debug
-/Source/Common/Microsoft.Deployment.Common/obj/Debug
-/Source/Common/Microsoft.Deployment.Common/obj/Release
+
 *.nupkg
-/Source/Common/Microsoft.Deployment.Common/bin/Release
-/Source/Common/Microsoft.Deployment.Common.Test/obj/Release
 /Source/**/bin/**/*
 /Source/**/obj/**/*
 /Source/**/packages/**/*
+/Source/Actions/*/scripts/**/*
+/Source/Commomn/*/scripts/**/*
