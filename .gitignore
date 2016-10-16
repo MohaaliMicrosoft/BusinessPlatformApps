@@ -16,3 +16,4 @@
 /Source/Actions/Microsoft.Deployment.Actions.Common/StyleCop.Cache
 /Source/Actions/Microsoft.Deployment.Actions.AzureCustom/StyleCop.Cache
 /Source/Actions/Microsoft.Deployment.Actions.ADF/StyleCop.Cache
+*.suo
