@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38282763-A8DE-485E-A5EB-E5E969F4385B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Deployment.Common</RootNamespace>
+    <AssemblyName>Microsoft.Deployment.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0-beta2\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\SharedVersion.cs">
+      <Link>Properties\SharedVersion.cs</Link>
+    </Compile>
+    <Compile Include="Actions\ActionRequest.cs" />
+    <Compile Include="Actions\ActionResponse.cs" />
+    <Compile Include="Actions\ActionStatus.cs" />
+    <Compile Include="Actions\BaseAction.cs" />
+    <Compile Include="Actions\DelegateInterceptor.cs" />
+    <Compile Include="Actions\DeploymentAction.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\IActionExceptionHandler.cs" />
+    <Compile Include="Actions\IActionRequestInterceptor.cs" />
+    <Compile Include="Actions\InterceptorStatus.cs" />
+    <Compile Include="CommonController.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Enums\ModelType.cs" />
+    <Compile Include="Enums\SqlAuthentication.cs" />
+    <Compile Include="Enums\SqlCommandType.cs" />
+    <Compile Include="Enums\SqlServerFlavor.cs" />
+    <Compile Include="ErrorCode\AzureErrorCodes.cs" />
+    <Compile Include="ErrorCode\DefaultErrorCodes.cs" />
+    <Compile Include="ErrorCode\SqlErrorCodes.cs" />
+    <Compile Include="ErrorResources\EnglishErrorCodes.Designer.cs" />
+    <Compile Include="Exceptions\ActionNotFoundException.cs" />
+    <Compile Include="Exceptions\ActionResponseCode.cs" />
+    <Compile Include="Helpers\AzureArmParameter.cs" />
+    <Compile Include="Helpers\AzureHttpClient.cs" />
+    <Compile Include="Helpers\ErrorUtility.cs" />
+    <Compile Include="Helpers\FileUtility.cs" />
+    <Compile Include="Helpers\FTPUtility.cs" />
+    <Compile Include="Helpers\HttpClientUtility.cs" />
+    <Compile Include="Helpers\ImpersonateUtility.cs" />
+    <Compile Include="Helpers\JsonUtility.cs" />
+    <Compile Include="Helpers\NTHelper.cs" />
+    <Compile Include="Helpers\NTPermissionUtility.cs" />
+    <Compile Include="Helpers\PBIXUtils.cs" />
+    <Compile Include="Helpers\RandomGenerator.cs" />
+    <Compile Include="Helpers\RequestUtility.cs" />
+    <Compile Include="Helpers\RetryUtility.cs" />
+    <Compile Include="Helpers\SqlUtility.cs" />
+    <Compile Include="Helpers\StringEnumConverterLower.cs" />
+    <Compile Include="Helpers\StringExtension.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Model\QDEFF.cs" />
+    <Compile Include="Model\SqlCredentials.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tags\ActionsTagHandler.cs" />
+    <Compile Include="Tags\ITagHandler.cs" />
+    <Compile Include="Tags\MsiTagHandler.cs" />
+    <Compile Include="Tags\PagesTagHandler.cs" />
+    <Compile Include="Tags\TestTag.cs" />
+    <Compile Include="Template\Template.cs" />
+    <Compile Include="Template\TemplateParser.cs" />
+    <Compile Include="Template\UIPage.cs" />
+    <Compile Include="TestHarness\Helpers\DataStoreMock.cs" />
+    <Compile Include="TestHarness\Helpers\DeploymentTestHelper.cs" />
+    <Compile Include="TestHarness\Helpers\OAuthUtility.cs" />
+    <Compile Include="TestHarness\Helpers\TokenUtility.cs" />
+    <Compile Include="TestHarness\TestService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ErrorResources\EnglishErrorCodes.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="scripts\ai.1.0.0-build00159.js" />
+    <Content Include="scripts\ai.1.0.0-build00159.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="package.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
