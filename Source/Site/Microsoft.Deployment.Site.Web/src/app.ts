@@ -1,6 +1,6 @@
 ﻿import { inject } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
-import MainService from "./Template/Common/Web/services/mainservice";
+import MainService from "./SiteCommon/Web/services/mainservice";
 
 @inject(MainService)
 export class App

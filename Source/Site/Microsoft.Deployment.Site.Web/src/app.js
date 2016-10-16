@@ -14,7 +14,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var aurelia_framework_1 = require('aurelia-framework');
-var mainservice_1 = require("./Template/Common/Web/services/mainservice");
+var mainservice_1 = require("./SiteCommon/Web/services/mainservice");
 var App = (function () {
     function App(MainService) {
         this.MS = MainService;

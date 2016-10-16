@@ -5,11 +5,11 @@ var runSequence = require('run-sequence');
 var del = require('del');
 
 gulp.task('Copy-Build-App', function() {
-     return gulp.src('../../../Template/*/Web/**/*').pipe(gulp.dest('wwwroot/dist/WebCommon/'));
+     return gulp.src('../../App/*/Web/**/*').pipe(gulp.dest('wwwroot/dist/App/'));
 });
 
 gulp.task('Copy-Build-SiteCommon', function () {
-    return gulp.src('').pipe(gulp.dest('wwwroot/dist/App/'));
+    return gulp.src('../../SiteCommon/Web/**/*').pipe(gulp.dest('wwwroot/dist/SiteCommon/Web'));
 });
 
 gulp.task('Copy-Build-Src', function () {
@@ -24,7 +24,7 @@ gulp.task('CleanDirectory', function () {
 
 gulp.task('Pre-Build', function(callback) {
     runSequence('CleanDirectory',
-              ['Copy-Build-Src', 'Copy-Build', 'Copy-Build-WebCommon'],
+              ['Copy-Build-App', 'Copy-Build-Src', 'Copy-Build-SiteCommon'],
               callback);
 });
 
