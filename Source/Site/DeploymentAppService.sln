@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Deployment.Site.Service", "Microsoft.Deployment.Site.Service\Microsoft.Deployment.Site.Service.csproj", "{398721F5-390C-434D-94DA-6AC281CC7318}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Bpst.App.Web", "Microsoft.Deployment.Site.Web\Microsoft.Bpst.App.Web.xproj", "{B28BB976-B0FF-44CD-B042-125A3EA4545C}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Deployment.Site.Web", "Microsoft.Deployment.Site.Web\Microsoft.Deployment.Site.Web.xproj", "{B28BB976-B0FF-44CD-B042-125A3EA4545C}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SiteCommon", "..\SiteCommon\", "{FEC8E72F-A9F7-4727-A6B0-F056E7AF40DE}"
 	ProjectSection(WebsiteProperties) = preProject

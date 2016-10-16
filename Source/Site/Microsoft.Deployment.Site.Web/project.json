@@ -1,4 +1,7 @@
 {
+  "title": "Microsoft.Deployment.Site.Web",
+  "copyright": "Microsoft Corp 2016",
+  "description": "This is the main web project which shows the wizard experience to the end user",
     "userSecretsId": "Microsoft.Deployment.Web-{E0EE09F7-ABEB-45D0-A957-2163DB134112}",
 
     "dependencies": {
