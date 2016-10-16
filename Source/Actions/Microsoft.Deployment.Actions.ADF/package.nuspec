@@ -24,14 +24,11 @@
     </tags>
     <dependencies>
          <group targetFramework="net452">
-            <dependency id="Microsoft.ApplicationInsights" version="2.2.0-beta2" />
             <dependency id="Microsoft.Bcl" version="1.1.10" />
             <dependency id="Microsoft.Bcl.Async" version="1.0.168" />
             <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
             <dependency id="Microsoft.Deployment.Common" version="1.1.1.43-dev" />
             <dependency id="Microsoft.Net.Http" version="2.2.29" />
-            <dependency id="Newtonsoft.Json" version="9.0.1" />
-            <dependency id="NuGet.CommandLine" version="3.4.4-rtm-final" />
          </group>
       </dependencies>
   </metadata>
