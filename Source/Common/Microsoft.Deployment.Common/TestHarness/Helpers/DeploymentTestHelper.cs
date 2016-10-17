@@ -7,20 +7,19 @@ namespace Microsoft.Deployment.Common.TestHarness.Helpers
 {
     public class DeploymentTestHelper
     {
-        // This method will implement the way the website does its deployment
+        // This method will implement the way the website does its deployment and should be kept in sync for testing
         public static void DeployTemplate(string templateToDeploy, JObject payload, int stepToStart = 0)
         {
-            var template = TestService.Instance.TemplateUtility.Templates
-                .SingleOrDefault(p => p.TemplateName.EqualsIgnoreCase(templateToDeploy));
+            var app = TestService.Instance.AppFactory.Apps[templateToDeploy];
 
             DataStoreMock datastore = new DataStoreMock();
             datastore.AddObjectToDataStore("deployment-1", payload);
 
             ActionStatus lastStatus = ActionStatus.Success;
 
-            for (int index = stepToStart; index < template.Actions.Count; index++)
+            for (int index = stepToStart; index < app.Actions.Count; index++)
             {
-                var action = template.Actions[index];
+                var action = app.Actions[index];
                 var payloadCopy = datastore.GetDataStore();
 
                 if (lastStatus != ActionStatus.BatchWithState )

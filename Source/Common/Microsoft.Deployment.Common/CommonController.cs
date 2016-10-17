@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Exceptions;
-using Microsoft.Deployment.Common.Helpers;
-using Microsoft.Deployment.Common.Template;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.Common
@@ -13,18 +12,18 @@ namespace Microsoft.Deployment.Common
     public class CommonController
     {
         public CommonController(string source, Dictionary<string, string> loggingParameters,
-            string virtualPathRoot, string templateRelativePath, string refererUrl, TemplateParser templateHandler)
+            string virtualPathRoot, string appRelativePath, string refererUrl, AppFactory appFactory)
         {
             this.Source = source;
             this.LoggingParameters = loggingParameters;
             this.VirtualPathRoot = virtualPathRoot;
-            this.TemplateRelativePath = templateRelativePath;
+            this.AppRelativePath = appRelativePath;
             this.Referer = refererUrl;
-            this.TemplateHandler = templateHandler;
+            this.AppFactory = appFactory;
         }
 
         private string Referer { get; set; }
-        public TemplateParser TemplateHandler { get; set; }
+        public AppFactory AppFactory { get; set; }
 
         public Dictionary<string, string> LoggingParameters { get; private set; }
 
@@ -32,16 +31,16 @@ namespace Microsoft.Deployment.Common
 
         private string VirtualPathRoot { get; set; }
 
-        private string TemplateRelativePath { get; set; }
+        private string AppRelativePath { get; set; }
 
-        public IEnumerable<string> GetAllTemplates(string userId, string userGenId, string sessionId, string operationId,
+        public IEnumerable<string> GetAllApps(string userId, string userGenId, string sessionId, string operationId,
             string uniqueLink)
         {
             Logger logger = new Logger(userId, userGenId, sessionId, operationId, uniqueLink, "NA", this.Source,
-                "GetAllTemplates", this.LoggingParameters);
+                "GetAllApps", this.LoggingParameters);
 
             var start = DateTime.Now;
-            var templateNames = this.TemplateHandler.Templates.Select(p => p.TemplateName);
+            var templateNames = this.AppFactory.Apps.Select(p => p.Key);
             var end = DateTime.Now;
 
             var allTemplates = templateNames as IList<string> ?? templateNames.ToList();
@@ -50,14 +49,14 @@ namespace Microsoft.Deployment.Common
             return allTemplates;
         }
 
-        public Template.Template GetTemplate(string userId, string userGenId, string sessionId, string operationId,
+        public App GetApp(string userId, string userGenId, string sessionId, string operationId,
             string uniqueLink, string id)
         {
 
             Logger logger = new Logger(userId, userGenId, sessionId, operationId, uniqueLink, id, this.Source,
                 "GetTemplate", this.LoggingParameters);
             var start = DateTime.Now;
-            var template = this.TemplateHandler.Templates.SingleOrDefault(p => p.TemplateName == id);
+            var template = this.AppFactory.Apps[id];
             var end = DateTime.Now;
 
             logger.LogRequest("GetTemplate-" + id, end - start, template != null);
@@ -72,7 +71,7 @@ namespace Microsoft.Deployment.Common
                 id, this.LoggingParameters);
             logger.LogEvent("Start-" + id, null);
             var start = DateTime.Now;
-            var action = this.TemplateHandler.AllActions.SingleOrDefault(p => p.OperationUniqueName.EqualsIgnoreCase(id));
+            var action = this.AppFactory.Actions[id];
             if (action != null)
             {
                 int loopCount = 0;
@@ -100,7 +99,7 @@ namespace Microsoft.Deployment.Common
             do
             {
                 ActionRequest request = new ActionRequest(this.LoggingParameters, body, templateName,
-                       this.VirtualPathRoot, this.TemplateRelativePath, this.Referer, this.TemplateHandler.AllActions);
+                       this.VirtualPathRoot, this.AppRelativePath, this.Referer, this.AppFactory.Actions);
                 request.Logger = logger;
 
                 try
@@ -132,7 +131,7 @@ namespace Microsoft.Deployment.Common
                 exceptionFromAction = exc.GetBaseException();
             }
 
-            var exceptionHandler = this.TemplateHandler.AllActionExceptionHandlers
+            var exceptionHandler = this.AppFactory.ActionExceptionsHandlers
                 .FirstOrDefault(p => p.ExceptionExpected == exceptionFromAction.GetType());
 
             bool showGenericException = true;
@@ -169,7 +168,7 @@ namespace Microsoft.Deployment.Common
         {
             ActionResponse responseToReturn;
 
-            var interceptors = this.TemplateHandler.AllRequestInterceptors.Select(p => 
+            var interceptors = this.AppFactory.RequestInterceptors.Select(p => 
             new Tuple<InterceptorStatus, IActionRequestInterceptor>(p.CanIntercept(action, request), p))
             .ToList();
 

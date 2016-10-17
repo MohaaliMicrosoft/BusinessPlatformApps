@@ -101,10 +101,9 @@
     <Compile Include="Tags\ITagHandler.cs" />
     <Compile Include="Tags\MsiTagHandler.cs" />
     <Compile Include="Tags\PagesTagHandler.cs" />
-    <Compile Include="Tags\TestTag.cs" />
-    <Compile Include="Template\Template.cs" />
-    <Compile Include="Template\TemplateParser.cs" />
-    <Compile Include="Template\UIPage.cs" />
+    <Compile Include="AppLoad\App.cs" />
+    <Compile Include="AppLoad\AppFactory.cs" />
+    <Compile Include="AppLoad\UIPage.cs" />
     <Compile Include="TestHarness\Helpers\DataStoreMock.cs" />
     <Compile Include="TestHarness\Helpers\DeploymentTestHelper.cs" />
     <Compile Include="TestHarness\Helpers\OAuthUtility.cs" />

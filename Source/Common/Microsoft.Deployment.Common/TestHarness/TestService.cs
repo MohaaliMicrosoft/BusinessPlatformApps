@@ -2,8 +2,8 @@
 using System.Net.Http;
 using Microsoft.Deployment.Common;
 using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Helpers;
-using Microsoft.Deployment.Common.Template;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,7 +12,7 @@ namespace Microsoft.Deployment.Common.TestHarness
     public class TestService
     {
         public static TestService Instance { get; set; }
-        public TemplateParser TemplateUtility { get; set; } = new TemplateParser();
+        public AppFactory AppFactory { get; set; } = new AppFactory();
 
         public const string TestRedirectUrl = "https://bpst-slot1.azurewebsites.net";
 
@@ -79,8 +79,8 @@ namespace Microsoft.Deployment.Common.TestHarness
 
             Dictionary<string, string> loggingParam = new Dictionary<string, string>();
             param.Add("Service", "Test");
-            var service = new CommonController("Test", loggingParam, TestRedirectUrl, Constants.TemplatePath,
-                TestRedirectUrl, this.TemplateUtility);
+            var service = new CommonController("Test", loggingParam, TestRedirectUrl, Constants.AppsPath,
+                TestRedirectUrl, this.AppFactory);
 
             if (UseRealService && !performLocal)
             {

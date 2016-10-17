@@ -7,56 +7,27 @@ namespace Microsoft.Deployment.Common.Actions
 {
     public class ActionRequest
     {
-        public string TemplateRootPath
-        {
-            get
-            {
-                string folderPath = System.AppDomain.CurrentDomain.BaseDirectory;
-                string templatePath = folderPath + Constants.TemplatePath;
-                if (!Directory.Exists(templatePath))
-                {
-                    templatePath = folderPath + Constants.TemplatePathMsi;
-                    if (!Directory.Exists(templatePath))
-                    {
-                        throw new Exception("Template Root Path invalid");
-                    }
-                }
-                return templatePath;
-            }
-        }
-
+        public string AppsRootPath { get; set; }
         public string WebsiteRootUrl { get; set; }
-
-        public string SiteRootPath { get; private set; }
-
-        public string TemplatePath
-        {
-            get
-            {
-                return Path.Combine(this.TemplateRootPath, this.TemplateName);
-            }
-        }
-
+        public string ServiceRootPath { get; private set; }
+        public string AppPath { get; set; }
         public Dictionary<string, string> Parameters { get; set; }
-
         public JObject Message { get; set; }
-
-        public string TemplateName { get; set; }
-        public string SiteTemplatePath { get; private set; }
+        public string AppName { get; set; }
+        public string SiteAppPath { get; private set; }
         public Logger Logger { get; set; }
+        public Dictionary<string, IAction> Actions { get; set; }
 
-        public IEnumerable<IAction> AllActions { get; set; }
-
-        public ActionRequest(Dictionary<string,string> parameters, JObject message, string template, 
-            string siteRoot, string templateRelativePath, string referer, IEnumerable<IAction> allActions)
+        public ActionRequest(Dictionary<string,string> parameters, JObject message, string appName, 
+            string serviceRoot, string appRelativePath, string referer, Dictionary<string,IAction> actions)
         {
-            this.TemplateName = template;
+            this.AppName = appName;
             this.Parameters = parameters;
             this.Message = message;
-            this.SiteRootPath = siteRoot;
-            this.SiteTemplatePath = siteRoot + templateRelativePath + "/" + template;
+            this.ServiceRootPath = serviceRoot;
+            this.SiteAppPath = Path.Combine(serviceRoot, appRelativePath,appName);
             this.WebsiteRootUrl = referer;
-            this.AllActions = allActions;
+            this.Actions = actions;
         }
     }
 }
