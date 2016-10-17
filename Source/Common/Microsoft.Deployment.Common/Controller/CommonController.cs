@@ -1,107 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.AppLoad;
+using Microsoft.Deployment.Common.Controller;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Exceptions;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Microsoft.Deployment.Common
 {
     public class CommonController
     {
-        public CommonController(string source, Dictionary<string, string> loggingParameters,
-            string virtualPathRoot, string appRelativePath, string refererUrl, AppFactory appFactory)
+        public CommonController(CommonControllerModel commonControllerModel)
         {
-            this.Source = source;
-            this.LoggingParameters = loggingParameters;
-            this.VirtualPathRoot = virtualPathRoot;
-            this.AppRelativePath = appRelativePath;
-            this.Referer = refererUrl;
-            this.AppFactory = appFactory;
+           
         }
 
-        private string Referer { get; set; }
-        public AppFactory AppFactory { get; set; }
+        public CommonControllerModel CommonControllerModel { get; set; }
 
-        public Dictionary<string, string> LoggingParameters { get; private set; }
 
-        private string Source { get; set; }
-
-        private string VirtualPathRoot { get; set; }
-
-        private string AppRelativePath { get; set; }
-
-        public IEnumerable<string> GetAllApps(string userId, string userGenId, string sessionId, string operationId,
-            string uniqueLink)
+        public IEnumerable<string> GetAllApps(UserInfo info)
         {
-            Logger logger = new Logger(userId, userGenId, sessionId, operationId, uniqueLink, "NA", this.Source,
-                "GetAllApps", this.LoggingParameters);
+            Logger logger = new Logger(info, this.CommonControllerModel);
+            info.ActionName = "GetAllApps";
 
             var start = DateTime.Now;
-            var templateNames = this.AppFactory.Apps.Select(p => p.Key);
+            var templateNames = this.CommonControllerModel.AppFactory.Apps.Select(p => p.Key);
             var end = DateTime.Now;
 
             var allTemplates = templateNames as IList<string> ?? templateNames.ToList();
-            logger.LogRequest("GetAllTemplates", end - start, allTemplates.Any());
+            logger.LogRequest("GetAllApps", end - start, allTemplates.Any());
             logger.Flush();
             return allTemplates;
         }
 
-        public App GetApp(string userId, string userGenId, string sessionId, string operationId,
-            string uniqueLink, string id)
+        public App GetApp(UserInfo info)
         {
 
-            Logger logger = new Logger(userId, userGenId, sessionId, operationId, uniqueLink, id, this.Source,
-                "GetTemplate", this.LoggingParameters);
+            Logger logger = new Logger(info, this.CommonControllerModel);
+            info.ActionName = "GetApp";
+
             var start = DateTime.Now;
-            var template = this.AppFactory.Apps[id];
+            var app = this.CommonControllerModel.AppFactory.Apps[info.AppName];
             var end = DateTime.Now;
 
-            logger.LogRequest("GetTemplate-" + id, end - start, template != null);
+            logger.LogRequest("GetApp-" + info.AppName, end - start, app != null);
             logger.Flush();
-            return template;
+            return app;
         }
 
-        public ActionResponse ExecuteAction(string userId, string userGenId, string sessionId, string operationId,
-            string uniqueLink, string templateName, string id, JObject body)
+        public ActionResponse ExecuteAction(UserInfo info, JObject body, string actionName)
         {
-            Logger logger = new Logger(userId, userGenId, sessionId, operationId, uniqueLink, templateName, this.Source,
-                id, this.LoggingParameters);
-            logger.LogEvent("Start-" + id, null);
+            info.ActionName = actionName;
+            Logger logger = new Logger(info, this.CommonControllerModel);
+            logger.LogEvent("Start-" + actionName, null);
             var start = DateTime.Now;
-            var action = this.AppFactory.Actions[id];
+            var action = this.CommonControllerModel.AppFactory.Actions[actionName];
+
+            ActionRequest request = JsonConvert.DeserializeObject<ActionRequest>(body.ToString());
+            request.ControllerModel = this.CommonControllerModel;
+            request.Info = info;
+            request.Logger = logger;
+
             if (action != null)
             {
                 int loopCount = 0;
 
-                ActionResponse responseToReturn = RunAction(templateName, body, logger, action, loopCount);
-                logger.LogEvent("End-" + id, null, body, responseToReturn);
+                ActionResponse responseToReturn = RunAction(request, logger, action, loopCount);
+                logger.LogEvent("End-" + actionName, null, request, responseToReturn);
                 logger.LogRequest(action.OperationUniqueName, DateTime.Now - start,
-                    responseToReturn.Status.IsSucessfullStatus(), body, responseToReturn);
+                    responseToReturn.Status.IsSucessfullStatus(), request, responseToReturn);
                 logger.Flush();
                 return responseToReturn;
             }
 
-            logger.LogEvent("End-" + id, null, body, null);
-            logger.LogRequest(id, DateTime.Now - start, false, body, null);
+            logger.LogEvent("End-" + actionName, null, request, null);
+            logger.LogRequest(actionName, DateTime.Now - start, false, request, null);
             var ex = new ActionNotFoundException();
-            logger.LogException(ex, null, body, null);
+            logger.LogException(ex, null, request, null);
             logger.Flush();
             throw ex;
         }
 
-        private ActionResponse RunAction(string templateName, JObject body, Logger logger,
+        private ActionResponse RunAction(ActionRequest request, Logger logger,
             IAction action, int loopCount)
         {
             ActionResponse responseToReturn = null;
             do
             {
-                ActionRequest request = new ActionRequest(this.LoggingParameters, body, templateName,
-                       this.VirtualPathRoot, this.AppRelativePath, this.Referer, this.AppFactory.Actions);
-                request.Logger = logger;
-
                 try
                 {
                     responseToReturn = this.RunActionWithInterceptor(action, request);
@@ -131,7 +120,7 @@ namespace Microsoft.Deployment.Common
                 exceptionFromAction = exc.GetBaseException();
             }
 
-            var exceptionHandler = this.AppFactory.ActionExceptionsHandlers
+            var exceptionHandler = this.CommonControllerModel.AppFactory.ActionExceptionsHandlers
                 .FirstOrDefault(p => p.ExceptionExpected == exceptionFromAction.GetType());
 
             bool showGenericException = true;
@@ -168,7 +157,7 @@ namespace Microsoft.Deployment.Common
         {
             ActionResponse responseToReturn;
 
-            var interceptors = this.AppFactory.RequestInterceptors.Select(p => 
+            var interceptors = this.CommonControllerModel.AppFactory.RequestInterceptors.Select(p => 
             new Tuple<InterceptorStatus, IActionRequestInterceptor>(p.CanIntercept(action, request), p))
             .ToList();
 
@@ -178,14 +167,7 @@ namespace Microsoft.Deployment.Common
             var requestInterceptors = interceptors.Where(p => p.Item1 == InterceptorStatus.Intercept);
             foreach (var requestInterceptor in requestInterceptors)
             {
-                request.Logger.LogEvent("StartIntercept-" + requestInterceptor.GetType(), null);
                 var response = requestInterceptor.Item2.Intercept(action, request);
-
-                Dictionary<string,string> interceptorResult = new Dictionary<string, string>();
-                interceptorResult.Add("InterceptorStatus", response.Status.ToString());
-
-                request.Logger.LogEvent("InterceptorResult", interceptorResult, request.Message, response);
-                request.Logger.LogEvent("EndIntercept-" + requestInterceptor.GetType(), null);
             }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Deployment.Common.ActionModel;
 
 namespace Microsoft.Deployment.Common.Actions
 {

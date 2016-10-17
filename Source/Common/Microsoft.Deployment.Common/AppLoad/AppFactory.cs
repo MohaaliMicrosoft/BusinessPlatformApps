@@ -18,10 +18,10 @@ namespace Microsoft.Deployment.Common.AppLoad
         private Dictionary<string, UIPage> allPages = new Dictionary<string, UIPage>();
 
         [ImportMany]
-        private IEnumerable<ITagHandler> AllTagHandlers;
+        public IEnumerable<ITagHandler> AllTagHandlers;
 
         [ImportMany]
-        private IEnumerable<IAction> AllActions;
+        public IEnumerable<IAction> AllActions;
 
         [ImportMany]
         public IEnumerable<IActionExceptionHandler> ActionExceptionsHandlers;

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Deployment.Common.Actions
+﻿using Microsoft.Deployment.Common.ActionModel;
+
+namespace Microsoft.Deployment.Common.Actions
 {
     public interface IAction
     {

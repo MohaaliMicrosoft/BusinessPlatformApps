@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Deployment.Common.Actions
+﻿namespace Microsoft.Deployment.Common.ActionModel
 {
     public enum ActionStatus
     {
@@ -9,7 +9,7 @@
         UserInteractionRequired,
         Success,
 
-        // Used for when you encounter an Error
+        // Used for when you encounter an Error - these should never be returned
         Retry,
         UnhandledException
     }

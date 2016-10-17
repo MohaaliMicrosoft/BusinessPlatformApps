@@ -1,51 +1,47 @@
-﻿namespace Microsoft.Deployment.Common
-{
-    using System;
-    using System.Collections.Generic;
-    using Microsoft.ApplicationInsights;
-    using Microsoft.Deployment.Common.Actions;
-    using Microsoft.Deployment.Common.Helpers;
-    using Newtonsoft.Json.Linq;
-    using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.ApplicationInsights;
+using Microsoft.Deployment.Common.ActionModel;
+using Newtonsoft.Json.Linq;
 
+namespace Microsoft.Deployment.Common.Controller
+{
     public class Logger
     {
         private TelemetryClient telemetryClient;
 
-        private string actionName;
-
         private Dictionary<string, string> globalParams;
 
-        private string source;
+        private UserInfo Info { get; }
+        public CommonControllerModel CommonControllerModel { get; }
 
-        public Logger(string userId, string userGenId, string sessionId, string operationId, string uniqueLink, string template, string source, string actionName, Dictionary<string, string> globalParams)
+        public Logger(UserInfo info, CommonControllerModel commonControllerModel)
         {
-            this.source = source;
-            this.actionName = actionName;
+            this.Info = info;
+            this.CommonControllerModel = commonControllerModel;
             this.telemetryClient = new TelemetryClient { InstrumentationKey = Constants.AppInsightsKey };
 
-            this.globalParams = globalParams;
-
-            this.telemetryClient.Context.Operation.Id = operationId;
-            this.telemetryClient.Context.User.Id = userId;
-            this.telemetryClient.Context.Session.Id = sessionId;
-            this.telemetryClient.Context.Operation.Name = this.actionName;
+            this.telemetryClient.Context.Operation.Id = info.OperationId;
+            this.telemetryClient.Context.User.Id = info.UserId;
+            this.telemetryClient.Context.Session.Id = info.SessionId;
+            this.telemetryClient.Context.Operation.Name = info.ActionName;
 
             if (this.globalParams == null)
             {
                 this.globalParams = new Dictionary<string, string>();
             }
 
-            this.globalParams.Add("TemplateName", template);
-            this.globalParams.Add("UserGenId", userGenId);
-            this.globalParams.Add("EntryPointAction", this.actionName);
-            this.globalParams.Add("OriginatingSource", this.source);
-            this.globalParams.Add("LinkedOperationId", operationId);
-            this.globalParams.Add("UniqueLink", uniqueLink);
+            this.globalParams.Add("TemplateName", info.AppName);
+            this.globalParams.Add("UserGenId", info.UserGenId);
+            this.globalParams.Add("EntryPointAction", info.ActionName);
+            this.globalParams.Add("OriginatingSource", commonControllerModel.Source);
+            this.globalParams.Add("LinkedOperationId", info.OperationId);
+            this.globalParams.Add("UniqueLink", info.UniqueLink);
             this.globalParams.Add("Build", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             this.AddToDictionary(this.globalParams, this.telemetryClient.Context.Properties);
         }
+
 
         public void LogEvent(string eventName, Dictionary<string, string> properties)
         {
@@ -91,11 +87,21 @@
             this.Flush();
         }
 
-        public void LogTrace(string objectString, object obj, string traceId)
+        public void LogTrace(string objectString, ActionRequest obj, string traceId)
+        {
+           
+        }
+
+        public void LogTrace(string objectString, ActionResponse obj, string traceId)
+        {
+
+        }
+
+        public void LogTraceInAppInsights(string objectString, object obj, string traceId)
         {
             Dictionary<string, object> container = new Dictionary<string, object>();
             container.Add("TraceId", traceId);
-            container.Add(objectString, RemovePrivateInformation(obj));
+            //container.Add(objectString, RemovePrivateInformation(obj));
 
             foreach (var globParam in this.globalParams)
             {
@@ -104,7 +110,7 @@
 
             this.AddTraceId(traceId);
 
-            this.telemetryClient.TrackTrace(JsonUtility.GetJsonStringFromObject(container));
+            //this.telemetryClient.TrackTrace(JsonUtility.GetJsonStringFromObject(container));
 
             this.Flush();
             this.ClearTraceId();
@@ -133,7 +139,7 @@
             }
         }
 
-        internal void LogEvent(string eventName, Dictionary<string, string> properties, JObject requestBody, ActionResponse responseToReturn)
+        internal void LogEvent(string eventName, Dictionary<string, string> properties, ActionRequest requestBody, ActionResponse responseToReturn)
         {
             // Add the reqyest/response onto body
             if (properties == null)
@@ -150,7 +156,7 @@
             this.ClearTraceId();
         }
 
-        internal void LogException(Exception exception, Dictionary<string, string> properties, JObject requestBody, ActionResponse responseToReturn)
+        internal void LogException(Exception exception, Dictionary<string, string> properties, ActionRequest requestBody, ActionResponse responseToReturn)
         {
             // Add the reqyest/response onto body
             if (properties == null)
@@ -167,7 +173,7 @@
             this.ClearTraceId();
         }
 
-        internal void LogRequest(string request, TimeSpan duration, bool sucess, JObject requestBody, ActionResponse responseToReturn)
+        internal void LogRequest(string request, TimeSpan duration, bool sucess, ActionRequest requestBody, ActionResponse responseToReturn)
         {
             if (responseToReturn == null)
             {
@@ -193,21 +199,6 @@
             {
                 targetDictionary.Add(prop.Key, prop.Value);
             }
-        }
-
-        private object RemovePrivateInformation(object o)
-        {
-            if (o is JObject)
-            {
-                JObject result = new JObject((JObject)o);
-                result.Remove("ImpersonationPassword");
-                result.Remove("SqlCredentials");
-                result.Remove("Token");
-
-                return result;
-            }
-
-            return o;
         }
     }
 }

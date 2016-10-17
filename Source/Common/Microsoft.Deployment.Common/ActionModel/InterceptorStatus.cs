@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Deployment.Common.Actions
+﻿namespace Microsoft.Deployment.Common.ActionModel
 {
     public enum InterceptorStatus
     {

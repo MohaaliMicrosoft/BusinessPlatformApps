@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.Linq;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Helpers;
 
 namespace Microsoft.Deployment.Common.Actions
@@ -8,12 +10,10 @@ namespace Microsoft.Deployment.Common.Actions
     {
         public InterceptorStatus CanIntercept(IAction actionToExecute, ActionRequest request)
         {
-            bool? impersonationFound = request.Message
-                .SelectToken("ImpersonateAction")?
-                .ToString()
-                .EqualsIgnoreCase("true");
+            bool impersonationFound = request.DataStore.PublicDataStore.ContainsKey("ImpersonateAction") &&
+            request.DataStore.GetValueFromDataStore(DataStoreType.Any, "ImpersonateAction").First().ToString() == "true";
 
-            if (impersonationFound.HasValue && impersonationFound.Value)
+            if (impersonationFound)
             {
                 return InterceptorStatus.IntercepAndHandleAction;
             }

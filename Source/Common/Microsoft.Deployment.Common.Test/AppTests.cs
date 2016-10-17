@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Deployment.Common.AppLoad;
+﻿using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Deployment.Common.Test
 {
     [TestClass]
-    public class TemplateParserTests
+    public class AppTests
     {
         [TestMethod]
         public void GetApps()

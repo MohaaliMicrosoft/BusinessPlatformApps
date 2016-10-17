@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 
@@ -53,9 +54,9 @@ namespace Microsoft.Deployment.Common.Helpers
 
         public static ActionResponse Execute(ActionDelegate action, ActionRequest request)
         {
-            var domain = NTHelper.CleanDomain(request.Message["ImpersonationDomain"][0].ToString());
-            var userName = NTHelper.CleanUsername(request.Message["ImpersonationUsername"][0].ToString());
-            var password = request.Message["ImpersonationPassword"][0].ToString();
+            var domain = NTHelper.CleanDomain(request.DataStore.GetValueFromDataStore(DataStoreType.Any, "ImpersonationDomain").First().ToString());
+            var userName = NTHelper.CleanUsername(request.DataStore.GetValueFromDataStore(DataStoreType.Any, "ImpersonationUsername").First().ToString());
+            var password = request.DataStore.GetValueFromDataStore(DataStoreType.Any, "ImpersonationPassword").First().ToString();
 
             string[] userDomain = WindowsIdentity.GetCurrent().Name.Split('\\');
             if (userDomain.Length != 2)

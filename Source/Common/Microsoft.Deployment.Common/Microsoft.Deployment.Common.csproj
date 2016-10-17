@@ -54,18 +54,23 @@
     <Compile Include="..\..\Shared\SharedVersion.cs">
       <Link>Properties\SharedVersion.cs</Link>
     </Compile>
-    <Compile Include="Actions\ActionRequest.cs" />
-    <Compile Include="Actions\ActionResponse.cs" />
-    <Compile Include="Actions\ActionStatus.cs" />
+    <Compile Include="ActionModel\ActionRequest.cs" />
+    <Compile Include="ActionModel\ActionResponse.cs" />
+    <Compile Include="ActionModel\ActionResponseExceptionDetail.cs" />
+    <Compile Include="ActionModel\ActionStatus.cs" />
+    <Compile Include="ActionModel\DataStore.cs" />
+    <Compile Include="ActionModel\DataStoreType.cs" />
     <Compile Include="Actions\BaseAction.cs" />
     <Compile Include="Actions\DelegateInterceptor.cs" />
     <Compile Include="Actions\DeploymentAction.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\IActionExceptionHandler.cs" />
     <Compile Include="Actions\IActionRequestInterceptor.cs" />
-    <Compile Include="Actions\InterceptorStatus.cs" />
-    <Compile Include="CommonController.cs" />
+    <Compile Include="ActionModel\InterceptorStatus.cs" />
+    <Compile Include="Controller\CommonController.cs" />
+    <Compile Include="Controller\CommonControllerModel.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controller\UserInfo.cs" />
     <Compile Include="Enums\ModelType.cs" />
     <Compile Include="Enums\SqlAuthentication.cs" />
     <Compile Include="Enums\SqlCommandType.cs" />
@@ -93,7 +98,7 @@
     <Compile Include="Helpers\SqlUtility.cs" />
     <Compile Include="Helpers\StringEnumConverterLower.cs" />
     <Compile Include="Helpers\StringExtension.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Controller\Logger.cs" />
     <Compile Include="Model\QDEFF.cs" />
     <Compile Include="Model\SqlCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,11 +109,6 @@
     <Compile Include="AppLoad\App.cs" />
     <Compile Include="AppLoad\AppFactory.cs" />
     <Compile Include="AppLoad\UIPage.cs" />
-    <Compile Include="TestHarness\Helpers\DataStoreMock.cs" />
-    <Compile Include="TestHarness\Helpers\DeploymentTestHelper.cs" />
-    <Compile Include="TestHarness\Helpers\OAuthUtility.cs" />
-    <Compile Include="TestHarness\Helpers\TokenUtility.cs" />
-    <Compile Include="TestHarness\TestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorResources\EnglishErrorCodes.resx" />
