@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.AppLoad;
@@ -50,7 +51,7 @@ namespace Microsoft.Deployment.Common.Controller
             return app;
         }
 
-        public ActionResponse ExecuteAction(UserInfo info, JObject body, string actionName)
+        public async Task<ActionResponse> ExecuteAction(UserInfo info, JObject body, string actionName)
         {
             info.ActionName = actionName;
             Logger logger = new Logger(info, this.CommonControllerModel);
@@ -67,7 +68,7 @@ namespace Microsoft.Deployment.Common.Controller
             {
                 int loopCount = 0;
 
-                ActionResponse responseToReturn = RunAction(request, logger, action, loopCount);
+                ActionResponse responseToReturn = await RunActionAsync(request, logger, action, loopCount);
                 responseToReturn.DataStore = request.DataStore;
 
                 logger.LogEvent("End-" + actionName, null, request, responseToReturn);
@@ -85,7 +86,7 @@ namespace Microsoft.Deployment.Common.Controller
             throw ex;
         }
 
-        private ActionResponse RunAction(ActionRequest request, Logger logger,
+        private async Task<ActionResponse> RunActionAsync(ActionRequest request, Logger logger,
             IAction action, int loopCount)
         {
             ActionResponse responseToReturn = null;
@@ -93,11 +94,11 @@ namespace Microsoft.Deployment.Common.Controller
             {
                 try
                 {
-                    responseToReturn = this.RunActionWithInterceptor(action, request);
+                    responseToReturn = await this.RunActionWithInterceptor(action, request);
                 }
                 catch (Exception exceptionFromAction)
                 {
-                    responseToReturn = RunExceptionHandler(request,exceptionFromAction);
+                    responseToReturn = await RunExceptionHandler(request,exceptionFromAction);
                 }
 
                 loopCount += 1;
@@ -111,7 +112,7 @@ namespace Microsoft.Deployment.Common.Controller
             return responseToReturn;
         }
 
-        private ActionResponse RunExceptionHandler( ActionRequest request, Exception exceptionFromAction)
+        private async Task<ActionResponse> RunExceptionHandler(ActionRequest request, Exception exceptionFromAction)
         {
             ActionResponse responseToReturn = null;
             if (exceptionFromAction is AggregateException)
@@ -130,7 +131,7 @@ namespace Microsoft.Deployment.Common.Controller
                 try
                 {
                     request.Logger.LogEvent("StartExceptionHandler-" + exceptionFromAction.GetType().Name, null);
-                    responseToReturn = exceptionHandler.HandleException(request, exceptionFromAction);
+                    responseToReturn = await exceptionHandler.HandleExceptionAsync(request, exceptionFromAction);
                     showGenericException = false;
                 }
                 catch
@@ -153,44 +154,56 @@ namespace Microsoft.Deployment.Common.Controller
             return responseToReturn;
         }
 
-        private ActionResponse RunActionWithInterceptor(IAction action, ActionRequest request)
+        private async Task<ActionResponse> RunActionWithInterceptor(IAction action, ActionRequest request)
         {
             ActionResponse responseToReturn;
+            List<IActionRequestInterceptor> actionInterceptors = new List<IActionRequestInterceptor>();
 
-            var interceptors = this.CommonControllerModel.AppFactory.RequestInterceptors.Select(p => 
-            new Tuple<InterceptorStatus, IActionRequestInterceptor>(p.CanIntercept(action, request), p))
-            .ToList();
+            IActionRequestInterceptor actionInterceptorHandle = null;
+            foreach (var actionRequestInterceptor in this.CommonControllerModel.AppFactory.RequestInterceptors.ToList())
+            {
+                var InterceptStatus = await actionRequestInterceptor.CanInterceptAsync(action, request);
+                if (InterceptStatus == InterceptorStatus.Intercept)
+                {
+                    actionInterceptors.Add(actionRequestInterceptor);
+                }
+
+                if (InterceptStatus == InterceptorStatus.IntercepAndHandleAction)
+                {
+                    actionInterceptorHandle = actionRequestInterceptor;
+                }
+            }
 
             // This code handles all interceptors which dont affect the action execution
             // Token refreshes, db creation tasks and generally actions which need prework before they
             // can be executed
-            var requestInterceptors = interceptors.Where(p => p.Item1 == InterceptorStatus.Intercept);
-            foreach (var requestInterceptor in requestInterceptors)
+            
+            foreach (var requestInterceptor in actionInterceptors)
             {
                 // Check to see what happened
-                var response = requestInterceptor.Item2.Intercept(action, request);
+                var response = await requestInterceptor.InterceptAsync(action, request);
             }
 
             // Check to make sure there is only one interceptor which can handle action otherwise use default
             // This could be either (delegate/elevated/non elevated handler)
-            var interceptor = interceptors.SingleOrDefault(p => p.Item1 == InterceptorStatus.IntercepAndHandleAction);
-            if (interceptor != null)
+           
+            if (actionInterceptorHandle != null)
             { 
                 try
                 {
                     // No need to log as it will be picked up by the caller
-                    request.Logger.LogEvent("StartIntercepAndHandleAction-" + interceptor.GetType(), null);
-                    responseToReturn = interceptor.Item2.Intercept(action, request);
+                    request.Logger.LogEvent("StartIntercepAndHandleAction-" + actionInterceptorHandle.GetType(), null);
+                    responseToReturn = await actionInterceptorHandle.InterceptAsync(action, request);
                 }
                 finally
                 {
-                    request.Logger.LogEvent("EndIntercepAndHandleAction-" + interceptor.GetType(), null);
+                    request.Logger.LogEvent("EndIntercepAndHandleAction-" + actionInterceptorHandle.GetType(), null);
                 }
             }
             else
             {
                 // Execute default if none found
-                responseToReturn = action.ExecuteAction(request);
+                responseToReturn = await action.ExecuteActionAsync(request);
             }
 
             return responseToReturn;

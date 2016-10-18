@@ -1,4 +1,5 @@
-﻿using Microsoft.Deployment.Common.ActionModel;
+﻿using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 
 namespace Microsoft.Deployment.Common.Actions
 {
@@ -6,6 +7,6 @@ namespace Microsoft.Deployment.Common.Actions
     {
         string OperationUniqueName { get; }
 
-        ActionResponse ExecuteAction(ActionRequest request);
+        Task<ActionResponse> ExecuteActionAsync(ActionRequest request);
     }
 }

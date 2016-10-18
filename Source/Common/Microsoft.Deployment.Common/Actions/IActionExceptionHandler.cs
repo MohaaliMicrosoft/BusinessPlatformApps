@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Deployment.Common.ActionModel;
 
 namespace Microsoft.Deployment.Common.Actions
@@ -7,6 +8,6 @@ namespace Microsoft.Deployment.Common.Actions
     {
         Type ExceptionExpected { get; }
 
-        ActionResponse HandleException(ActionRequest request, Exception exception);
+        Task<ActionResponse> HandleExceptionAsync(ActionRequest request, Exception exception);
     }
 }
