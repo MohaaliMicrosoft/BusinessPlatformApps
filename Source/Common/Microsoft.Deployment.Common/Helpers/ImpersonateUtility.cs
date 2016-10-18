@@ -54,9 +54,9 @@ namespace Microsoft.Deployment.Common.Helpers
 
         public static ActionResponse Execute(ActionDelegate action, ActionRequest request)
         {
-            var domain = NTHelper.CleanDomain(request.DataStore[DataStoreType.Any, "ImpersonationDomain"].First().ValueAsString);
-            var userName = NTHelper.CleanUsername(request.DataStore[DataStoreType.Any, "ImpersonationUsername"].First().ValueAsString);
-            var password = request.DataStore[DataStoreType.Any, "ImpersonationPassword"].First().ValueAsString;
+            var domain = NTHelper.CleanDomain(request.DataStore.GetFirst("ImpersonationDomain"));
+            var userName = NTHelper.CleanUsername(request.DataStore.GetFirst("ImpersonationUsername"));
+            var password = request.DataStore.GetFirst("ImpersonationPassword");
 
             string[] userDomain = WindowsIdentity.GetCurrent().Name.Split('\\');
             if (userDomain.Length != 2)
