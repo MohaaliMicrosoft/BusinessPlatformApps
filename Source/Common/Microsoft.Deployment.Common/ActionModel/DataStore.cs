@@ -20,7 +20,6 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public Dictionary<string, Dictionary<string, JToken>> PrivateDataStore { get; set; }
 
-
         public JToken this[string route, string key]
         {
             get
@@ -46,13 +45,12 @@ namespace Microsoft.Deployment.Common.ActionModel
             }
         }
 
-        public IList<DataStoreItem> this[string key]
+        public IList<DataStoreItem> this[string key, DataStoreType dataStoreType = DataStoreType.Any]
         {
             get
             {
                 return this.GetValueAndRoutesFromDataStore(DataStoreType.Any, key);
             }
-
         }
 
         public IList<DataStoreItem> this[DataStoreType type, string key]
@@ -124,6 +122,11 @@ namespace Microsoft.Deployment.Common.ActionModel
             this.UpdateValue(dataStoreType, route, key, value);
         }
 
+        public void AddToDataStore(string key, JToken value, DataStoreType dataStoreType)
+        {
+            this.UpdateValue(dataStoreType, this.CurrentRoute, key, value);
+        }
+
         public void AddObjectDataStore(string route, JObject value, DataStoreType dataStoreType)
         {
             foreach (var val in value)
@@ -132,6 +135,13 @@ namespace Microsoft.Deployment.Common.ActionModel
             }
         }
 
+        public void AddObjectDataStore(JObject value, DataStoreType dataStoreType)
+        {
+            foreach (var val in value)
+            {
+                this.UpdateValue(dataStoreType, this.CurrentRoute, val.Key, val.Value);
+            }
+        }
 
         private JToken GetValueWithRouteAndKey(DataStoreType dataStoreType, string route, string key)
         {
