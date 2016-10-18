@@ -11,7 +11,7 @@ namespace Microsoft.Deployment.Common.Actions
         public InterceptorStatus CanIntercept(IAction actionToExecute, ActionRequest request)
         {
             bool impersonationFound = request.DataStore.PublicDataStore.ContainsKey("ImpersonateAction") &&
-            request.DataStore.GetValueFromDataStore(DataStoreType.Any, "ImpersonateAction").First().ToString() == "true";
+            request.DataStore[DataStoreType.Any, "ImpersonateAction"].First().ValueAsString == "true";
 
             if (impersonationFound)
             {

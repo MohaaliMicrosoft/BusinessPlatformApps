@@ -59,6 +59,7 @@
     <Compile Include="ActionModel\ActionResponseExceptionDetail.cs" />
     <Compile Include="ActionModel\ActionStatus.cs" />
     <Compile Include="ActionModel\DataStore.cs" />
+    <Compile Include="ActionModel\DataStoreItem.cs" />
     <Compile Include="ActionModel\DataStoreType.cs" />
     <Compile Include="Actions\BaseAction.cs" />
     <Compile Include="Actions\DelegateInterceptor.cs" />

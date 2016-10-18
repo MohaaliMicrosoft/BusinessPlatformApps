@@ -4,19 +4,17 @@ using System.Linq;
 using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.AppLoad;
-using Microsoft.Deployment.Common.Controller;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Exceptions;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Deployment.Common
+namespace Microsoft.Deployment.Common.Controller
 {
     public class CommonController
     {
         public CommonController(CommonControllerModel commonControllerModel)
         {
-           
         }
 
         public CommonControllerModel CommonControllerModel { get; set; }
@@ -70,6 +68,8 @@ namespace Microsoft.Deployment.Common
                 int loopCount = 0;
 
                 ActionResponse responseToReturn = RunAction(request, logger, action, loopCount);
+                responseToReturn.DataStore = request.DataStore;
+
                 logger.LogEvent("End-" + actionName, null, request, responseToReturn);
                 logger.LogRequest(action.OperationUniqueName, DateTime.Now - start,
                     responseToReturn.Status.IsSucessfullStatus(), request, responseToReturn);
@@ -167,9 +167,9 @@ namespace Microsoft.Deployment.Common
             var requestInterceptors = interceptors.Where(p => p.Item1 == InterceptorStatus.Intercept);
             foreach (var requestInterceptor in requestInterceptors)
             {
+                // Check to see what happened
                 var response = requestInterceptor.Item2.Intercept(action, request);
             }
-
 
             // Check to make sure there is only one interceptor which can handle action otherwise use default
             // This could be either (delegate/elevated/non elevated handler)
