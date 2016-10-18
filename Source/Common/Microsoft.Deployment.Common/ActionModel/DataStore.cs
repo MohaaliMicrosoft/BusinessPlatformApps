@@ -108,40 +108,30 @@ namespace Microsoft.Deployment.Common.ActionModel
 
             if (dataStoreType == DataStoreType.Private || dataStoreType == DataStoreType.Any)
             {
-                foreach (var keyValuePair in PrivateDataStore)
-                {
-                    if (keyValuePair.Value.ContainsKey(key))
-                    {
-                        valuesToReturn.Add(new DataStoreItem()
-                        {
-                          Route = keyValuePair.Key,
-                          Key = key,
-                          Value = keyValuePair.Value[key],
-                            DataStoreType = DataStoreType.Private
-                        });
-                    }
-                }
+                valuesToReturn.AddRange(GetValueAndRoutesFromDataStore(this.PrivateDataStore, key, DataStoreType.Private));
             }
 
             if (dataStoreType == DataStoreType.Public || dataStoreType == DataStoreType.Any)
             {
-                foreach (var keyValuePair in PublicDataStore)
-                {
-                    if (keyValuePair.Value.ContainsKey(key))
-                    {
-                        valuesToReturn.Add(new DataStoreItem()
-                        {
-                            Route = keyValuePair.Key,
-                            Key = key,
-                            Value = keyValuePair.Value[key],
-                            DataStoreType = DataStoreType.Public
-                        });
-                    }
-                }
+                valuesToReturn.AddRange(GetValueAndRoutesFromDataStore(this.PublicDataStore, key, DataStoreType.Public));
             }
 
             return valuesToReturn;
         }
+
+        public void AddToDataStore(string route, string key, JToken value, DataStoreType dataStoreType)
+        {
+            this.UpdateValue(dataStoreType, route, key, value);
+        }
+
+        public void AddObjectDataStore(string route, JObject value, DataStoreType dataStoreType)
+        {
+            foreach (var val in value)
+            {
+                this.UpdateValue(dataStoreType, route, val.Key, val.Value);
+            }
+        }
+
 
         private JToken GetValueWithRouteAndKey(DataStoreType dataStoreType, string route, string key)
         {
@@ -166,29 +156,22 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         private void UpdateValue(DataStoreType dataStoreType, string route, string key, JToken value)
         {
-            bool found = false;
+            bool foundInPrivate = false;
+            bool foundInPublic = false;
 
             if (dataStoreType == DataStoreType.Private || dataStoreType == DataStoreType.Any)
             {
-                if (PrivateDataStore.ContainsKey(route) && PrivateDataStore[route].ContainsKey(key))
-                {
-                    this.PrivateDataStore[route][key] = value;
-                    found = true;
-                }
+                foundInPrivate = UpdateItemIntoDataStore(this.PrivateDataStore, route, key, value);
             }
 
             if (dataStoreType == DataStoreType.Public || dataStoreType == DataStoreType.Any)
             {
-                if (PublicDataStore.ContainsKey(route) && PublicDataStore[route].ContainsKey(key))
-                {
-                    this.PrivateDataStore[route][key] = value;
-                    found = true;
-                }
+                foundInPublic=  UpdateItemIntoDataStore(this.PrivateDataStore, route, key, value);
             }
 
-            if (!found && dataStoreType != DataStoreType.Any)
+            if (!foundInPublic && !foundInPrivate)
             {
-                if (dataStoreType == DataStoreType.Private)
+                if (dataStoreType == DataStoreType.Private || dataStoreType == DataStoreType.Any)
                 {
                     AddModifyItemToDataStore(this.PrivateDataStore, route,key,value);
                 }
@@ -198,6 +181,52 @@ namespace Microsoft.Deployment.Common.ActionModel
                     AddModifyItemToDataStore(this.PublicDataStore, route, key, value);
                 }
             }
+        }
+
+        private static List<DataStoreItem> GetValueAndRoutesFromDataStore(Dictionary<string, Dictionary<string, JToken>> store,
+            string key, DataStoreType dataStoreType)
+        {
+            List<DataStoreItem> itemsMatching = new List<DataStoreItem>();
+
+            foreach (var keyValuePair in store)
+            {
+                if (keyValuePair.Value.ContainsKey(key))
+                {
+                    itemsMatching.Add(new DataStoreItem()
+                    {
+                        Route = keyValuePair.Key,
+                        Key = key,
+                        Value = keyValuePair.Value[key],
+                        DataStoreType = dataStoreType
+                    });
+                }
+            }
+
+            return itemsMatching;
+        }
+
+        private static bool UpdateItemIntoDataStore(Dictionary<string, Dictionary<string, JToken>> store,
+            string route, string key, JToken value)
+        {
+            bool found = false;
+            if (store.ContainsKey(route) && store[route].ContainsKey(key))
+            {
+                found = true;
+                if (value == null)
+                {
+                    store[route].Remove(key);
+                    if (!store[key].Any())
+                    {
+                        store.Remove(route);
+                    }
+                }
+                else
+                {
+                    store[route][key] = value;
+                }
+            }
+
+            return found;
         }
 
         private static void AddModifyItemToDataStore(Dictionary<string, Dictionary<string, JToken>> store,
