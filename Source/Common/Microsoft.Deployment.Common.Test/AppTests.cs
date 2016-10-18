@@ -46,6 +46,15 @@ namespace Microsoft.Deployment.Common.Test
             Assert.IsTrue(store["password"].First().DataStoreType == DataStoreType.Private);
             Assert.IsTrue(store["password"].First().ValueAsString == "secret");
             Assert.IsTrue(store["password"].First().ToString() == "secret");
+
+
+            var valueNotFound = store["valuenothere"];
+            var valueNotFoundWithRoute = store["routethere", "valuenothere"];
+            Assert.IsNull(valueNotFoundWithRoute);
+
+            store["routethere", "valuenothere"] = "TestValue";
+            valueNotFoundWithRoute = store["routethere", "valuenothere"];
+            Assert.IsNotNull(valueNotFoundWithRoute);
         }
     }
 }
