@@ -46,7 +46,7 @@ namespace Microsoft.Deployment.Common.ActionModel
             }
         }
 
-        public IEnumerable<DataStoreItem> this[string key]
+        public IList<DataStoreItem> this[string key]
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         }
 
-        public IEnumerable<DataStoreItem> this[DataStoreType type, string key]
+        public IList<DataStoreItem> this[DataStoreType type, string key]
         {
             get
             {
@@ -102,7 +102,7 @@ namespace Microsoft.Deployment.Common.ActionModel
             return false;
         }
 
-        private IEnumerable<DataStoreItem> GetValueAndRoutesFromDataStore(DataStoreType dataStoreType, string key)
+        private IList<DataStoreItem> GetValueAndRoutesFromDataStore(DataStoreType dataStoreType, string key)
         {
             List<DataStoreItem> valuesToReturn = new List<DataStoreItem>();
 
