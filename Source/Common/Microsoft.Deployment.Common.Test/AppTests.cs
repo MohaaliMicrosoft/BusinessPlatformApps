@@ -40,9 +40,9 @@ namespace Microsoft.Deployment.Common.Test
             Assert.IsTrue(store.GetValue("TestObject").Count()  == 2);
             Assert.IsTrue(store.GetValue("TestObject2").Count() == 2);
             Assert.IsTrue(store.GetValue("password").Count() == 1);
-            Assert.IsTrue(store.GetAllWithMetadata("password").First().DataStoreType == DataStoreType.Private);
-            Assert.IsTrue(store.GetAllWithMetadata("password").First().ValueAsString == "secret");
-            Assert.IsTrue(store.GetAllWithMetadata("password").First().ToString() == "secret");
+            Assert.IsTrue(store.GetAllDataStoreItems("password").First().DataStoreType == DataStoreType.Private);
+            Assert.IsTrue(store.GetAllDataStoreItems("password").First().ValueAsString == "secret");
+            Assert.IsTrue(store.GetAllDataStoreItems("password").First().ToString() == "secret");
 
             var valueNotFound = store.GetValue("valuenothere");
             var valueNotFoundWithRoute = store.GetValue("routethere", "valuenothere");

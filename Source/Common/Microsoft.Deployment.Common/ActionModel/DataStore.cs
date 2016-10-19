@@ -147,6 +147,11 @@ namespace Microsoft.Deployment.Common.ActionModel
             return this.GetFirstValueFromDataStore(key, dataStoreType);
         }
 
+        public DataStoreItem GetDataStoreItem(string key, DataStoreType dataStoreType = DataStoreType.Any)
+        {
+            return this.GetValueAndRoutesFromDataStore(dataStoreType, key).First();
+        }
+
         public IList<string> GetAllValues(string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetAllValueFromDataStore(key,dataStoreType).Select(p=>p?.ToString()).ToList();
@@ -157,7 +162,7 @@ namespace Microsoft.Deployment.Common.ActionModel
             return this.GetAllValueFromDataStore(key, dataStoreType);
         }
 
-        public IList<DataStoreItem> GetAllWithMetadata(string key, DataStoreType dataStoreType = DataStoreType.Any)
+        public IList<DataStoreItem> GetAllDataStoreItems(string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetValueAndRoutesFromDataStore(dataStoreType,key);
         }
@@ -229,7 +234,7 @@ namespace Microsoft.Deployment.Common.ActionModel
             return null;
         }
 
-        private void UpdateValue(DataStoreType dataStoreType, string route, string key, JToken value)
+        public void UpdateValue(DataStoreType dataStoreType, string route, string key, JToken value)
         {
             bool foundInPrivate = false;
             bool foundInPublic = false;
