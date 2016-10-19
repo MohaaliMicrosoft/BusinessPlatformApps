@@ -37,20 +37,20 @@ namespace Microsoft.Deployment.Common.Test
                 {"TestObject2","TestValue2" }
             });
 
-            Assert.IsTrue(store.GetAll("TestObject").Count()  == 2);
-            Assert.IsTrue(store.GetAll("TestObject2").Count() == 2);
-            Assert.IsTrue(store.GetAll("password").Count() == 1);
+            Assert.IsTrue(store.GetValue("TestObject").Count()  == 2);
+            Assert.IsTrue(store.GetValue("TestObject2").Count() == 2);
+            Assert.IsTrue(store.GetValue("password").Count() == 1);
             Assert.IsTrue(store.GetAllWithMetadata("password").First().DataStoreType == DataStoreType.Private);
             Assert.IsTrue(store.GetAllWithMetadata("password").First().ValueAsString == "secret");
             Assert.IsTrue(store.GetAllWithMetadata("password").First().ToString() == "secret");
 
-            var valueNotFound = store.GetFirst("valuenothere");
-            var valueNotFoundWithRoute = store.Get("routethere", "valuenothere");
+            var valueNotFound = store.GetValue("valuenothere");
+            var valueNotFoundWithRoute = store.GetValue("routethere", "valuenothere");
             Assert.IsNull(valueNotFoundWithRoute);
             Assert.IsNull(valueNotFound);
 
             store.AddToDataStore("routethere", "valuenothere", "TestValue");
-            valueNotFoundWithRoute = store.Get("routethere", "valuenothere");
+            valueNotFoundWithRoute = store.GetValue("routethere", "valuenothere");
             Assert.IsNotNull(valueNotFoundWithRoute);
         }
     }
