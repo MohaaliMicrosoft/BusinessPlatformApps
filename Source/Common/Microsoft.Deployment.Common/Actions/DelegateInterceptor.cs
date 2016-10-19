@@ -15,7 +15,7 @@ namespace Microsoft.Deployment.Common.Actions
 #pragma warning restore 1998
         {
             bool impersonationFound = request.DataStore.PublicDataStore.ContainsKey("ImpersonateAction") &&
-            request.DataStore.GetFirst("ImpersonateAction") == "true";
+            request.DataStore.GetValue("ImpersonateAction") == "true";
 
             if (impersonationFound)
             {

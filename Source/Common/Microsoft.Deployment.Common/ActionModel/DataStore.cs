@@ -127,7 +127,7 @@ namespace Microsoft.Deployment.Common.ActionModel
             }
         }
 
-        public string Get(string route, string key, DataStoreType dataStoreType = DataStoreType.Any)
+        public string GetValue(string route, string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetValueWithRouteAndKey(dataStoreType, route, key)?.ToString();
         }
@@ -137,17 +137,17 @@ namespace Microsoft.Deployment.Common.ActionModel
             return this.GetValueWithRouteAndKey(dataStoreType, route, key);
         }
 
-        public string GetFirst(string key, DataStoreType dataStoreType = DataStoreType.Any)
+        public string GetValue(string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetFirstValueFromDataStore(key, dataStoreType)?.ToString();
         }
 
-        public JToken GetFirstJson(string route, string key, DataStoreType dataStoreType = DataStoreType.Any)
+        public JToken GetJson( string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetFirstValueFromDataStore(key, dataStoreType);
         }
 
-        public IList<string> GetAll(string key, DataStoreType dataStoreType = DataStoreType.Any)
+        public IList<string> GetAllValues(string key, DataStoreType dataStoreType = DataStoreType.Any)
         {
             return this.GetAllValueFromDataStore(key,dataStoreType).Select(p=>p?.ToString()).ToList();
         }
