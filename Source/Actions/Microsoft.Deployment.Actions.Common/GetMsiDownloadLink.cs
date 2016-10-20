@@ -14,11 +14,12 @@ namespace Microsoft.Deployment.Actions.Common
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var msi = System.IO.Directory.GetFiles(request.Info.AppFilePath, "*.exe");
+            var msi = System.IO.Directory.GetFiles(request.Info.App.AppFilePath, "*.exe");
             if (msi.Length == 1)
             {
                 var file = new FileInfo(msi.First());
-                string serverPath = request.Info.SerivceRootUrl + "/" + request.Info.AppRelativeFilePath + $"/{file.Name}";
+                string serverPath = request.Info.SerivceRootUrl + "/" + request.Info.App.AppRelativeFilePath + $"/{file.Name}";
+                serverPath.Replace("\\", "/");
                 return new ActionResponse(ActionStatus.Success, JsonUtility.GetJObjectFromStringValue(serverPath));
             }
 

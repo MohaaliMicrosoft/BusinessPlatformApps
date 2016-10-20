@@ -21,7 +21,7 @@ namespace Microsoft.Deployment.Actions.Custom.SCCM
                 Directory.CreateDirectory(sccmPath);
             }
 
-            string[] files = Directory.GetFiles(Path.Combine(request.Info.AppFilePath, RESOURCE_PATH));
+            string[] files = Directory.GetFiles(Path.Combine(request.Info.App.AppFilePath, RESOURCE_PATH));
 
             // Copy the files and overwrite destination files if they already exist.
             foreach (string s in files)

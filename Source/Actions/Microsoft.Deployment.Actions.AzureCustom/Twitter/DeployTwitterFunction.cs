@@ -33,7 +33,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             param.AddStringParam("resourcegroup", resourceGroup);
             param.AddStringParam("subscription", subscription);
 
-            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText( Path.Combine(request.Info.AppFilePath, "Service/AzureArm/function.json")));
+            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText( Path.Combine(request.Info.App.AppFilePath, "Service/AzureArm/function.json")));
             var armParamTemplate = JsonUtility.GetJObjectFromObject(param.GetDynamicObject());
             armTemplate.Remove("parameters");
             armTemplate.Add("parameters", armParamTemplate["parameters"]);

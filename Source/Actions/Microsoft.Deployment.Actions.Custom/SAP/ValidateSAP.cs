@@ -22,8 +22,8 @@ namespace Microsoft.Deployment.Actions.Custom.SAP
 
             if (!File.Exists(exeDestination) || !File.Exists(exeConfigDestination))
             {
-                string exeSource = Path.Combine(request.Info.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME);
-                string exeConfigSource = Path.Combine(request.Info.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME_CONFIG);
+                string exeSource = Path.Combine(request.Info.App.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME);
+                string exeConfigSource = Path.Combine(request.Info.App.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME_CONFIG);
 
                 (new FileInfo(exeDestination)).Directory.Create();
 

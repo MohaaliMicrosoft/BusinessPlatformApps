@@ -17,7 +17,7 @@ namespace Microsoft.Deployment.Actions.SQL
 
             try
             {
-                string msiLocationName = Path.Combine(request.Info.AppFilePath, "Service\\Resources").Replace('/', '\\');
+                string msiLocationName = Path.Combine(request.Info.App.AppFilePath, "Service\\Resources").Replace('/', '\\');
                 string[] installSequence =
                 {
                 $"/i \"{Path.Combine(msiLocationName, "msodbcsql.msi")}\" /quiet /qn /promptrestart IACCEPTMSODBCSQLLICENSETERMS=YES",

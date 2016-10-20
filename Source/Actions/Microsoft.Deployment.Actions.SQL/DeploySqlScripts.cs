@@ -19,7 +19,7 @@ namespace Microsoft.Deployment.Actions.SQL
 
             string connectionString = request.DataStore.GetAllValues("SqlConnectionString")[sqlIndex];
  
-            var files = Directory.EnumerateFiles(Path.Combine(request.Info.AppFilePath,sqlScriptsFolder)).ToList();
+            var files = Directory.EnumerateFiles(Path.Combine(request.Info.App.AppFilePath,sqlScriptsFolder)).ToList();
             files.ForEach(f=>SqlUtility.InvokeSqlCommand(connectionString, File.ReadAllText(f), new Dictionary<string, string>()));
             return new ActionResponse(ActionStatus.Success,JsonUtility.GetEmptyJObject());
         }
