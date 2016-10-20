@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Deployment.Common;
 using Microsoft.Deployment.Common.ActionModel;
@@ -13,7 +14,7 @@ namespace Microsoft.Deployment.Site.Service.Controllers
     public class ActionController : ApiController
     {
         [HttpPost]
-        public ActionResponse ExecuteAction(string id, [FromBody] JObject body)
+        public Task<ActionResponse> ExecuteAction(string id, [FromBody] JObject body)
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param.Add("Service", "Online");
@@ -64,13 +65,10 @@ namespace Microsoft.Deployment.Site.Service.Controllers
             }
 
 
-
             UserInfo info = new UserInfo()
             {
                 ActionName = id,
-                AppFilePath = "", // Addressed later
                 AppName = appName,
-                AppRelativeFilePath = "", // Addressed later
                 OperationId = operationId,
                 SessionId = sessionId,
                 UniqueLink = uniqueId,

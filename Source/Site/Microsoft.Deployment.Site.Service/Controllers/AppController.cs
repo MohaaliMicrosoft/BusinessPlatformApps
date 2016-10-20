@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Deployment.Common;
-using Microsoft.Deployment.Common.Template;
+using Microsoft.Deployment.Common.AppLoad;
+using Microsoft.Deployment.Common.Controller;
 
 namespace Microsoft.Deployment.Site.Service.Controllers
 {
-    public class TemplatesController : ApiController
+    public class AppController : ApiController
     {
         [HttpGet]
-        public IEnumerable<string> GetAllTemplates()
+        public IEnumerable<string> GetAllApps()
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param.Add("Service", "Online");
@@ -53,12 +55,24 @@ namespace Microsoft.Deployment.Site.Service.Controllers
                 referer = url[0] + "//" + url[2];
             }
 
-            return new CommonController("API", param, Request.RequestUri.GetLeftPart(UriPartial.Authority), Constants.TemplatePath, referer, WebApiConfig.Templates)
-                .GetAllTemplates(userId, userGenId, sessionId, operationId, uniqueId);
+            UserInfo info = new UserInfo()
+            {
+                OperationId = operationId,
+                SessionId = sessionId,
+                UniqueLink = uniqueId,
+                UserGenId = userGenId,
+                UserId = userId,
+                WebsiteRootUrl = referer,
+                SerivceRootUrl = "" // Addressed Later
+            };
+
+
+            return new CommonController(WebApiConfig.CommonControllerModel)
+                .GetAllApps(info);
         }
 
         [HttpGet]
-        public Template GetTemplate(string id)
+        public App GetApp(string id)
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param.Add("Service", "Online");
@@ -102,8 +116,21 @@ namespace Microsoft.Deployment.Site.Service.Controllers
             }
 
 
-            return new CommonController("API", param, Request.RequestUri.GetLeftPart(UriPartial.Authority), Constants.TemplatePath, referer, WebApiConfig.Templates)
-                .GetTemplate(userId, userGenId, sessionId, operationId, uniqueId, id);
+            UserInfo info = new UserInfo()
+            {
+                ActionName = id,
+                OperationId = operationId,
+                SessionId = sessionId,
+                UniqueLink = uniqueId,
+                UserGenId = userGenId,
+                UserId = userId,
+                WebsiteRootUrl = referer,
+                SerivceRootUrl = "" // Addressed Later
+            };
+
+
+            return new CommonController(WebApiConfig.CommonControllerModel)
+                .GetApp(info);
         }
     }
 }
