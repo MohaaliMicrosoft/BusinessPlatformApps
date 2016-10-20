@@ -15,5 +15,11 @@ namespace Microsoft.Deployment.Common.Controller
         public string UniqueLink { get; set; }
         public string AppName { get; set; }
         public string ActionName { get; set; }
+
+        public string SerivceRootUrl { get; set; }
+        public string WebsiteRootUrl { get; set; }
+
+        public string AppFilePath { get; set; }
+        public string AppRelativeFilePath { get; set; }
     }
 }

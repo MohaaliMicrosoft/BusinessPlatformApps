@@ -12,9 +12,8 @@ namespace Microsoft.Deployment.Common.Controller
         public string Source { get; set; }
         public string Referer { get; set; }
 
-        public string AppRootPath { get; set; }
-        public string SiteCommonPath { get; set; }
-        public string WebsiteRootUrl { get; set; }
+        public string AppRootFilePath { get; set; }
+        public string SiteCommonFilePath { get; set; }
         public string ServiceRootFilePath { get; set; }
     }
 }
