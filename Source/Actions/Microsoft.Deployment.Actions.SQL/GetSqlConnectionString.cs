@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Enums;
 using Microsoft.Deployment.Common.Helpers;
@@ -9,13 +11,15 @@ namespace Microsoft.Deployment.Actions.SQL
     [Export(typeof(IAction))]
     public class GetSqlConnectionString : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string server = request.Message["SqlCredentials"].SelectToken("Server")?.ToString();
-            string user = request.Message["SqlCredentials"].SelectToken("User")?.ToString();
-            string password = request.Message["SqlCredentials"].SelectToken("Password")?.ToString();
-            var auth = request.Message["SqlCredentials"].SelectToken("AuthType")?.ToString();
-            var database = request.Message["SqlCredentials"].SelectToken("Database")?.ToString();
+            var sqlCreds = request.DataStore.GetJson("SqlCredentials");
+
+            string server = sqlCreds.SelectToken("Server")?.ToString();
+            string user = sqlCreds.SelectToken("User")?.ToString();
+            string password = sqlCreds.SelectToken("Password")?.ToString();
+            var auth = sqlCreds.SelectToken("AuthType")?.ToString();
+            var database = sqlCreds.SelectToken("Database")?.ToString();
 
             SqlCredentials credentials = new SqlCredentials()
             {
@@ -27,7 +31,7 @@ namespace Microsoft.Deployment.Actions.SQL
             };
 
             var response = SqlUtility.GetConnectionString(credentials);
-            return new ActionResponse(ActionStatus.Success, JsonUtility.CreateJObjectWithValueFromObject(response));
+            return new ActionResponse(ActionStatus.Success, JsonUtility.CreateJObjectWithValueFromObject(response), true);
         }
     }
 }

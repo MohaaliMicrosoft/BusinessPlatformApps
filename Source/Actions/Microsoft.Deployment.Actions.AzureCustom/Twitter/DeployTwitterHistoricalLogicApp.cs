@@ -38,7 +38,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             param.AddStringParam("search", search);
             param.AddStringParam("LogicAppName", logicAppNameHistorical);
 
-            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.AppPath, "Service/AzureArm/logicappHistorical.json")));
+            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.Info.AppFilePath, "Service/AzureArm/logicappHistorical.json")));
             var armParamTemplate = JsonUtility.GetJObjectFromObject(param.GetDynamicObject());
             armTemplate.Remove("parameters");
             armTemplate.Add("parameters", armParamTemplate["parameters"]);

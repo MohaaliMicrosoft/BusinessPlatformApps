@@ -39,7 +39,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
                 Microsoft.Azure.Management.Resources.ResourceManagementClient client = new ResourceManagementClient(creds);
                 var registeration = await client.Providers.RegisterAsync("Microsoft.CognitiveServices");
 
-                var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.AppPath, "Service/AzureArm/sentimentCognitiveService.json")));
+                var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.Info.AppFilePath, "Service/AzureArm/sentimentCognitiveService.json")));
                 var armParamTemplate = JsonUtility.GetJObjectFromObject(param.GetDynamicObject());
                 armTemplate.Remove("parameters");
                 armTemplate.Add("parameters", armParamTemplate["parameters"]);

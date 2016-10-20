@@ -25,7 +25,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
                 {"client_id", Constants.MicrosoftClientId },
                 {"prompt", "consent" },
                 {"response_type", "code" },
-                {"redirect_uri", Uri.EscapeDataString(request.ControllerModel.WebsiteRootUrl + Constants.WebsiteRedirectPath) },
+                {"redirect_uri", Uri.EscapeDataString(request.Info.WebsiteRootUrl + Constants.WebsiteRedirectPath) },
                 {"resource", Uri.EscapeDataString(Constants.AzureManagementApi) }
             };
 

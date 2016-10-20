@@ -1,18 +1,21 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32.TaskScheduler;
+using Task = Microsoft.Win32.TaskScheduler.Task;
 
 namespace Microsoft.Deployment.Actions.OnPremise.TaskScheduler
 {
     [Export(typeof(IAction))]
     public class GetTaskStatus : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string taskName = request.Message["TaskName"][0].ToString();
+            string taskName = request.DataStore.GetValue("TaskName");
 
             TaskCollection tasks = null;
 
@@ -40,7 +43,7 @@ namespace Microsoft.Deployment.Actions.OnPremise.TaskScheduler
 
                     ActionResponse response = new ActionResponse(ActionStatus.Failure, JsonUtility.GetEmptyJObject(),
                         new Exception($"Scheduled task exited with code {task.LastTaskResult}"), "TaskSchedulerRunFailed");
-                    response.LogLocation = FileUtility.GetLocalTemplatePath(request.TemplateName);
+                    response.ExceptionDetail.LogLocation = FileUtility.GetLocalTemplatePath(request.Info.AppName);
 
                     return response;
                 }

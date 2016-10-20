@@ -1,29 +1,32 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.Actions.OnPremise
 {
     [Export(typeof(IAction))]
     public class GetDataPullStatus : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             ActionResponse response;
 
-            bool isWaiting = request.Message["IsWaiting"] == null
+            bool isWaiting = request.DataStore.GetValue("IsWaiting") == null
                 ? false
-                : bool.Parse(request.Message["IsWaiting"].ToString());
+                : bool.Parse(request.DataStore.GetValue("IsWaiting"));
 
-            int sqlIndex = int.Parse(request.Message["SqlServerIndex"].ToString());
+            int sqlIndex = int.Parse(request.DataStore.GetValue("SqlServerIndex"));
 
-            string connectionString = request.Message["SqlConnectionString"][sqlIndex].ToString(); // Must specify Initial Catalog
-            string finishedActionName = request.Message["FinishedActionName"] == null
+            string connectionString = request.DataStore.GetAllValues("SqlConnectionString")[sqlIndex]; // Must specify Initial Catalog
+            string finishedActionName = request.DataStore.GetValue("FinishedActionName") == null
                 ? null
-                : request.Message["FinishedActionName"].ToString();
-            string targetSchema = request.Message["TargetSchema"].ToString(); // Specifies the schema used by the template
+                : request.DataStore.GetValue("FinishedActionName");
+            string targetSchema = request.DataStore.GetValue("TargetSchema"); // Specifies the schema used by the template
 
             string query = $"[{targetSchema}].sp_get_replication_counts";
 
@@ -62,9 +65,9 @@ namespace Microsoft.Deployment.Actions.OnPremise
             if (string.IsNullOrEmpty(finishedActionName))
                 return response;
 
-            ActionResponse finishedResponse = RequestUtility.CallAction(request, finishedActionName);
+            ActionResponse finishedResponse = await RequestUtility.CallAction(request, finishedActionName);
 
-            var content = finishedResponse.Response["value"]?.ToString();
+            var content = JObject.FromObject(finishedResponse.Body)["value"]?.ToString();
 
             if ((isPullingData && finishedResponse.Status != ActionStatus.Failure) || finishedResponse.Status == ActionStatus.Success)
             {
@@ -76,7 +79,7 @@ namespace Microsoft.Deployment.Actions.OnPremise
                         finishedActionName +
                         "\",TargetSchema:\"" + targetSchema + 
                         "\",status:" + JsonUtility.Serialize(recordCounts) +
-                        ", slices:" + finishedResponse.Response["value"].ToString() + "}");
+                        ", slices:" + JObject.FromObject(finishedResponse.Body)["value"]?.ToString() + "}");
                 }
                 else
                 {
@@ -95,7 +98,7 @@ namespace Microsoft.Deployment.Actions.OnPremise
                     finishedActionName +
                      "\",TargetSchema:\"" + targetSchema + 
                      "\",status:" + JsonUtility.Serialize(recordCounts) +
-                    ", slices:" + finishedResponse.Response["value"].ToString() + "}");
+                    ", slices:" + JObject.FromObject(finishedResponse.Body)["value"]?.ToString() + "}");
                 }
                 else
                 {

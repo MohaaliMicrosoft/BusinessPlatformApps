@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Enums;
 using Microsoft.Deployment.Common.Helpers;
@@ -12,9 +14,9 @@ namespace Microsoft.Deployment.Actions.Custom.SCCM
     {
         private readonly int[] MinVersion = {5, 0, 8239, 0};
 
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string connectionString = request.Message["SqlConnectionString"][0].ToString();
+            string connectionString = request.DataStore.GetValue("SqlConnectionString");
 
             // Check if the Sites table exists. If not this isn't a SCCM database
             DataTable result = SqlUtility.RunCommand(connectionString, "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='Sites' AND TABLE_TYPE='BASE TABLE' AND TABLE_SCHEMA='dbo'", SqlCommandType.ExecuteWithData);

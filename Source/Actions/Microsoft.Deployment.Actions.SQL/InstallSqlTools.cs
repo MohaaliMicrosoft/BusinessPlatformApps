@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -9,13 +11,13 @@ namespace Microsoft.Deployment.Actions.SQL
     [Export(typeof(IAction))]
     public class InstallSqlTools : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             ActionResponse response = new ActionResponse(ActionStatus.Success, "");
 
             try
             {
-                string msiLocationName = Path.Combine(request.TemplatePath, "Service\\Resources").Replace('/', '\\');
+                string msiLocationName = Path.Combine(request.Info.AppFilePath, "Service\\Resources").Replace('/', '\\');
                 string[] installSequence =
                 {
                 $"/i \"{Path.Combine(msiLocationName, "msodbcsql.msi")}\" /quiet /qn /promptrestart IACCEPTMSODBCSQLLICENSETERMS=YES",

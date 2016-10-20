@@ -37,7 +37,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
             param.AddStringParam("Username", user);
             param.AddParameter("Password", "securestring", password);            
 
-            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.SiteCommonPath, "Service/Arm/sqlserveranddatabase.json")));
+            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.SiteCommonFilePath, "Service/Arm/sqlserveranddatabase.json")));
             var armParamTemplate = JsonUtility.GetJObjectFromObject(param.GetDynamicObject());
             armTemplate.Remove("parameters");
             armTemplate.Add("parameters", armParamTemplate["parameters"]);

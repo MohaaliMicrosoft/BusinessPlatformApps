@@ -27,7 +27,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
 
             AzureHttpClient client = new AzureHttpClient(azureToken, subscription, resourceGroup);
 
-            var functionCSharp = System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.AppPath, "Service/Data/TweetFunctionCSharp.cs"));
+            var functionCSharp = System.IO.File.ReadAllText(Path.Combine(request.Info.AppFilePath, "Service/Data/TweetFunctionCSharp.cs"));
             var jsonBody =
                 "{\"files\":{\"run.csx\":\"test\"},\"config\":" +
                 "{\"" +

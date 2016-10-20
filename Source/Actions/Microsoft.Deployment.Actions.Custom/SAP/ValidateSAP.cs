@@ -2,6 +2,8 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -11,7 +13,7 @@ namespace Microsoft.Deployment.Actions.Custom.SAP
     [Export(typeof(IAction))]
     public class ValidateSAP : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             string exePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), EXECUTABLE_PATH);
 
@@ -20,8 +22,8 @@ namespace Microsoft.Deployment.Actions.Custom.SAP
 
             if (!File.Exists(exeDestination) || !File.Exists(exeConfigDestination))
             {
-                string exeSource = Path.Combine(request.TemplatePath, RESOURCE_PATH, EXECUTABLE_NAME);
-                string exeConfigSource = Path.Combine(request.TemplatePath, RESOURCE_PATH, EXECUTABLE_NAME_CONFIG);
+                string exeSource = Path.Combine(request.Info.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME);
+                string exeConfigSource = Path.Combine(request.Info.AppFilePath, RESOURCE_PATH, EXECUTABLE_NAME_CONFIG);
 
                 (new FileInfo(exeDestination)).Directory.Create();
 

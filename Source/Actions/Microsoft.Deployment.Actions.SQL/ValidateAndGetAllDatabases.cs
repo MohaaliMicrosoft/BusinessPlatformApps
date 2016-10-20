@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Enums;
 using Microsoft.Deployment.Common.Helpers;
@@ -9,12 +11,12 @@ namespace Microsoft.Deployment.Actions.SQL
     [Export(typeof(IAction))]
     public class ValidateAndGetAllDatabases : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string server = request.Message["SqlCredentials"]["Server"].ToString();
-            string user = request.Message["SqlCredentials"].SelectToken("User")?.ToString();
-            string password = request.Message["SqlCredentials"].SelectToken("Password")?.ToString();
-            var auth = request.Message["SqlCredentials"]["AuthType"].ToString();
+            string server = request.DataStore.GetJson("SqlCredentials")["Server"].ToString();
+            string user = request.DataStore.GetJson("SqlCredentials").SelectToken("User")?.ToString();
+            string password = request.DataStore.GetJson("SqlCredentials").SelectToken("Password")?.ToString();
+            var auth = request.DataStore.GetJson("SqlCredentials")["AuthType"].ToString();
 
             SqlCredentials credentials = new SqlCredentials()
             {

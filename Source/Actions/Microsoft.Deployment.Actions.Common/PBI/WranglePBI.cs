@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -8,21 +10,21 @@ namespace Microsoft.Deployment.Actions.Common.PBI
     [Export(typeof(IAction))]
     public class WranglePBI : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             int sqlIndex = 0;
-            if (request.Message.SelectToken("SqlServerIndex") != null)
+            if (request.DataStore.KeyExists("SqlServerIndex"))
             {
-                sqlIndex = int.Parse(request.Message["SqlServerIndex"].ToString());
+                sqlIndex = int.Parse(request.DataStore.GetValue("SqlServerIndex"));
             }
 
-            var filename = request.Message["FileName"].ToString();
-            string connectionString = request.Message["SqlConnectionString"][sqlIndex].ToString();
+            var filename = request.DataStore.GetValue("FileName");
+            string connectionString = request.DataStore.GetAllValues("SqlConnectionString")[sqlIndex];
 
-            var templateFullPath = request.TemplatePath + $"/service/PowerBI/{filename}";
+            var templateFullPath = request.Info.AppFilePath + $"/service/PowerBI/{filename}";
             var tempfileName = Path.GetRandomFileName();
-            var templateTempFullPath = request.TemplatePath + $"/service/PowerBI/Temp/{tempfileName}/{filename}";
-            Directory.CreateDirectory(request.TemplatePath + $"/service/PowerBI/Temp/{tempfileName}");
+            var templateTempFullPath = request.ControllerModel.ServiceRootFilePath + $"/Temp/{tempfileName}/{filename}";
+            Directory.CreateDirectory(request.ControllerModel.ServiceRootFilePath + $"/Temp/{tempfileName}");
 
             var creds = SqlUtility.GetSqlCredentialsFromConnectionString(connectionString);
 
@@ -32,7 +34,7 @@ namespace Microsoft.Deployment.Actions.Common.PBI
                 wrangler.ReplaceKnownVariableinMashup("STSqlDatabase", creds.Database);
             }
 
-            string serverPath = request.SiteTemplatePath + $"/service/PowerBI/Temp/{tempfileName}/{filename}";
+            string serverPath = request.ControllerModel.ServiceRootFilePath + $"/Temp/{tempfileName}/{filename}";
             return new ActionResponse(ActionStatus.Success, JsonUtility.GetJObjectFromStringValue(serverPath));
         }
     }

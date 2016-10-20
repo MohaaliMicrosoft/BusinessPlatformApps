@@ -3,37 +3,40 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32.TaskScheduler;
+using Task = Microsoft.Win32.TaskScheduler.Task;
 
 namespace Microsoft.Deployment.Actions.OnPremise.TaskScheduler
 {
     [Export(typeof(IAction))]
     public class CreateTask : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var taskDescription = request.Message["TaskDescription"][0].ToString();
-            var taskFile = request.Message["TaskFile"][0].ToString();
-            var taskName = request.Message["TaskName"][0].ToString();
-            var taskParameters = request.Message["TaskParameters"][0].ToString();
-            var taskProgram = request.Message["TaskProgram"][0].ToString();
-            var taskStartTime = request.Message["TaskStartTime"][0].ToString();
+            var taskDescription = request.DataStore.GetValue("TaskDescription");
+            var taskFile = request.DataStore.GetValue("TaskFile");
+            var taskName = request.DataStore.GetValue("TaskName");
+            var taskParameters = request.DataStore.GetValue("TaskParameters");
+            var taskProgram = request.DataStore.GetValue("TaskProgram");
+            var taskStartTime = request.DataStore.GetValue("TaskStartTime");
 
-            var taskUsername = request.Message["ImpersonationUsername"] == null || string.IsNullOrEmpty(request.Message["ImpersonationUsername"][0].ToString())
+            var taskUsername = request.DataStore.GetValue("ImpersonationUsername") == null || string.IsNullOrEmpty(request.DataStore.GetValue("ImpersonationUsername"))
                 ? WindowsIdentity.GetCurrent().Name
-                : NTHelper.CleanDomain(request.Message["ImpersonationDomain"][0].ToString()) + "\\" + NTHelper.CleanUsername(request.Message["ImpersonationUsername"][0].ToString());
-            var taskPassword = request.Message["ImpersonationPassword"] == null || string.IsNullOrEmpty(request.Message["ImpersonationPassword"][0].ToString())
+                : NTHelper.CleanDomain(request.DataStore.GetValue("ImpersonationDomain")) + "\\" + NTHelper.CleanUsername(request.DataStore.GetValue("ImpersonationUsername"));
+            var taskPassword = request.DataStore.GetValue("ImpersonationPassword") == null || string.IsNullOrEmpty(request.DataStore.GetValue("ImpersonationPassword"))
                 ? null
-                : request.Message["ImpersonationPassword"][0].ToString();
+                : request.DataStore.GetValue("ImpersonationPassword");
 
             if (taskPassword == null)
                 return new ActionResponse(ActionStatus.Failure, JsonUtility.GetEmptyJObject(), "CreateTaskPasswordMissing");
 
-            string workingDirectory = request.Message["TaskDirectory"] == null
-                ? FileUtility.GetLocalTemplatePath(request.TemplateName)
-                : FileUtility.GetLocalPath(request.Message["TaskDirectory"][0].ToString());
+            string workingDirectory = request.DataStore.GetValue("TaskDirectory") == null
+                ? FileUtility.GetLocalTemplatePath(request.Info.AppName)
+                : FileUtility.GetLocalPath(request.DataStore.GetValue("TaskDirectory"));
 
             bool isPowerShell = taskProgram.EqualsIgnoreCase("powershell");
 

@@ -25,7 +25,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
             string tokenUrl = string.Format(Constants.AzureTokenUri, aadTenant);
             HttpClient client = new HttpClient();
 
-            var builder = GetTokenUri(code, Constants.AzureManagementCoreApi, request.ControllerModel.WebsiteRootUrl);
+            var builder = GetTokenUri(code, Constants.AzureManagementCoreApi, request.Info.WebsiteRootUrl);
             var content = new StringContent(builder.ToString());
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
