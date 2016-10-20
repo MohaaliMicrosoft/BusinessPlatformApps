@@ -16,9 +16,10 @@ namespace Microsoft.Deployment.Common.Controller
     {
         public CommonController(CommonControllerModel commonControllerModel)
         {
+            this.CommonControllerModel = commonControllerModel;
         }
 
-        public CommonControllerModel CommonControllerModel { get; set; }
+        public CommonControllerModel CommonControllerModel { get; }
 
 
         public IEnumerable<string> GetAllApps(UserInfo info)

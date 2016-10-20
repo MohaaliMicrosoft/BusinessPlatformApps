@@ -10,6 +10,7 @@ namespace Microsoft.Deployment.Common.ActionModel
         public UserInfo Info { get; set; }
         public Logger Logger { get; set; }
         public DataStore DataStore { get; set; }
+        public string AppPath { get; set; }
 
         public ActionRequest()
         {
