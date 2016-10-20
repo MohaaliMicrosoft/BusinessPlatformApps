@@ -2,6 +2,8 @@
 using System.Dynamic;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -12,19 +14,20 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     [Export(typeof(IAction))]
     public class DeployTwitterCSharpFunctionAssets : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][1]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
-            var location = request.Message["SelectedLocation"][0]["Name"].ToString();
-            var sitename = request.Message["SiteName"][0].ToString();
-            var sqlConnectionString = request.Message["SqlConnectionString"][0].ToString();
-            var cognitiveServiceKey = request.Message["CognitiveServiceKey"][0].ToString();
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
+            var location = request.DataStore.GetJson("SelectedLocation")["Name"].ToString();
 
-            AzureHttpClient client = new AzureHttpClient(token, subscription, resourceGroup);
+            var sitename = request.DataStore.GetValue("SiteName");
+            var sqlConnectionString = request.DataStore.GetValue("SqlConnectionString");
+            var cognitiveServiceKey = request.DataStore.GetValue("CognitiveServiceKey");
 
-            var functionCSharp = System.IO.File.ReadAllText(Path.Combine(request.TemplatePath, "Service/Data/TweetFunctionCSharp.cs"));
+            AzureHttpClient client = new AzureHttpClient(azureToken, subscription, resourceGroup);
+
+            var functionCSharp = System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.AppPath, "Service/Data/TweetFunctionCSharp.cs"));
             var jsonBody =
                 "{\"files\":{\"run.csx\":\"test\"},\"config\":" +
                 "{\"" +
@@ -43,10 +46,10 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             jsonRequest["files"]["run.csx"] = functionCSharp;
             string stringRequest = JsonUtility.GetJsonStringFromObject(jsonRequest); 
 
-            var functionCreated = client.ExecuteWebsiteAsync(HttpMethod.Put, sitename, "/api/functions/TweetProcessingFunction",
+            var functionCreated = await client.ExecuteWebsiteAsync(HttpMethod.Put, sitename, "/api/functions/TweetProcessingFunction",
             stringRequest);
 
-            string response = functionCreated.Content.ReadAsStringAsync().Result;
+            string response = await functionCreated.Content.ReadAsStringAsync();
             if (!functionCreated.IsSuccessStatusCode)
             {
                 return new ActionResponse(ActionStatus.Failure, JsonUtility.GetJObjectFromJsonString(response),
@@ -78,9 +81,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
                     null, DefaultErrorCodes.DefaultErrorCode, "Error creating appsetting");
             }
 
-            var getFunction = client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Get,
+            var getFunction = await client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Get,
             $"/providers/Microsoft.Web/sites/{sitename}", "2015-08-01", string.Empty);
-            response = getFunction.Content.ReadAsStringAsync().Result;
+            response = await getFunction.Content.ReadAsStringAsync();
 
             if (!getFunction.IsSuccessStatusCode)
             {

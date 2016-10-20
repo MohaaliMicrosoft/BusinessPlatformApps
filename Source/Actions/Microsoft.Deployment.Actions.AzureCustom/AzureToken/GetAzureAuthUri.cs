@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -11,9 +13,11 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
     [Export(typeof(IAction))]
     public class GetAzureAuthUri : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            var aadTenant = request.Message["AADTenant"][0].ToString();
+            var aadTenant = request.DataStore.GetValue("AADTenant");
             string authBase = string.Format(Constants.AzureAuthUri, aadTenant);
 
             Dictionary<string, string> message = new Dictionary<string, string>
@@ -21,7 +25,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
                 {"client_id", Constants.MicrosoftClientId },
                 {"prompt", "consent" },
                 {"response_type", "code" },
-                {"redirect_uri", Uri.EscapeDataString(request.WebsiteRootUrl + Constants.WebsiteRedirectPath) },
+                {"redirect_uri", Uri.EscapeDataString(request.ControllerModel.WebsiteRootUrl + Constants.WebsiteRedirectPath) },
                 {"resource", Uri.EscapeDataString(Constants.AzureManagementApi) }
             };
 

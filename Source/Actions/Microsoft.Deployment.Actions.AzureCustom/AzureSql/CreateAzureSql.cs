@@ -2,9 +2,11 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Enums;
 using Microsoft.Deployment.Common.ErrorCode;
@@ -16,16 +18,16 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
     [Export(typeof(IAction))]
     public class CreateAzureSql : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][0]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
 
-            string server = request.Message["SqlCredentials"].SelectToken("Server")?.ToString();
-            string user = request.Message["SqlCredentials"].SelectToken("User")?.ToString();
-            string password = request.Message["SqlCredentials"].SelectToken("Password")?.ToString();
-            var database = request.Message["SqlCredentials"].SelectToken("Database")?.ToString();
+            string server = request.DataStore.GetJson("SqlCredentials").SelectToken("Server")?.ToString();
+            string user = request.DataStore.GetJson("SqlCredentials").SelectToken("User")?.ToString();
+            string password = request.DataStore.GetJson("SqlCredentials").SelectToken("Password")?.ToString();
+            var database = request.DataStore.GetJson("SqlCredentials").SelectToken("Database")?.ToString();
 
             string serverWithoutExtension = server.Replace(".database.windows.net", string.Empty);
 
@@ -35,12 +37,12 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
             param.AddStringParam("Username", user);
             param.AddParameter("Password", "securestring", password);            
 
-            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.TemplateRootPath, "Common/Service/Arm/sqlserveranddatabase.json")));
+            var armTemplate = JsonUtility.GetJObjectFromJsonString(System.IO.File.ReadAllText(Path.Combine(request.ControllerModel.SiteCommonPath, "Service/Arm/sqlserveranddatabase.json")));
             var armParamTemplate = JsonUtility.GetJObjectFromObject(param.GetDynamicObject());
             armTemplate.Remove("parameters");
             armTemplate.Add("parameters", armParamTemplate["parameters"]);
 
-            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, token);
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, azureToken);
             ResourceManagementClient client = new ResourceManagementClient(creds);
 
             var deployment = new Microsoft.Azure.Management.Resources.Models.Deployment()
@@ -54,7 +56,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
 
             string deploymentName = "SqlDatabaseDeployment";
 
-            var validate = client.Deployments.ValidateAsync(resourceGroup, deploymentName, deployment, new CancellationToken()).Result;
+            var validate = await client.Deployments.ValidateAsync(resourceGroup, deploymentName, deployment, new CancellationToken());
             if (!validate.IsValid)
             {
                 return new ActionResponse(
@@ -65,14 +67,14 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
                     $"Azure:{validate.Error.Message} Details:{validate.Error.Details}");
             }
 
-            var deploymentItem = client.Deployments.CreateOrUpdateAsync(resourceGroup, deploymentName, deployment, new CancellationToken()).Result;
+            var deploymentItem = await client.Deployments.CreateOrUpdateAsync(resourceGroup, deploymentName, deployment, new CancellationToken());
 
             // Wait for deployment
             while (true)
             {
                 Thread.Sleep(5000);
-                var status = client.Deployments.GetAsync(resourceGroup, deploymentName, new CancellationToken()).Result;
-                var operations = client.DeploymentOperations.ListAsync(resourceGroup, deploymentName, new DeploymentOperationsListParameters()).Result;
+                var status = await client.Deployments.GetAsync(resourceGroup, deploymentName, new CancellationToken());
+                var operations = await client.DeploymentOperations.ListAsync(resourceGroup, deploymentName, new DeploymentOperationsListParameters());
                 var provisioningState = status.Deployment.Properties.ProvisioningState;
 
                 if (provisioningState == "Accepted" || provisioningState == "Running")
@@ -82,7 +84,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureSql
                     break;
 
                 var operation = operations.Operations.First(p => p.Properties.ProvisioningState == ProvisioningState.Failed);
-                var operationFailed = client.DeploymentOperations.GetAsync(resourceGroup, deploymentName, operation.OperationId).Result;
+                var operationFailed = await client.DeploymentOperations.GetAsync(resourceGroup, deploymentName, operation.OperationId);
 
                 return new ActionResponse(ActionStatus.Failure, JsonUtility.GetJObjectFromObject(operationFailed), null, DefaultErrorCodes.DefaultErrorCode, operationFailed.Operation.Properties.StatusMessage);                
             }

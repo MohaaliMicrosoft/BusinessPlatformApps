@@ -4,6 +4,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -13,9 +15,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     [Export(typeof(IAction))]
     public class ValidateTwitterAccount : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var accountsWithSpaces = request.Message["Accounts"].ToString();
+            var accountsWithSpaces = request.DataStore.GetValue("Accounts");
             var accounts = accountsWithSpaces.Split(' ').ToList();
 
             List<string> invalid = new List<string>();
@@ -29,9 +31,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
                 HttpClientUtility client = new HttpClientUtility();
                 Dictionary<string, string> customHeader = new Dictionary<string, string>();
                 customHeader.Add("X-Push-State-Request", "true");
-                var result = client.ExecuteGenericAsync(HttpMethod.Get, $"https://www.twitter.com/{accountTrimmed}", "","", customHeader).Result;
+                var result = await client.ExecuteGenericAsync(HttpMethod.Get, $"https://www.twitter.com/{accountTrimmed}", "","", customHeader);
                 
-                var responseString = result.Content.ReadAsStringAsync().Result;
+                var responseString = await result.Content.ReadAsStringAsync();
                 
                 if (result.StatusCode == HttpStatusCode.OK)
                 {
