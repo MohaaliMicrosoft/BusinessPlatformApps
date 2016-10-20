@@ -7,10 +7,7 @@ namespace Microsoft.Deployment.Common.Controller
     {
         // Initialise once and maintain
         public AppFactory AppFactory { get; set; }
-        public Dictionary<string, string> LoggingParameters { get; set; }
-
         public string Source { get; set; }
-        public string Referer { get; set; }
 
         public string AppRootFilePath { get; set; }
         public string SiteCommonFilePath { get; set; }
