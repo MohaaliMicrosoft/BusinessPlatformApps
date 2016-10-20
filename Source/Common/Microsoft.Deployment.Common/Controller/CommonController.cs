@@ -52,13 +52,14 @@ namespace Microsoft.Deployment.Common.Controller
             return app;
         }
 
-        public async Task<ActionResponse> ExecuteAction(UserInfo info, JObject body, string actionName)
+        public async Task<ActionResponse> ExecuteAction(UserInfo info, JObject body)
         {
-            info.ActionName = actionName;
             Logger logger = new Logger(info, this.CommonControllerModel);
-            logger.LogEvent("Start-" + actionName, null);
+            logger.LogEvent("Start-" + info.ActionName, null);
             var start = DateTime.Now;
-            var action = this.CommonControllerModel.AppFactory.Actions[actionName];
+            var action = this.CommonControllerModel.AppFactory.Actions[info.ActionName];
+            var app = this.CommonControllerModel.AppFactory.Apps[info.AppName];
+            info.App = app;
 
             ActionRequest request = JsonConvert.DeserializeObject<ActionRequest>(body.ToString());
             request.ControllerModel = this.CommonControllerModel;
@@ -72,15 +73,15 @@ namespace Microsoft.Deployment.Common.Controller
                 ActionResponse responseToReturn = await RunActionAsync(request, logger, action, loopCount);
                 responseToReturn.DataStore = request.DataStore;
 
-                logger.LogEvent("End-" + actionName, null, request, responseToReturn);
+                logger.LogEvent("End-" + info.ActionName, null, request, responseToReturn);
                 logger.LogRequest(action.OperationUniqueName, DateTime.Now - start,
                     responseToReturn.Status.IsSucessfullStatus(), request, responseToReturn);
                 logger.Flush();
                 return responseToReturn;
             }
 
-            logger.LogEvent("End-" + actionName, null, request, null);
-            logger.LogRequest(actionName, DateTime.Now - start, false, request, null);
+            logger.LogEvent("End-" + info.ActionName, null, request, null);
+            logger.LogRequest(info.ActionName, DateTime.Now - start, false, request, null);
             var ex = new ActionNotFoundException();
             logger.LogException(ex, null, request, null);
             logger.Flush();
