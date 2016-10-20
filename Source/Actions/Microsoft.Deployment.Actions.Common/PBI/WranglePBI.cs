@@ -21,7 +21,7 @@ namespace Microsoft.Deployment.Actions.Common.PBI
             var filename = request.DataStore.GetValue("FileName");
             string connectionString = request.DataStore.GetAllValues("SqlConnectionString")[sqlIndex];
 
-            var templateFullPath = request.Info.AppFilePath + $"/service/PowerBI/{filename}";
+            var templateFullPath = request.Info. + $"/service/PowerBI/{filename}";
             var tempfileName = Path.GetRandomFileName();
             var templateTempFullPath = request.ControllerModel.ServiceRootFilePath + $"/Temp/{tempfileName}/{filename}";
             Directory.CreateDirectory(request.ControllerModel.ServiceRootFilePath + $"/Temp/{tempfileName}");

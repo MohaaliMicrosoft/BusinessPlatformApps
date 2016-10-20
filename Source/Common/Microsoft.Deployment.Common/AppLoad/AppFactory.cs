@@ -55,8 +55,14 @@ namespace Microsoft.Deployment.Common.AppLoad
             foreach (var dir in parentDirectories)
             {
                 string initFilePath = Path.Combine(dir.FullName, Constants.InitFile);
-                string file = System.IO.File.ReadAllText(initFilePath);
-                App app = new App { Name = dir.Name };
+                string file = File.ReadAllText(initFilePath);
+
+                App app = new App {
+                    Name = dir.Name,
+                    AppFilePath = dir.FullName,
+                    AppRelativeFilePath = dir.FullName.Substring(dir.FullName.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal))
+                };
+
                 this.Apps.Add(dir.Name, app);
                 this.Parse(file, app);
             }
