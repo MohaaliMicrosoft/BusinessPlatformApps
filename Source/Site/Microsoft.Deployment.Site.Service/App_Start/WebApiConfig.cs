@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Http;
-using System.Web.UI;
 using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Controller;
 
@@ -9,7 +7,6 @@ namespace Microsoft.Deployment.Site.Service
 {
     public static class WebApiConfig
     {
-
         public static CommonControllerModel CommonControllerModel { get; private set; }
 
         public static void Register(HttpConfiguration config)
