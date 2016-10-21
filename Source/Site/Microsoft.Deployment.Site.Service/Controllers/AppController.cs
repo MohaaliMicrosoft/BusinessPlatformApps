@@ -118,7 +118,8 @@ namespace Microsoft.Deployment.Site.Service.Controllers
 
             UserInfo info = new UserInfo()
             {
-                ActionName = id,
+                AppName = id,
+                ActionName = "getapp",
                 OperationId = operationId,
                 SessionId = sessionId,
                 UniqueLink = uniqueId,
@@ -127,7 +128,6 @@ namespace Microsoft.Deployment.Site.Service.Controllers
                 WebsiteRootUrl = referer,
                 SerivceRootUrl = "" // Addressed Later
             };
-
 
             return new CommonController(WebApiConfig.CommonControllerModel)
                 .GetApp(info);
