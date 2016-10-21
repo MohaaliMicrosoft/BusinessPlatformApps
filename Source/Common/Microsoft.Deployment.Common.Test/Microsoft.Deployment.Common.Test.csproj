@@ -86,22 +86,22 @@
     <Content Include="Apps\TestApps\TestApp\init.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\nested\gettingstartedtemplate.html">
+    <Content Include="SiteCommon\Web\pagesgallery\nested\gettingstartedtemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\navbar.html">
+    <Content Include="SiteCommon\Web\pagesgallery\navbar.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\navbuttons.html">
+    <Content Include="SiteCommon\Web\pagesgallery\navbuttons.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\progresstemplate.html">
+    <Content Include="SiteCommon\Web\pagesgallery\progresstemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\sqlservertemplate.html">
+    <Content Include="SiteCommon\Web\pagesgallery\sqlservertemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\summarytemplate.html">
+    <Content Include="SiteCommon\Web\pagesgallery\summarytemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -147,22 +147,22 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SiteCommon\Web\nested\gettingstartedtemplate.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\nested\gettingstartedtemplate.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\navbar.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\navbar.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\navbuttons.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\navbuttons.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\progresstemplate.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\progresstemplate.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\sqlservertemplate.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\sqlservertemplate.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiteCommon\Web\summarytemplate.ts">
+    <Content Include="SiteCommon\Web\pagesgallery\summarytemplate.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
