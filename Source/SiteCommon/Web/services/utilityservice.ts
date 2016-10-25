@@ -65,17 +65,6 @@ export class UtilityService {
         return response;
     }
 
-    UseImpersonation(): boolean {
-        let useImpersonationIfAvailable: boolean = false;
-        try {
-            //let impersonationUsername: string = this.MS.DataService.GetItemFromDataStore('Credentials', 'ImpersonationUsername');
-            useImpersonationIfAvailable = impersonationUsername && impersonationUsername.length > 0;
-        } catch (checkImpersonationException) {
-            // Impersonation is not being used
-        }
-        return useImpersonationIfAvailable;
-    }
-
     async ValidateImpersonation(username: string, password: string, useCurrentUser: boolean): Promise<boolean> {
         let isValid: boolean = true;
 

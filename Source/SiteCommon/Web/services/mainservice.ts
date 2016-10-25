@@ -43,14 +43,14 @@ export default class MainService {
         this.NavigationService.appName = this.appName;
         this.DataStore = new DataStore(this);
 
-        if (this.MS.UtilityService.GetItem('App Name') !== this.appName) {
-            this.MS.UtilityService.ClearSessionStorage();
+        if (this.UtilityService.GetItem('App Name') !== this.appName) {
+            this.UtilityService.ClearSessionStorage();
         }
 
-        this.MS.UtilityService.SaveItem('App Name', this.appName);
+        this.UtilityService.SaveItem('App Name', this.appName);
 
-        if (!this.MS.UtilityService.GetItem('UserGeneratedId')) {
-            this.MS.UtilityService.SaveItem('UserGeneratedId', this.UtilityService.GetUniqueId(15));
+        if (!this.UtilityService.GetItem('UserGeneratedId')) {
+            this.UtilityService.SaveItem('UserGeneratedId', this.UtilityService.GetUniqueId(15));
         }
 
         this.LoggerService = new LoggerService(this);

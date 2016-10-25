@@ -14,7 +14,7 @@ export class HttpService {
     constructor(MainService, HttpClient) {
 
         if (window.location.href.startsWith('http://localhost') || window.location.href.startsWith('https://localhost')) {
-            this.baseUrl = 'http://localhost:42387/api/';
+            this.baseUrl = 'http://localhost:2305/api/';
         } else {
             let url = window.location.href;
             if (url.includes('bpsolutiontemplates')) {
@@ -74,14 +74,11 @@ export class HttpService {
     async Execute(method, content) {
         this.isServiceBusy = true;
 
-        this.MS.ErrorService.details = '';
-        this.MS.ErrorService.logLocation = '';
-        this.MS.ErrorService.message = '';
-        this.MS.ErrorService.showContactUs = false;
-
+        this.MS.ErrorService.Clear();
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
-        let commonRequestBody: any = this.MS.DataService.GetDataStore();
 
+        // Add here
+        let commonRequestBody: any = {};
         if (content) {
             for (let prop in content) {
                 commonRequestBody[prop] = content[prop];

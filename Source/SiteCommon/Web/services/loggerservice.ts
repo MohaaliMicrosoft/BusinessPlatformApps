@@ -20,7 +20,7 @@ export class LoggerService {
         var applicationInsights = init.loadAppInsights();
         this.appInsights = applicationInsights;
 
-        this.UserGenId = this.MS.DataService.GetItem('UserGeneratedId');
+        this.UserGenId = this.MS.UtilityService.GetItem('UserGeneratedId');
         this.SessionId = applicationInsights.context.session.id;
         this.UserId = applicationInsights.context.user.id;
         this.OperationId = applicationInsights.context.operation.id;

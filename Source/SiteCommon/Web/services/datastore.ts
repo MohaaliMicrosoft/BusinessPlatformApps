@@ -5,6 +5,7 @@ export class DataStore {
     PublicDataStore: Dictionary<Dictionary<any>>;
     PrivateDataStore: Dictionary<Dictionary<any>>;
     private MS: MainService;
+
     CurrentRoutePage: string;
     DeploymentIndex: string;
 

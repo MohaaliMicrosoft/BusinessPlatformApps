@@ -120,7 +120,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                         PageName = file.Split('\\').Last(),
                         AppName = appName,
                         RoutePageName = file.Split('\\').Last().Replace(".html", ""),
-                        Path = file,
+                        Path = file.Replace(".html",""),
                         UserGeneratedPath = userGeneratedPath
                     });
             }

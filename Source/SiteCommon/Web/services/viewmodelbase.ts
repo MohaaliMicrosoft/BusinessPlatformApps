@@ -81,9 +81,9 @@ export class ViewModelBase {
 
     async activate(params, navigationInstruction) {
         this.isActivated = false;
-        this.MS.DataService.SaveItem('Current Page', window.location.href);
+        this.MS.UtilityService.SaveItem('Current Page', window.location.href);
         var nav = navigationInstruction.route.replace('/', '');
-        this.MS.DataService.SaveItem('Current Route', nav);
+        this.MS.UtilityService.SaveItem('Current Route', nav);
         let viewmodelPreviousSave = window.sessionStorage.getItem(nav);
 
         // Save view model state

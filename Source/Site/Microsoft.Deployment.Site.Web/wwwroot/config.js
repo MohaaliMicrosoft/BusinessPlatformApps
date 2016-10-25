@@ -221,7 +221,8 @@ System.config({
   },
   bundles: {
     "app-build.js": [
-      "SiteCommon/Web/services/DataService.js",
+      "SiteCommon/Web/base/Dictionary.js",
+      "SiteCommon/Web/services/DataStore.js",
       "SiteCommon/Web/services/actionresponse.js",
       "SiteCommon/Web/services/deploymentservice.js",
       "SiteCommon/Web/services/errorservice.js",
@@ -650,15 +651,15 @@ System.config({
     "npm:aurelia-templating-resources@1.0.0/number-repeat-strategy.js": [
       "./repeat-utilities"
     ],
+    "npm:aurelia-templating-resources@1.0.0/if.js": [
+      "aurelia-templating",
+      "aurelia-dependency-injection"
+    ],
     "npm:aurelia-templating-resources@1.0.0/compose.js": [
       "aurelia-dependency-injection",
       "aurelia-task-queue",
       "aurelia-templating",
       "aurelia-pal"
-    ],
-    "npm:aurelia-templating-resources@1.0.0/if.js": [
-      "aurelia-templating",
-      "aurelia-dependency-injection"
     ],
     "npm:aurelia-templating-resources@1.0.0/with.js": [
       "aurelia-dependency-injection",
@@ -733,11 +734,11 @@ System.config({
       "./repeat-utilities",
       "aurelia-binding"
     ],
-    "npm:aurelia-templating-resources@1.0.0/aurelia-hide-style.js": [
-      "aurelia-pal"
-    ],
     "npm:aurelia-templating-resources@1.0.0/repeat-utilities.js": [
       "aurelia-binding"
+    ],
+    "npm:aurelia-templating-resources@1.0.0/aurelia-hide-style.js": [
+      "aurelia-pal"
     ],
     "npm:aurelia-templating-resources@1.0.0/dynamic-element.js": [
       "aurelia-templating"
