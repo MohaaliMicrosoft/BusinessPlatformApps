@@ -75,7 +75,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
             if (dataStoreType == DataStoreType.Public || dataStoreType == DataStoreType.Any)
             {
-                if (PrivateDataStore.ContainsKey(route))
+                if (PublicDataStore.ContainsKey(route))
                 {
                     found = true;
                 }
@@ -295,10 +295,12 @@ namespace Microsoft.Deployment.Common.ActionModel
                 if (value == null)
                 {
                     store[route].Remove(key);
-                    if (!store[key].Any())
-                    {
-                        store.Remove(route);
-                    }
+
+                    // Bug - TODO fix this area
+                    //if (!store[key].Any())
+                    //{
+                    //    store.Remove(route);
+                    //}
                 }
                 else
                 {

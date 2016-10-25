@@ -26,7 +26,7 @@ export default class MainService {
     DataService: DataService;
     DeploymentService: DeploymentService;
     UtilityService: UtilityService;
-    templateName: string;
+    appName: string;
     templateData: any;
 
     constructor(router, httpClient) {
@@ -35,19 +35,19 @@ export default class MainService {
     
 
         this.UtilityService = new UtilityService(this);
-        this.templateName = this.UtilityService.GetQueryParameter('name');
+        this.appName = this.UtilityService.GetQueryParameter('name');
 
         this.ErrorService = new ErrorService(this);
         this.HttpService = new HttpService(this, httpClient);
         this.NavigationService = new NavigationService(this);
-        this.NavigationService.templateName = this.templateName;
+        this.NavigationService.appName = this.appName;
         this.DataService = new DataService(this);
 
-        if (this.DataService.GetItem('Template Name') !== this.templateName) {
+        if (this.DataService.GetItem('App Name') !== this.appName) {
             this.DataService.ClearSessionStorage();
         }
 
-        this.DataService.SaveItem('Template Name', this.templateName);
+        this.DataService.SaveItem('App Name', this.appName);
 
         if (!this.DataService.GetItem('UserGeneratedId')) {
             this.DataService.SaveItem('UserGeneratedId', this.UtilityService.GetUniqueId(15));
@@ -58,8 +58,8 @@ export default class MainService {
     }
 
     async init() {
-        if (this.templateName && this.templateName !== '') {
-            this.templateData = await this.HttpService.GetTemplate(this.templateName);
+        if (this.appName && this.appName !== '') {
+            this.templateData = await this.HttpService.GetApp(this.appName);
             if (this.templateData && this.templateData['Pages']) {
                 this.NavigationService.init(this.templateData['Pages']);
             }

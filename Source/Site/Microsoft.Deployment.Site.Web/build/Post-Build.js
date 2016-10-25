@@ -64,7 +64,7 @@ gulp.task('Clean-Bundle', function () {
 
 gulp.task('Post-Build', function (callback) {
     runSequence(
-        //'unbundle',
+        'unbundle',
         'Clean-Bundle',
               'bundle',
               callback);

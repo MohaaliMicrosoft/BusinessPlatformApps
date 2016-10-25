@@ -4,8 +4,9 @@
     {
       "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
       "displayname": "Getting Started"
+
     }
   ],
 
-  "Actions": []
+  "Actions": [  ]
 }

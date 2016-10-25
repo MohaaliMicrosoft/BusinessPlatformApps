@@ -375,12 +375,8 @@
   </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Common -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.AzureCustom -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.Common -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.Custom -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.OnPremise -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.SQL -prerelease</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,7 +8,7 @@ export class NavigationService {
     isOnline: boolean = true;
     MS: MainService;
     pages: any[] = [];
-    templateName: string = '';
+    appName: string = '';
 
     constructor(MainService) {
         this.MS = MainService;
@@ -50,7 +50,7 @@ export class NavigationService {
     GetCurrentRoutePath(): string {
         let history: any = this.MS.Router.history;
         let route: string = history.location.hash;
-        let routePage = this.MS.NavigationService.templateName + route.replace('#', '');
+        let routePage = this.MS.NavigationService.appName + route.replace('#', '');
         if (routePage.endsWith('/')) {
             routePage += '//';
             routePage.replace('///', '');
@@ -108,7 +108,7 @@ export class NavigationService {
         this.MS.Router.navigate('#/' + this.pages[this.index].RoutePageName.toLowerCase());
         this.MS.Router.refreshNavigation();
         this.UpdateIndex();
-        this.MS.LoggerService.TrackPageView(this.templateName + '/' + this.pages[this.index].RoutePageName.toLowerCase(),
+        this.MS.LoggerService.TrackPageView(this.appName + '/' + this.pages[this.index].RoutePageName.toLowerCase(),
             window.location.href);
     }
 

@@ -14,14 +14,14 @@ export class DataService {
 
     /// This method will be used on startup from the main service
     LoadDataStores() {
-        this.dataStore = this.GetItem(this.MS.NavigationService.templateName + ' DataStore');
+        this.dataStore = this.GetItem(this.MS.NavigationService.appName + ' DataStore');
         if (!this.dataStore) {
             this.dataStore = {};
         }
     }
 
     CacheDataStores() {
-        this.SaveItem(this.MS.NavigationService.templateName + ' DataStore', this.dataStore);
+        this.SaveItem(this.MS.NavigationService.appName + ' DataStore', this.dataStore);
     }
 
     AddToDataStore(route, key, value) {
@@ -65,7 +65,7 @@ export class DataService {
     SaveItem(key, value) {
         let val = JSON.stringify(value);
         if (window.sessionStorage.getItem(key)) {
-            window.sessionStorage.removeItem(key)
+            window.sessionStorage.removeItem(key);
         }
         window.sessionStorage.setItem(key, val);
     }

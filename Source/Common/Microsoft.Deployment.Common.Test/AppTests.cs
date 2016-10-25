@@ -37,9 +37,9 @@ namespace Microsoft.Deployment.Common.Test
                 {"TestObject2","TestValue2" }
             });
 
-            Assert.IsTrue(store.GetValue("TestObject").Count()  == 2);
-            Assert.IsTrue(store.GetValue("TestObject2").Count() == 2);
-            Assert.IsTrue(store.GetValue("password").Count() == 1);
+            Assert.IsTrue(store.GetAllValues("TestObject").Count()  == 2);
+            Assert.IsTrue(store.GetAllValues("TestObject2").Count() == 2);
+            Assert.IsTrue(store.GetAllValues("password").Count() == 1);
             Assert.IsTrue(store.GetAllDataStoreItems("password").First().DataStoreType == DataStoreType.Private);
             Assert.IsTrue(store.GetAllDataStoreItems("password").First().ValueAsString == "secret");
             Assert.IsTrue(store.GetAllDataStoreItems("password").First().ToString() == "secret");
@@ -52,6 +52,9 @@ namespace Microsoft.Deployment.Common.Test
             store.AddToDataStore("routethere", "valuenothere", "TestValue");
             valueNotFoundWithRoute = store.GetValue("routethere", "valuenothere");
             Assert.IsNotNull(valueNotFoundWithRoute);
+
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(store.PrivateDataStore);
+
         }
     }
 }

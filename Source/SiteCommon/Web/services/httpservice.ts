@@ -40,16 +40,16 @@ export class HttpService {
         this.command.close();
     }
 
-    async GetTemplate(name) {
+    async GetApp(name) {
         var response = null;
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
-        this.MS.LoggerService.TrackStartRequest('GetTemplate-name', uniqueId);
+        this.MS.LoggerService.TrackStartRequest('GetApp-name', uniqueId);
         if (this.isOnPremise) {
             response = await this.command.gettemplate(this.MS.LoggerService.UserId,
                 this.MS.LoggerService.UserGenId, '', this.MS.LoggerService.OperationId,
                 uniqueId, name);
         } else {
-            response = await this.HttpClient.createRequest(`/templates/${name}`)
+            response = await this.HttpClient.createRequest(`/App/${name}`)
                 .asGet()
                 .withBaseUrl(this.baseUrl)
                 .withHeader('Content-Type', 'application/json; charset=utf-8')
@@ -87,14 +87,13 @@ export class HttpService {
                 commonRequestBody[prop] = content[prop];
             }
         }
-        commonRequestBody['TemplateName'] = this.MS.NavigationService.templateName;
         commonRequestBody.uniqueId = uniqueId;
         this.MS.LoggerService.TrackStartRequest(method, uniqueId);
         var response = null;
         if (this.isOnPremise) {
             response = await this.command.executeaction(this.MS.LoggerService.UserId, this.MS.LoggerService.UserGenId,
                 '', this.MS.LoggerService.OperationId, uniqueId,
-                this.MS.NavigationService.templateName, method, JSON.stringify(commonRequestBody));
+                this.MS.NavigationService.appName, method, JSON.stringify(commonRequestBody));
         } else {
             response = await this.HttpClient.createRequest(`${this.baseUrl}/action/${method}`)
                 .asPost()
@@ -104,7 +103,7 @@ export class HttpService {
                 .withHeader('OperationId', this.MS.LoggerService.OperationId)
                 .withHeader('SessionId', this.MS.LoggerService.appInsights.context.session.id)
                 .withHeader('UserId', this.MS.LoggerService.UserId)
-                .withHeader('TemplateName', this.MS.NavigationService.templateName)
+                .withHeader('TemplateName', this.MS.NavigationService.appName)
                 .withHeader('UniqueId', uniqueId)
                 .send();
             response = response.response;
