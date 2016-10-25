@@ -8,7 +8,7 @@ import { ErrorService } from './errorservice';
 import { LoggerService } from './loggerservice';
 import { NavigationService } from './navigationservice';
 import { HttpService } from './httpservice';
-import { DataService } from './DataService';
+import { DataStore } from './DataStore';
 import { UtilityService } from './utilityservice';
 import { ViewModelBase } from './viewmodelbase';
 
@@ -23,7 +23,7 @@ export default class MainService {
     LoggerService: LoggerService;
     HttpService: HttpService;
     NavigationService: NavigationService;
-    DataService: DataService;
+    DataStore: DataStore;
     DeploymentService: DeploymentService;
     UtilityService: UtilityService;
     appName: string;
@@ -41,22 +41,24 @@ export default class MainService {
         this.HttpService = new HttpService(this, httpClient);
         this.NavigationService = new NavigationService(this);
         this.NavigationService.appName = this.appName;
-        this.DataService = new DataService(this);
+        this.DataStore = new DataStore(this);
 
-        if (this.DataService.GetItem('App Name') !== this.appName) {
-            this.DataService.ClearSessionStorage();
+        if (this.MS.UtilityService.GetItem('App Name') !== this.appName) {
+            this.MS.UtilityService.ClearSessionStorage();
         }
 
-        this.DataService.SaveItem('App Name', this.appName);
+        this.MS.UtilityService.SaveItem('App Name', this.appName);
 
-        if (!this.DataService.GetItem('UserGeneratedId')) {
-            this.DataService.SaveItem('UserGeneratedId', this.UtilityService.GetUniqueId(15));
+        if (!this.MS.UtilityService.GetItem('UserGeneratedId')) {
+            this.MS.UtilityService.SaveItem('UserGeneratedId', this.UtilityService.GetUniqueId(15));
         }
 
         this.LoggerService = new LoggerService(this);
         this.DeploymentService = new DeploymentService(this);
     }
 
+
+    // Uninstall or any other types go here
     async init() {
         if (this.appName && this.appName !== '') {
             this.templateData = await this.HttpService.GetApp(this.appName);

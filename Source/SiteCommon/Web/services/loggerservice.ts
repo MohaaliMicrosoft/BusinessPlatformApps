@@ -34,7 +34,7 @@ export class LoggerService {
         properties.OperationId = this.OperationId;
         properties.Request = request;
         properties.UniqueId = uniqueId;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         this.appInsights.trackEvent('UI-StartRequest-' + request, properties);
         this.appInsights.flush();
     }
@@ -48,7 +48,7 @@ export class LoggerService {
         properties.Request = request;
         properties.UniqueId = uniqueId;
         properties.Sucess = isSucess;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         this.appInsights.trackEvent('UI-EndRequest-' + request, properties);
         this.appInsights.flush();
     }
@@ -59,7 +59,7 @@ export class LoggerService {
         properties.SessionId = this.SessionId;
         properties.UserId = this.UserId;
         properties.OperationId = this.OperationId;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         this.appInsights.trackEvent('UI-' + requestName, properties);
         this.appInsights.flush();
     }
@@ -72,7 +72,7 @@ export class LoggerService {
         properties.OperationId = this.OperationId;
         properties.DeploymentIndex = deploymentIndex;
         properties.DeploymentName = deploymentName;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         this.appInsights.trackEvent('UI-' + deploymentName + '-Start-' + deploymentIndex, properties);
         this.appInsights.flush();
     }
@@ -85,7 +85,7 @@ export class LoggerService {
         properties.OperationId = this.OperationId;
         properties.DeploymentIndex = deploymentIndex;
         properties.DeploymentName = deploymentName;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         properties.Sucess = isSucess;
         this.appInsights.trackEvent('UI-' + deploymentName + '-End-' + deploymentIndex, properties);
         this.appInsights.flush();
@@ -98,7 +98,7 @@ export class LoggerService {
         properties.UserId = this.UserId;
         properties.OperationId = this.OperationId;
 
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         this.appInsights.trackEvent('UI-DeploymentStart', properties);
         this.appInsights.flush();
     }
@@ -109,7 +109,7 @@ export class LoggerService {
         properties.SessionId = this.SessionId;
         properties.UserId = this.UserId;
         properties.OperationId = this.OperationId;
-        properties.TemplateName = this.MS.NavigationService.templateName;
+        properties.TemplateName = this.MS.NavigationService.appName;
         properties.Sucess = isSucess;
         this.appInsights.trackEvent('UI-DeploymentEnd', properties);
         this.appInsights.flush();
@@ -117,7 +117,7 @@ export class LoggerService {
 
     GetPropertiesForTelemtry(): any {
         let obj: any = {};
-        obj.TemplateName = this.MS.NavigationService.templateName;
+        obj.TemplateName = this.MS.NavigationService.appName;
         obj.FullUrl = window.location.href;
         obj.Origin = window.location.origin;
         obj.Host = window.location.host;

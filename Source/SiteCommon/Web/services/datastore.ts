@@ -1,20 +1,42 @@
 ﻿import {Dictionary} from '../base/Dictionary'
+import MainService from './mainservice';
 
 export class DataStore {
     PublicDataStore: Dictionary<Dictionary<any>>;
     PrivateDataStore: Dictionary<Dictionary<any>>;
-
+    private MS: MainService;
     CurrentRoutePage: string;
     DeploymentIndex: string;
 
-    constructor() {
+    constructor(MainService) {
+        this.MS = MainService;
         this.PrivateDataStore = new Dictionary<Dictionary<any>>();
         this.PublicDataStore = new Dictionary<Dictionary<any>>();
+        this.loadDataStores();
     }
 
     public currentRoute(): string {
         return this.CurrentRoutePage + "-" + this.DeploymentIndex;
     }
+
+    /// This method will be used on startup from the main service
+    private loadDataStores() {
+        this.PublicDataStore = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' PublicDataStore');
+        if (!this.PublicDataStore) {
+            this.PublicDataStore = new Dictionary<Dictionary<any>>();
+        }
+
+        this.PrivateDataStore = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' PrivateDataStore');
+        if (!this.PrivateDataStore) {
+            this.PrivateDataStore = new Dictionary<Dictionary<any>>();
+        }
+    }
+
+    private cacheDataStores() {
+        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' PublicDataStore', this.PublicDataStore);
+        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' PrivateDataStore', this.PrivateDataStore);
+    }
+
 
     public routeExists(route: string, dataStoreType: DataStoreType = DataStoreType.Any): boolean {
         var found: boolean = false;
@@ -60,10 +82,12 @@ export class DataStore {
 
     public addToDataStoreWithCustomRoute(route:string, key: string, value: any, dataStoreType: DataStoreType) {
         this.updateValue(dataStoreType, this.currentRoute(), key, value);
+        this.cacheDataStores();
     }
 
     public addToDataStore(key:string, value: any, dataStoreType: DataStoreType) {
-       this.updateValue(dataStoreType, this.currentRoute(), key, value);
+        this.updateValue(dataStoreType, this.currentRoute(), key, value);
+        this.cacheDataStores();
     }
 
     public addObjectDataStore(value: any, dataStoreType: DataStoreType)
@@ -72,6 +96,7 @@ export class DataStore {
         for (let propertyName in jsonParsed) {
             this.updateValue(dataStoreType, this.currentRoute(), propertyName, jsonParsed[propertyName]);
         }
+        this.cacheDataStores();
     }
 
     public addObjectDataStoreWithCustomRoute(route:string, value: any, dataStoreType: DataStoreType) {
@@ -79,6 +104,7 @@ export class DataStore {
         for (let propertyName in jsonParsed) {
             this.updateValue(dataStoreType, route, propertyName, jsonParsed[propertyName]);
         }
+        this.cacheDataStores();
     }
 
     public getJson(key: string, dataStoreType: DataStoreType = DataStoreType.Any): any {
