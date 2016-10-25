@@ -2,9 +2,10 @@
   "Pages": 
   [
     {
-      "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
-      "displayname": "Getting Started"
-
+        "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
+        "displayname": "Getting Started",
+        "templateName": "Test Property",
+        "subtitle": "Test Subtitle" 
     }
   ],
 

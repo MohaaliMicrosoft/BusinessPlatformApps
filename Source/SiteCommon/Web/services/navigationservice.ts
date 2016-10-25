@@ -24,7 +24,7 @@ export class NavigationService {
                 this.MS.Router.addRoute({
                     route: this.pages[i].RoutePageName.toLowerCase(),
                     name: this.pages[i].PageName,
-                    moduleId: './' + this.pages[i].Path,
+                    moduleId: '.' + this.pages[0].Path.replace(/\\/g,"/"),
                     title: this.pages[i].DisplayName,
                     nav: true
                 });
@@ -33,7 +33,7 @@ export class NavigationService {
             this.MS.Router.addRoute({
                 route: '',
                 name: this.pages[0].PageName,
-                moduleId: './' + this.pages[0].Path,
+                moduleId: '.' + this.pages[0].Path.replace(/\\/g, "/"),
                 title: this.pages[0].DisplayName,
                 nav: true
             });
@@ -104,16 +104,27 @@ export class NavigationService {
     }
 
     NavigateToIndex() {
-        // The index is set to the next step // do not update index here
+         // do not update index here
+
+        // Initialise the page
+        this.MS.DataStore.CurrentRoutePage = this.pages[this.index].RoutePageName.toLowerCase();
+
+
+        // The index is set to the next step
         this.MS.Router.navigate('#/' + this.pages[this.index].RoutePageName.toLowerCase());
+
+        
         this.MS.Router.refreshNavigation();
         this.UpdateIndex();
         this.MS.LoggerService.TrackPageView(this.appName + '/' + this.pages[this.index].RoutePageName.toLowerCase(),
             window.location.href);
     }
 
-    GetCurrentSelectedPage() {
-        this.UpdateIndex();
+    getCurrentSelectedPage() {
         return this.pages[this.index];
+    }
+
+    getIndex(): number {
+        return this.index;
     }
 }
