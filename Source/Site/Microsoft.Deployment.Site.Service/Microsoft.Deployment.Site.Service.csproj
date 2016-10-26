@@ -132,28 +132,28 @@
       <HintPath>..\packages\Microsoft.Deployment.Actions.ADF.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.ADF.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6142.34665, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6143.11393, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6142.34667, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6143.11395, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6142.34669, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6143.11396, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6142.34671, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6143.11398, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6142.34672, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6143.11400, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6142.34582, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610251911\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6143.11310, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">

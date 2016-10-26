@@ -29,7 +29,7 @@ export class DeploymentService {
             }
 
             this.MS.LoggerService.TrackDeploymentStepStartEvent(i, this.actions[i].OperationName);
-            let response = await this.MS.HttpService.Execute(this.actions[i].OperationName, param);
+            let response = await this.MS.HttpService.executeAsync(this.actions[i].OperationName, param);
             this.message = '';
 
             this.MS.LoggerService.TrackDeploymentStepStoptEvent(i, this.actions[i].OperationName, response.isSuccess);

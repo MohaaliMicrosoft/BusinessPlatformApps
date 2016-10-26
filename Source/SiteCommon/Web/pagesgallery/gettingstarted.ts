@@ -1,6 +1,6 @@
 import { ViewModelBase } from '../services/viewmodelbase';
 
-export class gettingstarted extends ViewModelBase {
+export class Gettingstarted extends ViewModelBase {
     architectureDiagram: string = '';
     downloadLink: string;
     features: string[] = [];
@@ -9,7 +9,7 @@ export class gettingstarted extends ViewModelBase {
     pricing: string[] = [];
     requirements: string[] = [];
     subtitle: string;
-    templateName: string = 'Hello Mo';
+    templateName: string = '';
     showPrivacy:boolean;
 
     constructor() {
@@ -19,7 +19,7 @@ export class gettingstarted extends ViewModelBase {
 
     async OnLoaded() {
         if (this.isDownload && !this.isEvaluation) {
-            let response = await this.MS.HttpService.Execute('Microsoft-GetMsiDownloadLink', {});
+            let response = await this.MS.HttpService.executeAsync('Microsoft-GetMsiDownloadLink', {});
             this.downloadLink = response.response.value;
         }
     }

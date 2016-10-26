@@ -84,14 +84,14 @@ export class UtilityService {
             //this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationUsername', username);
             //this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationPassword', password);
 
-            let response = await this.MS.HttpService.Execute('Microsoft-ValidateNTCredential', {});
+            let response = await this.MS.HttpService.executeAsync('Microsoft-ValidateNTCredential', {});
             isValid = response.isSuccess;
 
             if (isValid) {
-                let responseAdmin = await this.MS.HttpService.Execute('Microsoft-ValidateAdminPrivileges', {});
+                let responseAdmin = await this.MS.HttpService.executeAsync('Microsoft-ValidateAdminPrivileges', {});
                 isValid = responseAdmin.isSuccess;
                 if (isValid) {
-                    let responseSecurity = await this.MS.HttpService.Execute('Microsoft-ValidateSecurityOptions', {});
+                    let responseSecurity = await this.MS.HttpService.executeAsync('Microsoft-ValidateSecurityOptions', {});
                     isValid = responseSecurity.isSuccess;
                 }
             }
