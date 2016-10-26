@@ -14,7 +14,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public object Body { get; private set; }
 
-        public bool IsResponseContainsCredentials { get; set; }
+        public bool DoesResponseContainsCredentials { get; set; }
 
         public DataStore DataStore { get; set; }
 
@@ -31,7 +31,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public ActionResponse(ActionStatus status, object response, bool isResponseContainsCredentials = false)
         {
-            this.IsResponseContainsCredentials = isResponseContainsCredentials;
+            this.DoesResponseContainsCredentials = isResponseContainsCredentials;
             if (status == ActionStatus.Failure || status == ActionStatus.FailureExpected)
             {
                 this.ExceptionDetail.FriendlyMessageCode = DefaultErrorCodes.DefaultErrorCode;
@@ -40,29 +40,12 @@ namespace Microsoft.Deployment.Common.ActionModel
             this.Body = response;
         }
 
-        public ActionResponse(ActionStatus status, string response, bool isResponseContainsCredentials = false)
-        {
-            JObject obj = new JObject();
 
-            this.IsResponseContainsCredentials = isResponseContainsCredentials;
-            if (status == ActionStatus.Failure)
-            {
-                this.ExceptionDetail.FriendlyMessageCode = DefaultErrorCodes.DefaultErrorCode;
-            }
-            if (!string.IsNullOrEmpty(response))
-            {
-                obj = JsonUtility.GetJsonObjectFromJsonString(response);
-            }
-
-            this.Status = status;
-            this.Body = obj;
-        }
-
-        public ActionResponse(ActionStatus status, object response, string friendlyMessageCode)
+        public ActionResponse(ActionStatus status, object response, string friendlyErrorMessageCode)
         {
             if (status == ActionStatus.Failure)
             {
-                this.ExceptionDetail.FriendlyMessageCode = friendlyMessageCode;
+                this.ExceptionDetail.FriendlyMessageCode = friendlyErrorMessageCode;
             }
 
             this.Status = status;
