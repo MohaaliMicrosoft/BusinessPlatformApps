@@ -15,7 +15,7 @@ export class ViewModelBase {
     showBack: boolean = true;
     showNext: boolean = true;
 
-    isCurrentlyNavigating: boolean = false;
+    
     onNext: any[] = [];
     navigationMessage: string = '';
     useDefaultValidateButton: boolean = false;
@@ -42,11 +42,11 @@ export class ViewModelBase {
     }
 
     async NavigateNext() {
-        if (this.isCurrentlyNavigating) {
+        if (this.MS.NavigationService.isCurrentlyNavigating) {
             return;
         }
 
-        this.isCurrentlyNavigating = true;
+        this.MS.NavigationService.isCurrentlyNavigating = true;
         let isNavigationSuccessful: boolean = true;
 
         try {
@@ -77,15 +77,15 @@ export class ViewModelBase {
             this.NavigatedNext();
         }
 
-        this.isCurrentlyNavigating = false;
+        this.MS.NavigationService.isCurrentlyNavigating = false;
     }
 
     NavigateBack() {
-        if (this.isCurrentlyNavigating) {
+        if (this.MS.NavigationService.isCurrentlyNavigating) {
             return;
         }
 
-        this.isCurrentlyNavigating = true;
+        this.MS.NavigationService.isCurrentlyNavigating = true;
         let currentRoute = this.MS.NavigationService
             .getCurrentSelectedPage()
             .RoutePageName.toLowerCase();
@@ -107,7 +107,7 @@ export class ViewModelBase {
         this.MS.DeploymentService.hasError = false;
         this.MS.ErrorService.Clear();
 
-        this.isCurrentlyNavigating = false;
+        this.MS.NavigationService.isCurrentlyNavigating = false;
     }
 
     async activate(params, navigationInstruction) {
