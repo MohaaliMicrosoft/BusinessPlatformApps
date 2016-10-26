@@ -40,10 +40,8 @@ namespace Microsoft.Deployment.Common.AppLoad
         public AppFactory()
         {
             this.SetAppsPath();
-
             this.LoadBinaries();
             this.LoadAllPages();
-
             this.InstantiateAllApps();
 
         }
@@ -88,6 +86,8 @@ namespace Microsoft.Deployment.Common.AppLoad
             {
                 Console.WriteLine(compositionException.ToString());
             }
+
+            this.AllActions.ToList().ForEach(p=> this.Actions.Add(p.OperationUniqueName, p));
         }
 
         private void LoadAllPages()
@@ -123,7 +123,6 @@ namespace Microsoft.Deployment.Common.AppLoad
                     {
                         PageName = file.Split('\\').Last(),
                         AppName = appName,
-                        RoutePageName = file.Split('\\').Last().Replace(".html", ""),
                         Path = file.Replace(".html",""),
                         UserGeneratedPath = userGeneratedPath
                     });
