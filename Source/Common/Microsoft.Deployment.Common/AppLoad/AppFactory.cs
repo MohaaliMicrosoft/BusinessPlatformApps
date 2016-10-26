@@ -96,10 +96,13 @@ namespace Microsoft.Deployment.Common.AppLoad
             var parentDirectories = templateFiles.Select(Directory.GetParent);
             foreach (var dir in parentDirectories)
             {
-                string[] htmlPages = Directory.GetFiles(Path.Combine(dir.FullName, Constants.AppsWebPath), "*.html", SearchOption.AllDirectories);
-                string relativeUrl = Constants.AppsPath + Path.Combine(dir.FullName.Replace(this.AppPath, ""), Constants.AppsWebPath);
-                IEnumerable<string> relativeFilePaths = htmlPages.Select(p => p.Substring(p.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal)));
-                this.AddPages(dir.Name, relativeFilePaths);
+                if (Directory.Exists(Path.Combine(dir.FullName, Constants.AppsWebPath)))
+                {
+                    string[] htmlPages = Directory.GetFiles(Path.Combine(dir.FullName, Constants.AppsWebPath), "*.html", SearchOption.AllDirectories);
+                    string relativeUrl = Constants.AppsPath + Path.Combine(dir.FullName.Replace(this.AppPath, ""), Constants.AppsWebPath);
+                    IEnumerable<string> relativeFilePaths = htmlPages.Select(p => p.Substring(p.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal)));
+                    this.AddPages(dir.Name, relativeFilePaths);
+                }
             }
 
             string[] htmlPagesCommon = Directory.GetFiles(Path.Combine(this.SiteCommonPath, Constants.AppsWebPath), "*.html", SearchOption.AllDirectories);
@@ -121,7 +124,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                         PageName = file.Split('\\').Last(),
                         AppName = appName,
                         RoutePageName = file.Split('\\').Last().Replace(".html", ""),
-                        Path = file,
+                        Path = file.Replace(".html",""),
                         UserGeneratedPath = userGeneratedPath
                     });
             }

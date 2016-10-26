@@ -132,23 +132,29 @@
       <HintPath>..\packages\Microsoft.Deployment.Actions.ADF.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.ADF.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.AzureCustom">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.1-dev95\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6143.11393, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Common">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.1-dev95\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6143.11395, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Custom">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.1-dev95\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6143.11396, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.OnPremise">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.1-dev95\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6143.11398, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.SQL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.1-dev95\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6143.11400, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Common">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.1-dev94\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6143.11310, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610260615\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll</HintPath>
@@ -375,12 +381,8 @@
   </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Common -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.AzureCustom -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.Common -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.Custom -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.OnPremise -prerelease
-$(ProjectDir)\..\packages\NuGet.CommandLine.3.4.3\tools\nuget.exe update $(ProjectDir)\packages.config -source https://www.myget.org/F/bpapps/api/v3/index.json -id Microsoft.Deployment.Actions.SQL -prerelease</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -46,7 +46,7 @@ export class UtilityService {
 
     GetPropertiesForTelemtry(): any {
         let obj: any = {};
-        obj.TemplateName = this.MS.NavigationService.templateName;
+        obj.TemplateName = this.MS.NavigationService.appName;
         obj.FullUrl = window.location.href;
         obj.Origin = window.location.origin;
         obj.Host = window.location.host;
@@ -65,17 +65,6 @@ export class UtilityService {
         return response;
     }
 
-    UseImpersonation(): boolean {
-        let useImpersonationIfAvailable: boolean = false;
-        try {
-            let impersonationUsername: string = this.MS.DataService.GetItemFromDataStore('Credentials', 'ImpersonationUsername');
-            useImpersonationIfAvailable = impersonationUsername && impersonationUsername.length > 0;
-        } catch (checkImpersonationException) {
-            // Impersonation is not being used
-        }
-        return useImpersonationIfAvailable;
-    }
-
     async ValidateImpersonation(username: string, password: string, useCurrentUser: boolean): Promise<boolean> {
         let isValid: boolean = true;
 
@@ -91,18 +80,18 @@ export class UtilityService {
         }
 
         if (isValid) {
-            this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationDomain', domain);
-            this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationUsername', username);
-            this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationPassword', password);
+            //this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationDomain', domain);
+            //this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationUsername', username);
+            //this.MS.DataService.AddToDataStore('Credentials', 'ImpersonationPassword', password);
 
-            let response = await this.MS.HttpService.Execute('Microsoft-ValidateNTCredential', {});
+            let response = await this.MS.HttpService.executeAsync('Microsoft-ValidateNTCredential', {});
             isValid = response.isSuccess;
 
             if (isValid) {
-                let responseAdmin = await this.MS.HttpService.Execute('Microsoft-ValidateAdminPrivileges', {});
+                let responseAdmin = await this.MS.HttpService.executeAsync('Microsoft-ValidateAdminPrivileges', {});
                 isValid = responseAdmin.isSuccess;
                 if (isValid) {
-                    let responseSecurity = await this.MS.HttpService.Execute('Microsoft-ValidateSecurityOptions', {});
+                    let responseSecurity = await this.MS.HttpService.executeAsync('Microsoft-ValidateSecurityOptions', {});
                     isValid = responseSecurity.isSuccess;
                 }
             }
@@ -139,5 +128,27 @@ export class UtilityService {
             usernameError = `${usernameText} must not start or end with a hyphen.`;
         }
         return usernameError;
+    }
+
+    // Add items to the session storage - should use DataStore where possible
+    SaveItem(key, value) {
+        let val = JSON.stringify(value);
+        if (window.sessionStorage.getItem(key)) {
+            window.sessionStorage.removeItem(key);
+        }
+        window.sessionStorage.setItem(key, val);
+    }
+
+    ClearSessionStorage() {
+        window.sessionStorage.clear();
+    }
+
+    GetItem(key) {
+        let item = JSON.parse(window.sessionStorage.getItem(key));
+        return item;
+    }
+
+    RemoveItem(key) {
+        window.sessionStorage.removeItem(key);
     }
 }

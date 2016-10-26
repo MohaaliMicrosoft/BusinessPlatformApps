@@ -14,7 +14,7 @@ export class HttpService {
     constructor(MainService, HttpClient) {
 
         if (window.location.href.startsWith('http://localhost') || window.location.href.startsWith('https://localhost')) {
-            this.baseUrl = 'http://localhost:42387/api/';
+            this.baseUrl = 'http://localhost:2305/api/';
         } else {
             let url = window.location.href;
             if (url.includes('bpsolutiontemplates')) {
@@ -40,16 +40,16 @@ export class HttpService {
         this.command.close();
     }
 
-    async GetTemplate(name) {
+    async GetApp(name) {
         var response = null;
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
-        this.MS.LoggerService.TrackStartRequest('GetTemplate-name', uniqueId);
+        this.MS.LoggerService.TrackStartRequest('GetApp-name', uniqueId);
         if (this.isOnPremise) {
             response = await this.command.gettemplate(this.MS.LoggerService.UserId,
                 this.MS.LoggerService.UserGenId, '', this.MS.LoggerService.OperationId,
                 uniqueId, name);
         } else {
-            response = await this.HttpClient.createRequest(`/templates/${name}`)
+            response = await this.HttpClient.createRequest(`/App/${name}`)
                 .asGet()
                 .withBaseUrl(this.baseUrl)
                 .withHeader('Content-Type', 'application/json; charset=utf-8')
@@ -71,30 +71,26 @@ export class HttpService {
         return responseParsed;
     }
 
-    async Execute(method, content) {
+    async executeAsync(method, content): Promise<ActionResponse> {
         this.isServiceBusy = true;
 
-        this.MS.ErrorService.details = '';
-        this.MS.ErrorService.logLocation = '';
-        this.MS.ErrorService.message = '';
-        this.MS.ErrorService.showContactUs = false;
-
+        this.MS.ErrorService.Clear();
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
-        let commonRequestBody: any = this.MS.DataService.GetDataStore();
 
+        // Add here
+        let commonRequestBody: any = {};
         if (content) {
             for (let prop in content) {
                 commonRequestBody[prop] = content[prop];
             }
         }
-        commonRequestBody['TemplateName'] = this.MS.NavigationService.templateName;
         commonRequestBody.uniqueId = uniqueId;
         this.MS.LoggerService.TrackStartRequest(method, uniqueId);
         var response = null;
         if (this.isOnPremise) {
             response = await this.command.executeaction(this.MS.LoggerService.UserId, this.MS.LoggerService.UserGenId,
                 '', this.MS.LoggerService.OperationId, uniqueId,
-                this.MS.NavigationService.templateName, method, JSON.stringify(commonRequestBody));
+                this.MS.NavigationService.appName, method, JSON.stringify(commonRequestBody));
         } else {
             response = await this.HttpClient.createRequest(`${this.baseUrl}/action/${method}`)
                 .asPost()
@@ -104,7 +100,7 @@ export class HttpService {
                 .withHeader('OperationId', this.MS.LoggerService.OperationId)
                 .withHeader('SessionId', this.MS.LoggerService.appInsights.context.session.id)
                 .withHeader('UserId', this.MS.LoggerService.UserId)
-                .withHeader('TemplateName', this.MS.NavigationService.templateName)
+                .withHeader('TemplateName', this.MS.NavigationService.appName)
                 .withHeader('UniqueId', uniqueId)
                 .send();
             response = response.response;
@@ -135,7 +131,7 @@ export class HttpService {
         return actionResponse;
     }
 
-    async ExecuteWithImpersonation(method, content) {
+    async executeAsyncWithImpersonation(method, content): Promise<ActionResponse>  {
         let body: any = {};
 
         if (content) {
@@ -143,6 +139,6 @@ export class HttpService {
         }
 
         body.ImpersonateAction = true;
-        return this.Execute(method, content);
+        return this.executeAsync(method, content);
     }
 }

@@ -16,7 +16,7 @@
             <div class="st-section">
                 <div class="st-section-wrapper">
                     <router-view></router-view>
-                    <navbuttons if.bind="MS.NavigationService.templateName !== ''" viewmodel.bind="MS.NavigationService.currentViewModel"></navbuttons>
+                    <navbuttons if.bind="MS.NavigationService.appName !== ''" viewmodel.bind="MS.NavigationService.currentViewModel"></navbuttons>
                 </div>
                 <div class="st-footer">
                     <span><a class="st-footer-text" href="mailto:PBISolnTemplates@microsoft.com" target="_top">CONTACT US</a></span>

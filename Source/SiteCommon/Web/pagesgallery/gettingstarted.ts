@@ -1,11 +1,6 @@
-import { bindable } from 'aurelia-framework';
 import { ViewModelBase } from '../services/viewmodelbase';
 
-export class gettingstartedtemplate {
-    @bindable viewmodel = null;
-}
-
-export class GettingStartedViewModel extends ViewModelBase {
+export class Gettingstarted extends ViewModelBase {
     architectureDiagram: string = '';
     downloadLink: string;
     features: string[] = [];
@@ -13,20 +8,18 @@ export class GettingStartedViewModel extends ViewModelBase {
     isEvaluation: boolean = false;
     pricing: string[] = [];
     requirements: string[] = [];
-    subTitle: string;
-    templateName: string;
+    subtitle: string;
+    templateName: string = '';
+    showPrivacy:boolean;
 
     constructor() {
         super();
-        this.showBack = false;
         this.showPrivacy = true;
-        this.subTitle = '';
-        this.templateName = '';
     }
 
     async OnLoaded() {
         if (this.isDownload && !this.isEvaluation) {
-            let response = await this.MS.HttpService.Execute('Microsoft-GetMsiDownloadLink', {});
+            let response = await this.MS.HttpService.executeAsync('Microsoft-GetMsiDownloadLink', {});
             this.downloadLink = response.response.value;
         }
     }
