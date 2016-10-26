@@ -12,11 +12,9 @@ namespace Microsoft.Deployment.Common.ActionModel
         public Logger Logger { get; set; }
         public DataStore DataStore { get; set; }
 
-        public IEnumerable<IAction> AllActions { get; set; }
 
-        public ActionRequest(IEnumerable<IAction> allActions)
+        public ActionRequest()
         {
-            this.AllActions = allActions;
         }
     }
 }
