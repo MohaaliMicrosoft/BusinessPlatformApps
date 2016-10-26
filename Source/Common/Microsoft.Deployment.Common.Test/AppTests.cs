@@ -56,5 +56,19 @@ namespace Microsoft.Deployment.Common.Test
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(store.PrivateDataStore);
 
         }
+
+        [TestMethod]
+        public void TestActionsWithObjectTypes()
+        {
+            AppFactory appFactory = new AppFactory();
+            Assert.IsTrue(appFactory.Apps.Count > 0);
+
+            var result = appFactory.Actions["Microsoft-MockAction"].ExecuteActionAsync(null).Result;
+            Assert.IsTrue(result.Status == ActionStatus.Success);
+
+            var jobject = JObject.FromObject(result);
+            Assert.IsNotNull(jobject);
+            Assert.IsNotNull(jobject["Body"]?.ToString());
+        }
     }
 }
