@@ -1,4 +1,3 @@
-import { bindable } from 'aurelia-framework';
 import { ViewModelBase } from '../services/viewmodelbase';
 
 export class gettingstarted extends ViewModelBase {

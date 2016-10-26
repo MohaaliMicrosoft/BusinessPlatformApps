@@ -61,7 +61,6 @@
     <Folder Include="Apps\TestApps\TestApp2\Resources\" />
     <Folder Include="Apps\TestApps\TestApp2\Service\" />
     <Folder Include="Apps\TestApps\TestApp\Resources\" />
-    <Folder Include="Apps\TestApps\TestApp\Service\" />
     <Folder Include="DummyActions\" />
   </ItemGroup>
   <ItemGroup>
@@ -102,31 +101,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SiteCommon\Web\pagesgallery\summarytemplate.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Apps\TestApps\TestApp\Web\azure.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\gettingStarted.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\Images\twitterArchitectureDiagram.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\progress.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Apps\TestApps\TestApp\Web\azure.ts">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\gettingStarted.ts">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\progress.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
