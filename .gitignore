@@ -17,5 +17,6 @@
 /Source/Actions/Microsoft.Deployment.Actions.AzureCustom/StyleCop.Cache
 /Source/Actions/Microsoft.Deployment.Actions.ADF/StyleCop.Cache
 *.suo
+*/.vs/**/*
 /Source/Site/Microsoft.Deployment.Site.Web/node_modules
 /Source/Site/Microsoft.Deployment.Site.Web/wwwroot/dist
