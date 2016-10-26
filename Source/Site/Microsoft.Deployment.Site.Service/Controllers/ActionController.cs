@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.Controller;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.Site.Service.Controllers
@@ -11,14 +14,14 @@ namespace Microsoft.Deployment.Site.Service.Controllers
     public class ActionController : ApiController
     {
         [HttpPost]
-        public ActionResponse ExecuteAction(string id, [FromBody] JObject body)
+        public Task<ActionResponse> ExecuteAction(string id, [FromBody] JObject body)
         {
             Dictionary<string, string> param = new Dictionary<string, string>();
             param.Add("Service", "Online");
 
             string operationId = string.Empty;
             string userGenId = string.Empty;
-            string template = string.Empty;
+            string appName = string.Empty;
             string userId = string.Empty;
             string sessionId = string.Empty;
             string uniqueId = string.Empty;
@@ -36,7 +39,7 @@ namespace Microsoft.Deployment.Site.Service.Controllers
 
             if (this.Request.Headers.Contains("TemplateName"))
             {
-                template = this.Request.Headers.GetValues("TemplateName").First();
+                appName = this.Request.Headers.GetValues("TemplateName").First();
             }
 
             if (this.Request.Headers.Contains("UserId"))
@@ -61,8 +64,23 @@ namespace Microsoft.Deployment.Site.Service.Controllers
                 referer = url[0] + "//" + url[2];
             }
 
-            return new CommonController("API", param, Request.RequestUri.GetLeftPart(UriPartial.Authority), Constants.TemplatePath, referer, WebApiConfig.Templates)
-                .ExecuteAction(userId, userGenId, sessionId, operationId, uniqueId, template, id, body);
+
+            UserInfo info = new UserInfo()
+            {
+                ActionName = id,
+                AppName = appName,
+                OperationId = operationId,
+                SessionId = sessionId,
+                UniqueLink = uniqueId,
+                UserGenId = userGenId,
+                UserId = userId,
+                WebsiteRootUrl = referer,
+                SerivceRootUrl = "" // Addressed Later
+            };
+
+
+            return new CommonController(WebApiConfig.CommonControllerModel)
+                .ExecuteAction(info, body);
         }
     }
 }

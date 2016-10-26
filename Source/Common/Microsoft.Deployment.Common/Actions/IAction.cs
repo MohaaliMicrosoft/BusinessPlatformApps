@@ -1,9 +1,12 @@
-﻿namespace Microsoft.Deployment.Common.Actions
+﻿using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
+
+namespace Microsoft.Deployment.Common.Actions
 {
     public interface IAction
     {
         string OperationUniqueName { get; }
 
-        ActionResponse ExecuteAction(ActionRequest request);
+        Task<ActionResponse> ExecuteActionAsync(ActionRequest request);
     }
 }

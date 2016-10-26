@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32;
@@ -9,7 +11,7 @@ namespace Microsoft.Deployment.Actions.OnPremise.WinNT
     [Export(typeof(IAction))]
     public class ValidateSecurityOptions : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Lsa"))
             {

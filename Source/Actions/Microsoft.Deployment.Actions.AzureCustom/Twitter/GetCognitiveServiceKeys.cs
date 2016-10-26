@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json.Linq;
@@ -9,23 +11,24 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     [Export(typeof(IAction))]
     public class GetCognitiveServiceKeys : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][1]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
-            var cognitiveServiceName = request.Message["CognitiveServiceName"][0].ToString();
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
+            var location = request.DataStore.GetJson("SelectedLocation")["Name"].ToString();
+            var cognitiveServiceName = request.DataStore.GetValue("CognitiveServiceName");
 
-            AzureHttpClient client = new AzureHttpClient(token, subscription, resourceGroup);        
+            AzureHttpClient client = new AzureHttpClient(azureToken, subscription, resourceGroup);        
 
-            var response = client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Post, $"providers/Microsoft.CognitiveServices/accounts/{cognitiveServiceName}/listKeys", "2016-02-01-preview", string.Empty);
+            var response = await client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Post, $"providers/Microsoft.CognitiveServices/accounts/{cognitiveServiceName}/listKeys", "2016-02-01-preview", string.Empty);
             if (response.IsSuccessStatusCode)
             {
-                var subscriptionKeys = JsonUtility.GetJObjectFromJsonString(response.Content.ReadAsStringAsync().Result);
+                var subscriptionKeys = JsonUtility.GetJObjectFromJsonString(await response.Content.ReadAsStringAsync());
 
                 JObject cognitiveServiceKey = new JObject();
                 cognitiveServiceKey.Add("CognitiveServiceKey", subscriptionKeys["key1"].ToString());  
-                return new ActionResponse(ActionStatus.Success, cognitiveServiceKey);
+                return new ActionResponse(ActionStatus.Success, cognitiveServiceKey, true);
             }
 
             return new ActionResponse(ActionStatus.Failure);

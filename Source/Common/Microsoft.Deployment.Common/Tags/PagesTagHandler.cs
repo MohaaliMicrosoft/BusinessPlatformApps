@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.Deployment.Common.Actions;
+using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Helpers;
-using Microsoft.Deployment.Common.Template;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,31 +15,35 @@ namespace Microsoft.Deployment.Common.Tags
     {
         public string Tag { get; } = "Pages";
 
-        public void ProcessTag(JToken innerJson, JToken entireJson, IEnumerable<UIPage> allPages, IEnumerable<IAction> allActions, Template.Template template)
+        public void ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
         {
             foreach (var child in innerJson.Children())
             {
-                string pageName = child["name"].ToString(Formatting.None).Replace("\"", "");
+                string pageName = child["name"].ToString(Formatting.None);
+                pageName = pageName.Replace("\"", "");
+                pageName = pageName.Replace("/", "\\");
 
-                var page = allPages.FirstOrDefault(
-                        p => ((p.TemplateName.EqualsIgnoreCase(template.TemplateName)
-                              || p.TemplateName.EqualsIgnoreCase("CommonUI")) 
-                              && p.PageName.EqualsIgnoreCase(pageName)));
+                string pageToSearch = pageName;
 
-                if (page == null)
+                // Find page
+                if (!pageName.StartsWith("$"))
                 {
-                    throw new Exception("Unable to find page");
+                    pageToSearch = $"{app.Name}\\{pageName}";
                 }
 
-                UIPage pageCopied = page.Clone();
+                if (!allPages.ContainsKey(pageToSearch))
+                {
+                    throw new Exception($"Page:{pageName} in init.json not found");
+                }
 
+                var page = allPages[pageToSearch];
+
+                UIPage pageCopied = page.Clone();
                 string displayName = child["displayname"] != null ? child["displayname"].ToString(Formatting.None).Replace("\"", "") : pageName;
                 pageCopied.DisplayName = displayName;
-                pageCopied.AdditionalParameters = child;
-
-                template.Pages.Add(pageCopied);
+                pageCopied.Parameters = child;
+                app.Pages.Add(pageCopied);
             }
-         
         }
     }
 }

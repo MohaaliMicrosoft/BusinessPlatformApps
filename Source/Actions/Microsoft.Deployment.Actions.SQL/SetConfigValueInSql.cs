@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -10,22 +12,22 @@ namespace Microsoft.Deployment.Actions.SQL
     [Export(typeof(IAction))]
     public class SetConfigValueInSql : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             // Provided by the json 
-            var sqlIndex = int.Parse(request.Message["SqlServerIndex"].ToString());
-            string configTable = request.Message["SqlConfigTable"].ToString();
+            var sqlIndex = int.Parse(request.DataStore.GetValue("SqlServerIndex"));
+            string configTable = request.DataStore.GetValue("SqlConfigTable");
 
 
             // Provided by thge user including the messages below
-            string connectionString = request.Message["SqlConnectionString"][sqlIndex].ToString();
+            string connectionString = request.DataStore.GetAllValues("SqlConnectionString")[sqlIndex].ToString();
                 // Must specify Initial Catalog
 
             // Get list of settings to deploy;
-            JToken listGroup = request.Message.SelectToken("SqlGroup");
-            JToken listSubgroup = request.Message.SelectToken("SqlSubGroup");
-            JToken listConfigEntryName = request.Message.SelectToken("SqlEntryName");
-            JToken listConfigEntryValue = request.Message.SelectToken("SqlEntryValue");
+            JToken listGroup = request.DataStore.GetJson("SqlGroup");
+            JToken listSubgroup = request.DataStore.GetJson("SqlSubGroup");
+            JToken listConfigEntryName = request.DataStore.GetJson("SqlEntryName");
+            JToken listConfigEntryValue = request.DataStore.GetJson("SqlEntryValue");
 
             if (listGroup == null || listSubgroup == null || listConfigEntryName == null || listConfigEntryValue == null)
             {
@@ -42,10 +44,10 @@ namespace Microsoft.Deployment.Actions.SQL
 
             for (int i = 0; i < listGroup.Count(); i++)
             {
-                string group = request.Message["SqlGroup"][i].ToString();
-                string subgroup = request.Message["SqlSubGroup"][i].ToString();
-                string configEntryName = request.Message["SqlEntryName"][i].ToString();
-                string configEntryValue = request.Message["SqlEntryValue"][i].ToString();
+                string group = request.DataStore.GetJson("SqlGroup")[i].ToString();
+                string subgroup = request.DataStore.GetJson("SqlSubGroup")[i].ToString();
+                string configEntryName = request.DataStore.GetJson("SqlEntryName")[i].ToString();
+                string configEntryValue = request.DataStore.GetJson("SqlEntryValue")[i].ToString();
 
                 string query = string.Format(queryTemplate, configTable, group, subgroup, configEntryName,
                     configEntryValue);

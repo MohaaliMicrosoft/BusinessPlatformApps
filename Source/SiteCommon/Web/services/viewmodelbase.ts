@@ -1,28 +1,50 @@
 ﻿import MainService from './mainservice';
 
 export class ViewModelBase {
-    downloadLink: string;
     isActivated: boolean = false;
     isValidated: boolean = true;
-    MS: MainService;
-    showBack: boolean = true;
-    showNext: boolean = true;
-    showPrivacy: boolean = false;
+
     showValidation: boolean = false;
     showValidationDetails: boolean = false;
-    textNext: string = 'Next';
     validationText: string;
+
+    MS: MainService;
+
+    textNext: string = 'Next';
+
+    showBack: boolean = true;
+    showNext: boolean = true;
+
     isCurrentlyNavigating: boolean = false;
     navigationMessage: string = '';
     useDefaultValidateButton: boolean = false;
+
     viewmodel: ViewModelBase;
+
+    parametersLoaded:boolean = false;
 
     constructor() {
         this.MS = (<any>window).MainService;
         this.viewmodel = this;
     }
 
+    loadParameters() {
+          // Load the parameters from the additionalParamters section
+        if (!this.parametersLoaded) {
+            var parameters = this.MS.NavigationService.getCurrentSelectedPage().Parameters;
+            for (let propertyName in parameters) {
+                this[propertyName] = parameters[propertyName];
+            }
+        }
+
+        this.parametersLoaded = true;
+    }
+
     async NavigateNext() {
+        if (this.isCurrentlyNavigating) {
+            return;
+        }
+
         this.isCurrentlyNavigating = true;
         let isNavigationSuccessful: boolean = true;
 
@@ -36,7 +58,7 @@ export class ViewModelBase {
 
         if (isNavigationSuccessful) {
             let currentRoute = this.MS.NavigationService
-                .GetCurrentSelectedPage()
+                .getCurrentSelectedPage()
                 .RoutePageName.toLowerCase();
             let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
 
@@ -58,11 +80,16 @@ export class ViewModelBase {
     }
 
     NavigateBack() {
-        let currentRoute = this.MS.NavigationService
-            .GetCurrentSelectedPage()
-            .RoutePageName.toLowerCase();
-        let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
+        if (this.isCurrentlyNavigating) {
+            return;
+        }
 
+        this.isCurrentlyNavigating = true;
+        let currentRoute = this.MS.NavigationService
+            .getCurrentSelectedPage()
+            .RoutePageName.toLowerCase();
+
+        let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
         // Save view model state
         if (viewmodelPreviousSave) {
             window.sessionStorage.removeItem(currentRoute);
@@ -73,33 +100,42 @@ export class ViewModelBase {
         window.sessionStorage.setItem(currentRoute, JSON.stringify(this));
         this.viewmodel = this;
         this.MS = (<any>window).MainService;
-        this.MS.NavigationService.NavigateBack();
 
+        // Persistence is lost here for maintaining pages the user has visited
+        this.MS.NavigationService.NavigateBack();
         this.MS.DeploymentService.hasError = false;
         this.MS.ErrorService.Clear();
+
+        this.isCurrentlyNavigating = false;
     }
 
     async activate(params, navigationInstruction) {
         this.isActivated = false;
-        this.MS.DataService.SaveItem('Current Page', window.location.href);
+        this.loadParameters();
+        this.MS.UtilityService.SaveItem('Current Page', window.location.href);
         var nav = navigationInstruction.route.replace('/', '');
-        this.MS.DataService.SaveItem('Current Route', nav);
+        this.MS.UtilityService.SaveItem('Current Route', nav);
         let viewmodelPreviousSave = window.sessionStorage.getItem(nav);
 
-        // Save view model state
+        // Restore view model state
         if (viewmodelPreviousSave) {
             let jsonParsed = JSON.parse(viewmodelPreviousSave);
             for (let propertyName in jsonParsed) {
                 this[propertyName] = jsonParsed[propertyName];
             }
+
             this.viewmodel = this;
             this.viewmodel.MS = (<any>window).MainService;
         }
 
         this.MS.NavigationService.currentViewModel = this;
-        await this.Activated();
         this.isActivated = true;
     }
+
+   
+    ///////////////////////////////////////////////////////////////////////
+    /////////////////// Methods to override ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 
     // Called when object is no longer valid
     Invalidate() {
@@ -118,10 +154,6 @@ export class ViewModelBase {
         this.MS.ErrorService.message = '';
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    /////////////////// Methods to override ///////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-
     // Called when object has initiated navigating next
     async NavigatingNext(): Promise<boolean> {
         return true;
@@ -138,9 +170,5 @@ export class ViewModelBase {
     // Called when the view model is attached completely
     async OnLoaded() {
 
-    }
-
-    // Called when object is activated by the view model base but not loaded
-    async Activated() {
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -8,14 +10,14 @@ namespace Microsoft.Deployment.Actions.OnPremise.WinNT
     [Export(typeof(IAction))]
     public class AddLogonAsBatchPermission : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string domain = request.Message["ImpersonationDomain"] == null || string.IsNullOrEmpty(request.Message["ImpersonationDomain"][0].ToString())
+            string domain = request.DataStore.GetValue("ImpersonationDomain") == null || string.IsNullOrEmpty(request.DataStore.GetValue("ImpersonationDomain"))
                 ? Environment.GetEnvironmentVariable("USERDOMAIN")
-                : request.Message["ImpersonationDomain"][0].ToString();
-            string user = request.Message["ImpersonationUsername"] == null || string.IsNullOrEmpty(request.Message["ImpersonationUsername"][0].ToString())
+                : request.DataStore.GetValue("ImpersonationDomain");
+            string user = request.DataStore.GetValue("ImpersonationUsername") == null || string.IsNullOrEmpty(request.DataStore.GetValue("ImpersonationUsername"))
                 ? Environment.GetEnvironmentVariable("USERNAME")
-                : request.Message["ImpersonationUsername"][0].ToString();
+                : request.DataStore.GetValue("ImpersonationUsername");
 
             string domainAccount = $"{NTHelper.CleanDomain(domain)}\\{NTHelper.CleanUsername(user)}";
 
