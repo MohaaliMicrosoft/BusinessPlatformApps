@@ -71,7 +71,7 @@ export class HttpService {
         return responseParsed;
     }
 
-    async Execute(method, content) {
+    async executeAsync(method, content): Promise<ActionResponse> {
         this.isServiceBusy = true;
 
         this.MS.ErrorService.Clear();
@@ -131,7 +131,7 @@ export class HttpService {
         return actionResponse;
     }
 
-    async ExecuteWithImpersonation(method, content) {
+    async executeAsyncWithImpersonation(method, content): Promise<ActionResponse>  {
         let body: any = {};
 
         if (content) {
@@ -139,6 +139,6 @@ export class HttpService {
         }
 
         body.ImpersonateAction = true;
-        return this.Execute(method, content);
+        return this.executeAsync(method, content);
     }
 }
