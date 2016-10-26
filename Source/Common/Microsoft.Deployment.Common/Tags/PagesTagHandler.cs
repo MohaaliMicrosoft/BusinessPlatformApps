@@ -40,6 +40,16 @@ namespace Microsoft.Deployment.Common.Tags
 
                 UIPage pageCopied = page.Clone();
                 string displayName = child["displayname"] != null ? child["displayname"].ToString(Formatting.None).Replace("\"", "") : pageName;
+                string route = child["routeName"] != null ?  child["routeName"].ToString(Formatting.None).Replace("\"", ""): displayName.Replace(" ", "");
+
+                // If does not exist or is not unique, throw an error;
+                if (string.IsNullOrEmpty(route) ||
+                    app.Pages.Any(p => p.RoutePageName == route))
+                {
+                    throw new Exception("Page route name not defined or is duplicate in init.json (if routeName not defined, the default value is either display name or page name");
+                }
+              
+                pageCopied.RoutePageName = route;
                 pageCopied.DisplayName = displayName;
                 pageCopied.Parameters = child;
                 app.Pages.Add(pageCopied);
