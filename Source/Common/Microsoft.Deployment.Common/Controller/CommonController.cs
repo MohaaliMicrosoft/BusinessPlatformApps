@@ -52,7 +52,7 @@ namespace Microsoft.Deployment.Common.Controller
             return app;
         }
 
-        public async Task<ActionResponse> ExecuteAction(UserInfo info, JObject body)
+        public async Task<ActionResponse> ExecuteAction(UserInfo info, ActionRequest request)
         {
             Logger logger = new Logger(info, this.CommonControllerModel);
             logger.LogEvent("Start-" + info.ActionName, null);
@@ -61,7 +61,6 @@ namespace Microsoft.Deployment.Common.Controller
             var app = this.CommonControllerModel.AppFactory.Apps[info.AppName];
             info.App = app;
 
-            ActionRequest request = JsonConvert.DeserializeObject<ActionRequest>(body.ToString());
             request.ControllerModel = this.CommonControllerModel;
             request.Info = info;
             request.Logger = logger;

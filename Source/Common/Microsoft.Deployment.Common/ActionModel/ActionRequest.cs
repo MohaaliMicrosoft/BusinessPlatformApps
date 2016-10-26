@@ -9,7 +9,7 @@ namespace Microsoft.Deployment.Common.ActionModel
         public CommonControllerModel ControllerModel { get; set; }
         public UserInfo Info { get; set; }
         public Logger Logger { get; set; }
-        public DataStore DataStore { get; set; }
+        public DataStore DataStore { get; set; } = new DataStore();
 
 
         public ActionRequest()
