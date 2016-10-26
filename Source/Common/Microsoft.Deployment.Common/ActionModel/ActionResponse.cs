@@ -19,7 +19,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public DataStore DataStore { get; set; }
 
-        public ActionResponseExceptionDetail ExceptionDetail { get; set; }
+        public ActionResponseExceptionDetail ExceptionDetail { get; set; } = new ActionResponseExceptionDetail();
 
         // Used to Serialize and Deserialize for testing purposes only
         public ActionResponse()
