@@ -16,7 +16,7 @@ export class ViewModelBase {
     showNext: boolean = true;
 
     isCurrentlyNavigating: boolean = false;
-    actionsToExecuteOnNext:string[] = [];
+    onNext: any[] = [];
     navigationMessage: string = '';
     useDefaultValidateButton: boolean = false;
 
@@ -158,15 +158,17 @@ export class ViewModelBase {
     // Called when object has initiated navigating next
     async NavigatingNext(): Promise<boolean> {
 
-        for (let actionsToExecute in this.actionsToExecuteOnNext) {
-            var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
+        // Dont bother doing anything here
 
-            if (!response.isSuccess) {
-                return false;
-            } else {
-                // Store directly into Datastore here 
-            }
-        }
+        //for (let actionsToExecute in this.onNext) {
+
+        //    var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
+        //    if (!response.isSuccess) {
+        //        return false;
+        //    } else {
+        //        // Store directly into Datastore here 
+        //    }
+        //}
 
         return true;
     }

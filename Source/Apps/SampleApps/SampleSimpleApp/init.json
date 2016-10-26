@@ -1,13 +1,21 @@
 {
-  "Pages": 
-  [
+  "Pages": [
     {
-        "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
-        "displayname": "Getting Started",
-        "templateName": "Test Property",
-        "subtitle": "Test Subtitle"
+      "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
+      "displayname": "Getting Started",
+      "templateName": "Test Property",
+      "subtitle": "Test Subtitle"
+      //"onNext": [
+      //  {
+      //    "name": "Microsoft-TestAction",
+      //    "TargetSchema": "pbist",
+      //    "SCCMUsername": "$(this.username)",
+      //    "SCCMPassword": "$(this.password)"
+      //  }
+      //]
     }
   ],
+
 
   "Actions": [  ]
 }

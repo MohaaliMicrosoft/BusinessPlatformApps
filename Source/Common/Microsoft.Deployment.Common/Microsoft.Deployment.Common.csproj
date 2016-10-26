@@ -96,6 +96,7 @@
     <Compile Include="Helpers\PBIXUtils.cs" />
     <Compile Include="Helpers\RandomGenerator.cs" />
     <Compile Include="Helpers\RequestUtility.cs" />
+    <Compile Include="Helpers\ResponseObjectConverter.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
     <Compile Include="Helpers\SqlUtility.cs" />
     <Compile Include="Helpers\StringEnumConverterLower.cs" />

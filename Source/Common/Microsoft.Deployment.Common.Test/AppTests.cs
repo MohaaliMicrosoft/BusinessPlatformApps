@@ -68,7 +68,7 @@ namespace Microsoft.Deployment.Common.Test
 
             var jobject = JObject.FromObject(result);
             Assert.IsNotNull(jobject);
-            Assert.IsNotNull(jobject["Body"]?.ToString());
+            Assert.IsNotNull(jobject["Body"]["Value"].ToString());
         }
     }
 }

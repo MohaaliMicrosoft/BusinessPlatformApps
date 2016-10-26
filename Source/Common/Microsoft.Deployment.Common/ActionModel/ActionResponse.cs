@@ -12,6 +12,7 @@ namespace Microsoft.Deployment.Common.ActionModel
         [JsonConverter(typeof(StringEnumConverterLower))]
         public ActionStatus Status { get; set; }
 
+        [JsonConverter(typeof(ResponseObjectConverter))]
         public object Body { get; private set; }
 
         public bool DoesResponseContainsCredentials { get; set; }
