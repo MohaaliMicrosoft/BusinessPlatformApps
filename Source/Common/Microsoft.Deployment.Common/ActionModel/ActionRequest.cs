@@ -1,4 +1,5 @@
-﻿using Microsoft.Deployment.Common.Actions;
+﻿using System.Collections.Generic;
+using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Controller;
 using Newtonsoft.Json.Linq;
 
@@ -11,9 +12,11 @@ namespace Microsoft.Deployment.Common.ActionModel
         public Logger Logger { get; set; }
         public DataStore DataStore { get; set; }
 
+        public IEnumerable<IAction> AllActions { get; set; }
 
-        public ActionRequest()
+        public ActionRequest(IEnumerable<IAction> allActions)
         {
+            this.AllActions = allActions;
         }
     }
 }

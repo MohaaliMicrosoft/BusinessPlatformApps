@@ -40,6 +40,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,15 +55,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DummyActions\TestAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\TestApps\TestApp2\Resources\" />
     <Folder Include="Apps\TestApps\TestApp2\Service\" />
-    <Folder Include="Apps\TestApps\TestApp\Resources\" />
-    <Folder Include="Apps\TestApps\TestApp\Service\" />
-    <Folder Include="DummyActions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Deployment.Common\Microsoft.Deployment.Common.csproj">
@@ -83,9 +82,6 @@
     <Content Include="Apps\TestApps\TestApp2\Web\progress.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Apps\TestApps\TestApp\init.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="SiteCommon\Web\pagesgallery\nested\gettingstartedtemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -102,31 +98,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SiteCommon\Web\pagesgallery\summarytemplate.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Apps\TestApps\TestApp\Web\azure.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\gettingStarted.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\Images\twitterArchitectureDiagram.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\progress.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Apps\TestApps\TestApp\Web\azure.ts">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\gettingStarted.ts">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Apps\TestApps\TestApp\Web\progress.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -57,7 +57,8 @@ namespace Microsoft.Deployment.Common.AppLoad
                 string initFilePath = Path.Combine(dir.FullName, Constants.InitFile);
                 string file = File.ReadAllText(initFilePath);
 
-                App app = new App {
+                App app = new App
+                {
                     Name = dir.Name,
                     AppFilePath = dir.FullName,
                     AppRelativeFilePath = dir.FullName.Substring(dir.FullName.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal))
@@ -155,10 +156,24 @@ namespace Microsoft.Deployment.Common.AppLoad
         private void Parse(string file, App app)
         {
             JObject obj = JsonUtility.GetJsonObjectFromJsonString(file);
-            ;
+
+            List<string> rootTags = new List<string>();
+
             foreach (var child in obj.Root.Children())
             {
-                this.ParseTag(child, obj, app);
+                rootTags.Add(child.Path);
+            }
+
+            foreach (var child in obj.Root.Children())
+            {
+                //this.ParseTag(child, obj, app);
+
+                if (rootTags.Contains(child.Path))
+                {
+                    TagHandlerUtility.ParseTag(child, obj, app, this.allPages, this.Actions, this.AllTagHandlers.Where(t => t.Tag == child.Path));
+                }
+
+                TagHandlerUtility.ParseTag(child, obj, app, this.allPages, this.Actions, this.AllTagHandlers);
             }
         }
 

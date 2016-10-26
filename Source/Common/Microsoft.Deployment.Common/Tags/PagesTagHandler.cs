@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Helpers;
+using Microsoft.Deployment.Common.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,8 +16,9 @@ namespace Microsoft.Deployment.Common.Tags
     {
         public string Tag { get; } = "Pages";
 
-        public void ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
+        public TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
         {
+            List<UIPage> pagesToReturn = new List<UIPage>();
             foreach (var child in innerJson.Children())
             {
                 string pageName = child["name"].ToString(Formatting.None);
@@ -42,8 +44,10 @@ namespace Microsoft.Deployment.Common.Tags
                 string displayName = child["displayname"] != null ? child["displayname"].ToString(Formatting.None).Replace("\"", "") : pageName;
                 pageCopied.DisplayName = displayName;
                 pageCopied.Parameters = child;
-                app.Pages.Add(pageCopied);
+                pagesToReturn.Add(pageCopied);
             }
+
+            return new TagReturn() { Recurse = false, Output = pagesToReturn };
         }
     }
 }

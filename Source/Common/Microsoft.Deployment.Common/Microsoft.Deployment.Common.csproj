@@ -101,16 +101,20 @@
     <Compile Include="Helpers\StringEnumConverterLower.cs" />
     <Compile Include="Helpers\StringExtension.cs" />
     <Compile Include="Controller\Logger.cs" />
+    <Compile Include="Helpers\TagHandlerUtility.cs" />
     <Compile Include="Model\QDEFF.cs" />
     <Compile Include="Model\SqlCredentials.cs" />
+    <Compile Include="Model\TagReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tags\ActionsTagHandler.cs" />
+    <Compile Include="Tags\InstallTagHandler.cs" />
     <Compile Include="Tags\ITagHandler.cs" />
     <Compile Include="Tags\MsiTagHandler.cs" />
     <Compile Include="Tags\PagesTagHandler.cs" />
     <Compile Include="AppLoad\App.cs" />
     <Compile Include="AppLoad\AppFactory.cs" />
     <Compile Include="AppLoad\UIPage.cs" />
+    <Compile Include="Tags\UninstallTagHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorResources\EnglishErrorCodes.resx" />
