@@ -16,9 +16,9 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public string CurrentRoute => CurrentRoutePage + "-" + DeploymentIndex;
 
-        public Dictionary<string,Dictionary<string,JToken>> PublicDataStore { get; set; }
+        public Dictionary<string,Dictionary<string,JToken>> PublicDataStore { get; set; } = new Dictionary<string, Dictionary<string, JToken>>();
 
-        public Dictionary<string, Dictionary<string, JToken>> PrivateDataStore { get; set; }
+        public Dictionary<string, Dictionary<string, JToken>> PrivateDataStore { get; set; } = new Dictionary<string, Dictionary<string, JToken>>();
 
         // Removed for the time being to force usage of getfirst and getall
         //public JToken this[string route, string key]

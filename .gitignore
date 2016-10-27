@@ -20,4 +20,4 @@
 */.vs/**/*
 /Source/Site/Microsoft.Deployment.Site.Web/node_modules
 /Source/Site/Microsoft.Deployment.Site.Web/wwwroot/dist
-/Source
+*.coverage

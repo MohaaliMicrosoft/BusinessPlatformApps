@@ -14,7 +14,7 @@ namespace Microsoft.Deployment.Common.Test.DummyActions
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            return new ActionResponse(ActionStatus.Success, "Sucess"); 
+            return new ActionResponse(ActionStatus.Success, "Hello"); 
         }
     }
 }

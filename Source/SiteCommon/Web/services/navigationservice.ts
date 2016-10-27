@@ -9,6 +9,7 @@ export class NavigationService {
     MS: MainService;
     pages: any[] = [];
     appName: string = '';
+    isCurrentlyNavigating: boolean = false;
 
     constructor(MainService) {
         this.MS = MainService;
@@ -24,7 +25,7 @@ export class NavigationService {
                 this.MS.Router.addRoute({
                     route: this.pages[i].RoutePageName.toLowerCase(),
                     name: this.pages[i].PageName,
-                    moduleId: '.' + this.pages[0].Path.replace(/\\/g,"/"),
+                    moduleId: '.' + this.pages[i].Path.replace(/\\/g,"/"),
                     title: this.pages[i].DisplayName,
                     nav: true
                 });

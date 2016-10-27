@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.AppLoad;
+using Microsoft.Deployment.Common.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -68,7 +69,23 @@ namespace Microsoft.Deployment.Common.Test
 
             var jobject = JObject.FromObject(result);
             Assert.IsNotNull(jobject);
-            Assert.IsNotNull(jobject["Body"]?.ToString());
+            Assert.IsNotNull(jobject["Body"]["Value"].ToString());
+        }
+
+        [TestMethod]
+        public void TestActionWithCommonController()
+        {
+            AppFactory factory = new AppFactory();
+            CommonControllerModel model = new CommonControllerModel()
+            {
+                AppFactory = factory
+            };
+            CommonController commonController = new CommonController(model);
+            UserInfo info = new UserInfo();
+            info.ActionName = "Microsoft-MockAction";
+            info.AppName = "TestApp";
+            var result = commonController.ExecuteAction(info, new ActionRequest() {DataStore = new DataStore()}).Result;
+            Assert.IsTrue(result.Status == ActionStatus.Success);
         }
     }
 }

@@ -12,13 +12,14 @@ namespace Microsoft.Deployment.Common.ActionModel
         [JsonConverter(typeof(StringEnumConverterLower))]
         public ActionStatus Status { get; set; }
 
+        [JsonConverter(typeof(ResponseObjectConverter))]
         public object Body { get; private set; }
 
         public bool DoesResponseContainsCredentials { get; set; }
 
         public DataStore DataStore { get; set; }
 
-        public ActionResponseExceptionDetail ExceptionDetail { get; set; }
+        public ActionResponseExceptionDetail ExceptionDetail { get; set; } = new ActionResponseExceptionDetail();
 
         // Used to Serialize and Deserialize for testing purposes only
         public ActionResponse()

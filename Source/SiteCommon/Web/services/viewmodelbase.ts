@@ -15,8 +15,8 @@ export class ViewModelBase {
     showBack: boolean = true;
     showNext: boolean = true;
 
-    isCurrentlyNavigating: boolean = false;
-    actionsToExecuteOnNext:string[] = [];
+    
+    onNext: any[] = [];
     navigationMessage: string = '';
     useDefaultValidateButton: boolean = false;
 
@@ -42,11 +42,11 @@ export class ViewModelBase {
     }
 
     async NavigateNext() {
-        if (this.isCurrentlyNavigating) {
+        if (this.MS.NavigationService.isCurrentlyNavigating) {
             return;
         }
 
-        this.isCurrentlyNavigating = true;
+        this.MS.NavigationService.isCurrentlyNavigating = true;
         let isNavigationSuccessful: boolean = true;
 
         try {
@@ -77,15 +77,15 @@ export class ViewModelBase {
             this.NavigatedNext();
         }
 
-        this.isCurrentlyNavigating = false;
+        this.MS.NavigationService.isCurrentlyNavigating = false;
     }
 
     NavigateBack() {
-        if (this.isCurrentlyNavigating) {
+        if (this.MS.NavigationService.isCurrentlyNavigating) {
             return;
         }
 
-        this.isCurrentlyNavigating = true;
+        this.MS.NavigationService.isCurrentlyNavigating = true;
         let currentRoute = this.MS.NavigationService
             .getCurrentSelectedPage()
             .RoutePageName.toLowerCase();
@@ -107,7 +107,7 @@ export class ViewModelBase {
         this.MS.DeploymentService.hasError = false;
         this.MS.ErrorService.Clear();
 
-        this.isCurrentlyNavigating = false;
+        this.MS.NavigationService.isCurrentlyNavigating = false;
     }
 
     async activate(params, navigationInstruction) {
@@ -158,15 +158,17 @@ export class ViewModelBase {
     // Called when object has initiated navigating next
     async NavigatingNext(): Promise<boolean> {
 
-        for (let actionsToExecute in this.actionsToExecuteOnNext) {
-            var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
+        // Dont bother doing anything here
 
-            if (!response.isSuccess) {
-                return false;
-            } else {
-                // Store directly into Datastore here 
-            }
-        }
+        //for (let actionsToExecute in this.onNext) {
+
+        //    var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
+        //    if (!response.isSuccess) {
+        //        return false;
+        //    } else {
+        //        // Store directly into Datastore here 
+        //    }
+        //}
 
         return true;
     }
