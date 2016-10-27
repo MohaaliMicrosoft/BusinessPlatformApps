@@ -48,7 +48,7 @@ namespace Microsoft.Deployment.Common.Tags
 
                 // If does not exist or is not unique, throw an error;
                 if (string.IsNullOrEmpty(route) ||
-                    app.InstallPages.Any(p => p.RoutePageName == route) ||
+                    app.Pages.Any(p => p.RoutePageName == route) ||
                     app.UninstallPages.Any(p => p.RoutePageName == route))
                 {
                     throw new Exception("Page route name not defined or is duplicate in init.json (if routeName not defined, the default value is either display name or page name");

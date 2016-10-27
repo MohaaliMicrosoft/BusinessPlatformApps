@@ -26,12 +26,12 @@ namespace Microsoft.Deployment.Common.Tags
 
             foreach(var page in pages)
             {
-                app.InstallPages.Add(page.Output as UIPage);
+                app.Pages.Add(page.Output as UIPage);
             }
 
             foreach (var action in actions)
             {
-                app.InstallActions.Add(action.Output as DeploymentAction);
+                app.Actions.Add(action.Output as DeploymentAction);
             }
 
             return null;

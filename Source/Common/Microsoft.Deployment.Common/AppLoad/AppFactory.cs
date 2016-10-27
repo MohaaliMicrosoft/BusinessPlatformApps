@@ -173,8 +173,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                 {
                     foreach (var child in root.Children())
                     {
-                        var tag = this.AllTagHandlers.Where(t => t.Tag == root.Path.Split('.').Last()).FirstOrDefault();
-                        this.ParseTag(child, obj, app, null, tag.Recurse);
+                        this.ParseTag(child, obj, app, null, false);
                     }
                 }
             }
@@ -206,7 +205,7 @@ namespace Microsoft.Deployment.Common.AppLoad
             {
                 if (tag.Tag.Equals(obj.Path.Split('.').Last(), StringComparison.OrdinalIgnoreCase))
                 {
-                    if (obj.Children().First().Type == JTokenType.Array)
+                    if (obj.Children().Any() && obj.Children().First().Type == JTokenType.Array)
                     {
                         result = (List<TagReturn>)tag.ProcessTag(obj.Children().First(), root, this.allPages, this.Actions, app, tagReturn as List<TagReturn>);
                     }
