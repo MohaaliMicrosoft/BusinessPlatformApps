@@ -10,6 +10,8 @@ namespace Microsoft.Deployment.Common.Tags
     {
         string Tag { get; }
 
-        TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string,UIPage> allPages, Dictionary<string, IAction> allActions, App app);
+        bool Recurse { get; }
+
+        object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string,UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects = null);
     }
 }

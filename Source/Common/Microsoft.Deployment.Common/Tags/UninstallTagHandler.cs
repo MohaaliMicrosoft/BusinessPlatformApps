@@ -15,28 +15,26 @@ namespace Microsoft.Deployment.Common.Tags
     [Export(typeof(ITagHandler))]
     class UninstallTagHandler : ITagHandler
     {
+        public bool Recurse { get; } = true;
+
         public string Tag { get; } = "Uninstall";
 
-        public TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
+        public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
-            IEnumerable<ITagHandler> tags = new List<ITagHandler> { new PagesTagHandler(), new ActionsTagHandler() };
-            TagReturn output = new TagReturn();
+            var pages = childObjects.Where(c => c.Tag == "Pages");
+            var actions = childObjects.Where(c => c.Tag == "Actions");
 
-            foreach (var tag in tags)
+            foreach (var page in pages)
             {
-                output = TagHandlerUtility.ParseTag(innerJson.Children().FirstOrDefault(), app, allPages, allActions, new List<ITagHandler>() { tag }, null);
-
-                if (output.Output != null && output.Output.GetType() == typeof(List<UIPage>))
-                {
-                    app.UninstallPages.AddRange(output.Output as IEnumerable<UIPage>);
-                }
-                if (output.Output != null && output.Output.GetType() == typeof(IEnumerable<DeploymentAction>))
-                {
-                    app.UninstallActions.AddRange(output.Output as IEnumerable<DeploymentAction>);
-                }
+                app.UninstallPages.Add(page.Output as UIPage);
             }
 
-            return new TagReturn() { Output = null, Recurse = true };
+            foreach (var action in actions)
+            {
+                app.UninstallActions.Add(action.Output as DeploymentAction);
+            }
+
+            return null;
         }
     }
 }

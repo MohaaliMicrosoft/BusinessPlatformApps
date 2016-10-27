@@ -17,24 +17,24 @@ namespace Microsoft.Deployment.Common.Tags
     {
         public string Tag { get; } = "Install";
 
-        public TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
+        public bool Recurse { get; } = true;
+
+        public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
-            IEnumerable<ITagHandler> tags = new List<ITagHandler> { new PagesTagHandler(), new ActionsTagHandler() };
+            var pages = childObjects.Where(c => c.Tag == "Pages");
+            var actions = childObjects.Where(c => c.Tag == "Actions");
 
-            foreach (var child in innerJson.Children().FirstOrDefault().Children())
+            foreach(var page in pages)
             {
-                var output = TagHandlerUtility.ParseTag(child, app, allPages, allActions, tags, null);
-
-                if (output.Output != null && output.Output.GetType() == typeof(List<UIPage>))
-                {
-                    app.InstallPages.AddRange((output.Output as List<UIPage>));
-                }
-                if (output.Output != null && output.Output.GetType() == typeof(List<IAction>))
-                {
-                    app.InstallActions.AddRange(output.Output as List<DeploymentAction>);
-                }
+                app.InstallPages.Add(page.Output as UIPage);
             }
-            return new TagReturn() { Output = null, Recurse = true };
+
+            foreach (var action in actions)
+            {
+                app.InstallActions.Add(action.Output as DeploymentAction);
+            }
+
+            return null;
         }
     }
 }

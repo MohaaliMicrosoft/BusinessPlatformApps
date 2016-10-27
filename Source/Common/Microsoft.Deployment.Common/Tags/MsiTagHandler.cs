@@ -16,15 +16,17 @@ namespace Microsoft.Deployment.Common.Tags
     [Export(typeof(ITagHandler))]
     public class MsiTagHandler : ITagHandler
     {
+        public bool Recurse { get; } = false;
+
         public string Tag { get; } = "MSI";
 
-        public TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
+        public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
             var val = innerJson.Children()["Guid"].First();
 
             app.MsiGuid = Guid.Parse(val.ToString());
 
-            return new TagReturn() { Output = null, Recurse = false};
+            return null;
         }
     }
 }

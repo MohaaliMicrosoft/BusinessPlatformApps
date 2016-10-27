@@ -18,7 +18,7 @@
 
     "Actions": [
       {
-        "name": "TestAction"
+        "name": "Microsoft-MockAction"
       }
     ]
   },
@@ -38,6 +38,10 @@
         "displayname": "UNINSTAL DEPLOY"
       }
     ],
-    "Actions": []
+    "Actions": [
+      {
+        "name": "Microsoft-MockAction"
+      }
+    ]
   }
 }

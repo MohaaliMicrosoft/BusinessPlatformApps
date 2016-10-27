@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.Deployment.Common.Actions;
@@ -13,11 +14,12 @@ namespace Microsoft.Deployment.Common.Tags
     [Export(typeof(ITagHandler))]
     public class ActionsTagHandler : ITagHandler
     {
+        public bool Recurse { get; } = false;
         public string Tag { get; } = "Actions";
 
-        public TagReturn ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app)
+        public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
-            List<IAction> actionsToReturn = new List<IAction>();
+            List<TagReturn> actionsToReturn = new List<TagReturn>();
 
             foreach (var child in innerJson.Children())
             {
@@ -28,10 +30,10 @@ namespace Microsoft.Deployment.Common.Tags
 
                 string displayName = child["displayname"] != null ? child["displayname"].ToString(Formatting.None).Replace("\"", "") : actionName;
                 DeploymentAction deploymentAction = new DeploymentAction(displayName, action, child);
-                actionsToReturn.Add(deploymentAction as IAction);
+                actionsToReturn.Add(new TagReturn("Actions", deploymentAction));
             }
 
-            return new TagReturn() { Recurse = false, Output = actionsToReturn };
+            return actionsToReturn;
         }
     }
 }
