@@ -11,7 +11,7 @@ export class SearchTerms extends ViewModelBase {
     async OnValidate() {
         super.OnValidate();
 
-        var response = await this.MS.HttpService.executeAsync("Microsoft-GetSqlConnectionString", {});
+        var response = await this.MS.HttpService.executeAsync("Microsoft-Test", {});
        
 
         // Execute my test action here

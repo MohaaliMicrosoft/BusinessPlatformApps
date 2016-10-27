@@ -1,4 +1,5 @@
 ﻿import MainService from './mainservice';
+import { ActionRequest } from './actionrequest';
 import { ActionResponse } from './actionresponse';
 import { ActionStatus } from './actionresponse';
 import { HttpClient } from 'aurelia-http-client';
@@ -76,6 +77,8 @@ export class HttpService {
 
         this.MS.ErrorService.Clear();
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
+
+        var requestTemp: ActionRequest = new ActionRequest({}, this.MS.DataStore);
 
         try {
 
