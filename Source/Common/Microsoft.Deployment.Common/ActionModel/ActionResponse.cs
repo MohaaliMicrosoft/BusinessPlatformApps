@@ -17,6 +17,11 @@ namespace Microsoft.Deployment.Common.ActionModel
 
         public bool DoesResponseContainsCredentials { get; set; }
 
+        public bool IsSuccess
+        {
+            get { return this.Status != ActionStatus.Failure && this.Status != ActionStatus.FailureExpected; }
+        }
+
         public DataStore DataStore { get; set; }
 
         public ActionResponseExceptionDetail ExceptionDetail { get; set; } = new ActionResponseExceptionDetail();
