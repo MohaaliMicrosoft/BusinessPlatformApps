@@ -1,1 +1,5 @@
-test file
+---
+layout: index
+---
+
+Test
