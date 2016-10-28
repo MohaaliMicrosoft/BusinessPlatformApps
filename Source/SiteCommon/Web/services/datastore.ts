@@ -242,7 +242,7 @@ export class DataStore {
         }
 
         if (dataStoreType === DataStoreType.Public || dataStoreType === DataStoreType.Any) {
-            foundInPublic = DataStore.updateItemIntoDataStore(this.PrivateDataStore, route, key, value);
+            foundInPublic = DataStore.updateItemIntoDataStore(this.PublicDataStore, route, key, value);
         }
 
         if (!foundInPublic && !foundInPrivate) {

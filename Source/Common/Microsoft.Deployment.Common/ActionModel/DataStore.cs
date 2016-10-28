@@ -246,7 +246,7 @@ namespace Microsoft.Deployment.Common.ActionModel
 
             if (dataStoreType == DataStoreType.Public || dataStoreType == DataStoreType.Any)
             {
-                foundInPublic=  UpdateItemIntoDataStore(this.PrivateDataStore, route, key, value);
+                foundInPublic=  UpdateItemIntoDataStore(this.PublicDataStore, route, key, value);
             }
 
             if (!foundInPublic && !foundInPrivate)
