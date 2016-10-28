@@ -41,26 +41,14 @@ export class HttpService {
         this.command.close();
     }
 
-    async GetApp(name) {
+    async getApp(name) {
         var response = null;
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
         this.MS.LoggerService.TrackStartRequest('GetApp-name', uniqueId);
         if (this.isOnPremise) {
-            response = await this.command.gettemplate(this.MS.LoggerService.UserId,
-                this.MS.LoggerService.UserGenId, '', this.MS.LoggerService.OperationId,
-                uniqueId, name);
+            response = await this.command.gettemplate(this.MS.LoggerService.UserId,this.MS.LoggerService.UserGenId, '', this.MS.LoggerService.OperationId,uniqueId, name);
         } else {
-            response = await this.HttpClient.createRequest(`/App/${name}`)
-                .asGet()
-                .withBaseUrl(this.baseUrl)
-                .withHeader('Content-Type', 'application/json; charset=utf-8')
-                .withHeader('UserGeneratedId', this.MS.LoggerService.UserGenId)
-                .withHeader('OperationId', this.MS.LoggerService.OperationId)
-                .withHeader('SessionId', this.MS.LoggerService.appInsights.context.session.id)
-                .withHeader('UserId', this.MS.LoggerService.UserId)
-                .withHeader('TemplateName', name)
-                .withHeader('UniqueId', uniqueId)
-                .send();
+            response = await this.getRequestObject('get',`/App/${name}`).send();
             response = response.response;
         }
         if (!response) {
@@ -74,87 +62,51 @@ export class HttpService {
 
     async executeAsync(method, content): Promise<ActionResponse> {
         this.isServiceBusy = true;
+        var actionResponse: ActionResponse = null;
 
         this.MS.ErrorService.Clear();
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
 
-        var requestTemp: ActionRequest = new ActionRequest({}, this.MS.DataStore);
+        var actionRequest: ActionRequest = new ActionRequest(content, this.MS.DataStore);
 
         try {
-
-            // Add here
-            let commonRequestBody: any = {};
-
-            if (content) {
-                for (let prop in content) {
-                    commonRequestBody[prop] = content[prop];
-                }
-            }
-            commonRequestBody.uniqueId = uniqueId;
             this.MS.LoggerService.TrackStartRequest(method, uniqueId);
             var response = null;
+
             if (this.isOnPremise) {
-                response = await this.command.executeaction(this.MS.LoggerService.UserId,
-                    this.MS.LoggerService.UserGenId,
-                    '',
-                    this.MS.LoggerService.OperationId,
-                    uniqueId,
-                    this.MS.NavigationService.appName,
+                response = await this.command.executeaction(this.MS.LoggerService.UserId,this.MS.LoggerService.UserGenId,'',this.MS.LoggerService.OperationId,uniqueId,this.MS.NavigationService.appName,
                     method,
-                    JSON.stringify(commonRequestBody));
+                    JSON.stringify(actionRequest));
             } else {
-                response = await this.HttpClient.createRequest(`${this.baseUrl}/action/${method}`)
-                    .asPost()
-                    .withContent(JSON.stringify(commonRequestBody))
-                    .withHeader('Content-Type', 'application/json; charset=utf-8')
-                    .withHeader('UserGeneratedId', this.MS.LoggerService.UserGenId)
-                    .withHeader('OperationId', this.MS.LoggerService.OperationId)
-                    .withHeader('SessionId', this.MS.LoggerService.appInsights.context.session.id)
-                    .withHeader('UserId', this.MS.LoggerService.UserId)
-                    .withHeader('TemplateName', this.MS.NavigationService.appName)
-                    .withHeader('UniqueId', uniqueId)
-                    .send();
+                response = await this.getRequestObject('post', `/action/${method}`, actionRequest).send();
                 response = response.response;
-
             }
 
+            actionResponse = JSON.parse(response);
 
-            let actionResponse: ActionResponse = new ActionResponse(response);
-            this.MS.LoggerService.TrackEndRequest(method,
-                uniqueId,
-                actionResponse.responseStatus === ActionStatus.Failure);
+            this.MS.LoggerService.TrackEndRequest(method, uniqueId, !actionResponse.IsSuccess);
+            this.MS.DataStore.loadDataStoreFromJson(actionResponse.DataStore);
 
-            if (actionResponse.responseStatus === ActionStatus.Failure ||
-                actionResponse.responseStatus === ActionStatus.FailureExpected) {
-                if (!actionResponse.additionalDetailsErrorMessage) {
-                    this.MS.ErrorService
-                        .details = `Action Failed ${method} --- Error ID:(${this.MS.LoggerService.UserGenId})`;
-                } else {
-                    this.MS.ErrorService.details = `${actionResponse
-                        .additionalDetailsErrorMessage} --- Action Failed ${method} --- Error ID:(${
-                        this.MS.LoggerService.UserGenId})`;
-                }
 
-                this.MS.ErrorService.logLocation = actionResponse.logLocation;
-                this.MS.ErrorService.message = actionResponse.friendlyErrorMessage;
-                this.MS.ErrorService.showContactUs = actionResponse.responseStatus === ActionStatus.Failure;
+            // Handle any errors here
+            if (actionResponse.Status === ActionStatus.Failure || actionResponse.Status === ActionStatus.FailureExpected) {
+                this.MS.ErrorService.details = `${actionResponse.ExceptionDetail.AdditionalDetailsErrorMessage} --- Action Failed ${method} --- Error ID:(${this.MS.LoggerService.UserGenId})`;
+                this.MS.ErrorService.logLocation = actionResponse.ExceptionDetail.LogLocation;
+                this.MS.ErrorService.message = actionResponse.ExceptionDetail.FriendlyErrorMessage;
+                this.MS.ErrorService.showContactUs = actionResponse.Status === ActionStatus.Failure;
             } else {
-                this.MS.ErrorService.details = '';
-                this.MS.ErrorService.logLocation = '';
-                this.MS.ErrorService.message = '';
-                this.MS.ErrorService.showContactUs = false;
+                this.MS.ErrorService.Clear();
             }
-
-            return actionResponse;
+            
         } catch (e) {
-
+            this.MS.ErrorService.message = 'Unknown Error has occured';
+            this.MS.ErrorService.showContactUs = true;
+            throw e;
         } finally {
             this.isServiceBusy = false;
         }
 
-        this.MS.ErrorService.message = 'Unknown Error has occured';
-        this.MS.ErrorService.showContactUs = true;
-        return null;
+        return actionResponse;
     }
     
 
@@ -167,5 +119,30 @@ export class HttpService {
 
         body.ImpersonateAction = true;
         return this.executeAsync(method, content);
+    }
+
+    private getRequestObject(method: string, relatgiveUrl: string, body:any = {}) {
+
+        let uniqueId = this.MS.UtilityService.GetUniqueId(20);
+        var request = this.HttpClient.createRequest(relatgiveUrl);
+        request = request
+            .withBaseUrl(this.baseUrl)
+            .withHeader('Content-Type', 'application/json; charset=utf-8')
+            .withHeader('UserGeneratedId', this.MS.LoggerService.UserGenId)
+            .withHeader('OperationId', this.MS.LoggerService.OperationId)
+            .withHeader('SessionId', this.MS.LoggerService.appInsights.context.session.id)
+            .withHeader('UserId', this.MS.LoggerService.UserId)
+            .withHeader('TemplateName', this.MS.NavigationService.appName)
+            .withHeader('UniqueId', uniqueId);
+
+        if (method === 'get') {
+            request = request.asGet();
+        } else {
+            request = request
+                .asPost()
+                .withContent(JSON.stringify(body));
+        }
+
+        return request;
     }
 }

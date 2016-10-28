@@ -61,7 +61,7 @@ export default class MainService {
     // Uninstall or any other types go here
     async init() {
         if (this.appName && this.appName !== '') {
-            this.templateData = await this.HttpService.GetApp(this.appName);
+            this.templateData = await this.HttpService.getApp(this.appName);
             if (this.templateData && this.templateData['Pages']) {
                 this.NavigationService.init(this.templateData['Pages']);
             }

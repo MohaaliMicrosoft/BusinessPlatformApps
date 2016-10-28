@@ -32,21 +32,21 @@ export class DeploymentService {
             let response = await this.MS.HttpService.executeAsync(this.actions[i].OperationName, param);
             this.message = '';
 
-            this.MS.LoggerService.TrackDeploymentStepStoptEvent(i, this.actions[i].OperationName, response.isSuccess);
+            this.MS.LoggerService.TrackDeploymentStepStoptEvent(i, this.actions[i].OperationName, response.IsSuccess);
 
 
-            if (!(response.isSuccess)) {
+            if (!(response.IsSuccess)) {
                 this.hasError = true;
                 break;
             }
 
             //this.MS.DataService.AddObjectToDataStore('Deployment' + i, response.response);
-            if (response.responseStatus === ActionStatus.BatchWithState ||
-                response.responseStatus === ActionStatus.BatchNoState) {
+            if (response.Status === ActionStatus.BatchWithState ||
+                response.Status === ActionStatus.BatchNoState) {
                 i = i - 1; // Loop again but dont add parameter back
             }
 
-            lastActionStatus = response.responseStatus;
+            lastActionStatus = response.Status;
         }
 
         if (!this.hasError) {

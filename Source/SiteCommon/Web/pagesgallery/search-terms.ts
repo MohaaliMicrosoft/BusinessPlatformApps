@@ -1,4 +1,5 @@
 import { ViewModelBase } from '../services/viewmodelbase';
+import {ActionResponse} from "../services/actionresponse";
 
 export class SearchTerms extends ViewModelBase {
     searchQuery: string = '';
@@ -11,14 +12,12 @@ export class SearchTerms extends ViewModelBase {
     async OnValidate() {
         super.OnValidate();
 
-        var response = await this.MS.HttpService.executeAsync("Microsoft-Test", {});
-       
+        var body: any = {};
+        body.Hello = "Test";
+        body.hello2 = {};
+        body.hello2.hello = "Test2";
 
-        // Execute my test action here
-        //if (this.searchQuery.length > 0) {
-        //    this.isValidated = true;
-        //    this.showValidation = true;
-        //    this.MS.DataService.AddToDataStore('Customize', 'SearchQuery', this.searchQuery);
-        //}
+        var response: ActionResponse = await this.MS.HttpService.executeAsync("Microsoft-TestServiceAction", body);
+        console.log(response);
     }
 }

@@ -16,6 +16,47 @@ export class DataStore {
         this.loadDataStores();
     }
 
+    toJSON() {
+        var toConvert:any = {};
+        toConvert.PublicDataStore = this.PublicDataStore;
+        toConvert.PrivateDataStore = this.PrivateDataStore;
+        toConvert.CurrentRoutePage = this.CurrentRoutePage;
+        toConvert.DeploymentIndex = this.DeploymentIndex;
+        return toConvert;
+    }
+
+    loadDataStoreFromJson(value: any) {
+        if (!value) {
+            return;
+        }
+
+        let privateStore = value.PrivateDataStore;
+        let publicStore = value.PublicDataStore;
+
+        if (privateStore) {
+            this.PrivateDataStore = new Dictionary<Dictionary<any>>();
+            for (let route in privateStore) {
+                let valueToAdd: Dictionary<any> = new Dictionary<any>();
+                for (let key in privateStore[route]) {
+                    valueToAdd.add(key, privateStore[route][key]);
+                }
+                this.PrivateDataStore.add(route, valueToAdd);
+            }
+        }
+       
+        if (publicStore) {
+            this.PublicDataStore = new Dictionary<Dictionary<any>>();
+            for (let route in publicStore) {
+                let valueToAdd: Dictionary<any> = new Dictionary<any>();
+                for (let key in publicStore[route]) {
+                    valueToAdd.add(key, publicStore[route][key]);
+                }
+                this.PublicDataStore.add(route, valueToAdd);
+            }
+        }
+    }
+   
+
     public currentRoute(): string {
         return this.CurrentRoutePage + "-" + this.DeploymentIndex;
     }
@@ -32,6 +73,7 @@ export class DataStore {
             this.PrivateDataStore = new Dictionary<Dictionary<any>>();
         }
     }
+
 
     private cacheDataStores() {
         this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' PublicDataStore', this.PublicDataStore);
@@ -91,19 +133,17 @@ export class DataStore {
         this.cacheDataStores();
     }
 
-    public addObjectDataStore(value: any, dataStoreType: DataStoreType)
+    public addObjectToDataStore(value: any, dataStoreType: DataStoreType)
     {
-        let jsonParsed = JSON.parse(value);
-        for (let propertyName in jsonParsed) {
-            this.updateValue(dataStoreType, this.currentRoute(), propertyName, jsonParsed[propertyName]);
+        for (let propertyName in value) {
+            this.updateValue(dataStoreType, this.currentRoute(), propertyName, value[propertyName]);
         }
         this.cacheDataStores();
     }
 
-    public addObjectDataStoreWithCustomRoute(route:string, value: any, dataStoreType: DataStoreType) {
-        let jsonParsed = JSON.parse(value);
-        for (let propertyName in jsonParsed) {
-            this.updateValue(dataStoreType, route, propertyName, jsonParsed[propertyName]);
+    public addObjectToDataStoreWithCustomRoute(route:string, value: any, dataStoreType: DataStoreType) {
+        for (let propertyName in value) {
+            this.updateValue(dataStoreType, route, propertyName, value[propertyName]);
         }
         this.cacheDataStores();
     }
@@ -179,13 +219,13 @@ export class DataStore {
 
     private getValueWithRouteAndKey(dataStoreType: DataStoreType, route: string, key: string) {
         if (dataStoreType === DataStoreType.Private || dataStoreType === DataStoreType.Any) {
-            if (this.PrivateDataStore.containsKey(route) && this.PrivateDataStore.get(route).ContainsKey(key)) {
+            if (this.PrivateDataStore.containsKey(route) && this.PrivateDataStore.get(route).containsKey(key)) {
                 return this.PrivateDataStore.get(route).get(key);
             }
         }
 
         if (dataStoreType === DataStoreType.Public || dataStoreType === DataStoreType.Any) {
-            if (this.PublicDataStore.containsKey(route) && this.PublicDataStore.get(route).ContainsKey(key)) {
+            if (this.PublicDataStore.containsKey(route) && this.PublicDataStore.get(route).containsKey(key)) {
                 return this.PublicDataStore.get(route).get(key);
             }
         }
@@ -202,7 +242,7 @@ export class DataStore {
         }
 
         if (dataStoreType === DataStoreType.Public || dataStoreType === DataStoreType.Any) {
-            foundInPublic = DataStore.updateItemIntoDataStore(this.PrivateDataStore, route, key, value);
+            foundInPublic = DataStore.updateItemIntoDataStore(this.PublicDataStore, route, key, value);
         }
 
         if (!foundInPublic && !foundInPrivate) {
@@ -260,15 +300,15 @@ export class DataStore {
         key: string,
         value: any): void {
 
-        if (store.containsKey(route)) {
+        if (!store.containsKey(route)) {
             store.add(route, new Dictionary<any>());
         }
 
-        if (!store.get(route).ContainsKey(key)) {
+        if (!store.get(route).containsKey(key)) {
             store.get(route).add(key, value);
         }
 
-        store.get(route).modify(key);
+        store.get(route).modify(key, value);
     }
 }
 

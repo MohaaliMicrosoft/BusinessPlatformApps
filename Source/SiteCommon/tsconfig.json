@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "isolatedModules": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+    "compileOnSave": false,
+    "filesGlob": [
+        "./**/*.ts",
+        "!./core/es*.ts",
+        "!./**/*.d.ts"
+    ],
+    
+    "exclude": []
+}
