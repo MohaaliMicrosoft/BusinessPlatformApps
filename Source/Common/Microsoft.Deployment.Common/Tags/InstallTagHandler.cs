@@ -8,23 +8,31 @@ using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Deployment.Common.Model;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.Common.Tags
 {
     [Export(typeof(ITagHandler))]
-    public class MsiTagHandler : ITagHandler
+    class InstallTagHandler : ITagHandler
     {
-        public bool Recurse { get; } = false;
+        public string Tag { get; } = "Install";
 
-        public string Tag { get; } = "MSI";
+        public bool Recurse { get; } = true;
 
         public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
-            var val = innerJson.Children()["Guid"].First();
+            var pages = childObjects.Where(c => c.Tag == "Pages");
+            var actions = childObjects.Where(c => c.Tag == "Actions");
 
-            app.MsiGuid = Guid.Parse(val.ToString());
+            foreach(var page in pages)
+            {
+                app.Pages.Add(page.Output as UIPage);
+            }
+
+            foreach (var action in actions)
+            {
+                app.Actions.Add(action.Output as DeploymentAction);
+            }
 
             return null;
         }

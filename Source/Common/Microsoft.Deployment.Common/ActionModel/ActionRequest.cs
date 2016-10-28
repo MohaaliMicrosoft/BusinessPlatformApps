@@ -1,4 +1,5 @@
-﻿using Microsoft.Deployment.Common.Actions;
+﻿using System.Collections.Generic;
+using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Controller;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

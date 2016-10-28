@@ -21,3 +21,4 @@
 /Source/Site/Microsoft.Deployment.Site.Web/node_modules
 /Source/Site/Microsoft.Deployment.Site.Web/wwwroot/dist
 *.coverage
+/Source/Actions/.vs/config/applicationhost.config

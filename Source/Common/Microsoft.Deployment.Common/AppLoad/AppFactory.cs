@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
+using Microsoft.Deployment.Common.Model;
 using Microsoft.Deployment.Common.Tags;
 using Newtonsoft.Json.Linq;
 
@@ -55,7 +56,8 @@ namespace Microsoft.Deployment.Common.AppLoad
                 string initFilePath = Path.Combine(dir.FullName, Constants.InitFile);
                 string file = File.ReadAllText(initFilePath);
 
-                App app = new App {
+                App app = new App
+                {
                     Name = dir.Name,
                     AppFilePath = dir.FullName,
                     AppRelativeFilePath = dir.FullName.Substring(dir.FullName.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal))
@@ -86,7 +88,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                 Console.WriteLine(compositionException.ToString());
             }
 
-            this.AllActions.ToList().ForEach(p=> this.Actions.Add(p.OperationUniqueName, p));
+            this.AllActions.ToList().ForEach(p => this.Actions.Add(p.OperationUniqueName, p));
         }
 
         private void LoadAllPages()
@@ -122,7 +124,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                     {
                         PageName = file.Split('\\').Last(),
                         AppName = appName,
-                        Path = file.Replace(".html",""),
+                        Path = file.Replace(".html", ""),
                         UserGeneratedPath = userGeneratedPath
                     });
             }
@@ -157,37 +159,68 @@ namespace Microsoft.Deployment.Common.AppLoad
         private void Parse(string file, App app)
         {
             JObject obj = JsonUtility.GetJsonObjectFromJsonString(file);
-            ;
+
+            List<string> rootTags = new List<string>();
+
             foreach (var child in obj.Root.Children())
             {
-                this.ParseTag(child, obj, app);
+                rootTags.Add(child.Path);
+            }
+
+            foreach (var root in obj.Root.Children())
+            {
+                if (rootTags.Contains(root.Path.Split('.').Last()))
+                {
+                    foreach (var child in root.Children())
+                    {
+                        this.ParseTag(child, obj, app, null, false);
+                    }
+                }
             }
         }
 
-        private void ParseTag(JToken obj, JObject root, App app)
+        //get children under root
+        //get tag - and check if we need to recurse under him
+
+        private object ParseTag(JToken obj, JObject root, App app, List<TagReturn> tagReturn, bool recurse)
         {
+            List<TagReturn> result = new List<TagReturn>();
+            if (tagReturn == null)
+            {
+                tagReturn = new List<TagReturn>();
+            }
+
+            var handler = this.AllTagHandlers.Where(t => t.Tag == obj.Path.Split('.').Last()).First();
+            recurse = handler.Recurse;
+
+            if (recurse && obj.HasValues && obj.Children().First().Children().Any())
+            {
+                foreach (var child in obj.Children())
+                {
+                    result = (List<TagReturn>)this.ParseTag(child, root, app, tagReturn, recurse);
+                }
+            }
+
             foreach (var tag in this.AllTagHandlers)
             {
                 if (tag.Tag.Equals(obj.Path.Split('.').Last(), StringComparison.OrdinalIgnoreCase))
                 {
-                    if (obj.Children().First().Type == JTokenType.Array)
+                    if (obj.Children().Any() && obj.Children().First().Type == JTokenType.Array)
                     {
-                        tag.ProcessTag(obj.Children().First(), root, this.allPages, this.Actions, app);
+                        result = (List<TagReturn>)tag.ProcessTag(obj.Children().First(), root, this.allPages, this.Actions, app, tagReturn as List<TagReturn>);
                     }
                     else
                     {
-                        tag.ProcessTag(obj.Value<JToken>(), root, this.allPages, this.Actions, app);
+                        result = (List<TagReturn>)tag.ProcessTag(obj.Value<JToken>(), root, this.allPages, this.Actions, app, tagReturn as List<TagReturn>);
                     }
                 }
             }
 
-            if (obj.HasValues && obj.Children().First().Children().Any())
+            if (result != null)
             {
-                foreach (var child in obj.Children().First().Children())
-                {
-                    this.ParseTag(child, root, app);
-                }
+                tagReturn.AddRange(result);
             }
+            return tagReturn;
         }
     }
 }
