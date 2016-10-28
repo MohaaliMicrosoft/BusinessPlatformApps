@@ -2,6 +2,7 @@
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.Common.ActionModel
@@ -9,7 +10,7 @@ namespace Microsoft.Deployment.Common.ActionModel
     public class ActionResponse
     {
         // Status of the request
-        [JsonConverter(typeof(StringEnumConverterLower))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public ActionStatus Status { get; set; }
 
         [JsonConverter(typeof(ResponseObjectConverter))]

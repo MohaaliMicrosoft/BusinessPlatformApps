@@ -13,8 +13,6 @@ namespace Microsoft.Deployment.Site.Service.ServerActions
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            
-
             return new ActionResponse(ActionStatus.FailureExpected, "Test");
         }
     }
