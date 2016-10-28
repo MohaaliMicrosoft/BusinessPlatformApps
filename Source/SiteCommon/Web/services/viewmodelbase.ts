@@ -163,7 +163,7 @@ export class ViewModelBase {
         //for (let actionsToExecute in this.onNext) {
 
         //    var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
-        //    if (!response.isSuccess) {
+        //    if (!response.IsSuccess) {
         //        return false;
         //    } else {
         //        // Store directly into Datastore here 

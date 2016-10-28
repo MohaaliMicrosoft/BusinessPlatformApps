@@ -19,7 +19,7 @@
         return this.internalValues;
     }
 
-    get(key: string): any {
+    get(key: string): T {
         var index = this.internalKeys.indexOf(key);
         return this.internalValues[index];
     }
@@ -51,10 +51,11 @@
 
     remove(key: string): void {
         var index = this.internalKeys.indexOf(key, 0);
-        this.internalKeys.splice(index, 1);
-        this.internalValues.splice(index, 1);
+        if (index > -1) {
+            this.internalKeys.splice(index, 1);
+            this.internalValues.splice(index, 1);
+        }
     }
-
 
     containsKey(key: string): boolean {
         if (this.internalKeys.indexOf(key) === -1) {
