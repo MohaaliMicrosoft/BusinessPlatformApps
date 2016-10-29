@@ -67,9 +67,10 @@ export class HttpService {
         this.MS.ErrorService.Clear();
         let uniqueId = this.MS.UtilityService.GetUniqueId(20);
 
-        var actionRequest: ActionRequest = new ActionRequest(content, this.MS.DataStore);
+        
 
         try {
+            var actionRequest: ActionRequest = new ActionRequest(content, this.MS.DataStore);
             this.MS.LoggerService.TrackStartRequest(method, uniqueId);
             var response = null;
 

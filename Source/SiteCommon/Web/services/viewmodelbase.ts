@@ -1,4 +1,7 @@
 ﻿import MainService from './mainservice';
+import {JsonCustomParser} from "../base/JsonCustomParser";
+import {DataStoreType} from "./datastore";
+import {ActionResponse} from "./actionresponse";
 
 export class ViewModelBase {
     isActivated: boolean = false;
@@ -33,6 +36,7 @@ export class ViewModelBase {
           // Load the parameters from the additionalParamters section
         if (!this.parametersLoaded) {
             var parameters = this.MS.NavigationService.getCurrentSelectedPage().Parameters;
+
             for (let propertyName in parameters) {
                 this[propertyName] = parameters[propertyName];
             }
@@ -46,38 +50,37 @@ export class ViewModelBase {
             return;
         }
 
-        this.MS.NavigationService.isCurrentlyNavigating = true;
-        let isNavigationSuccessful: boolean = true;
-
         try {
+            this.MS.NavigationService.isCurrentlyNavigating = true;
+            let isNavigationSuccessful: boolean = true;
+
+
             isNavigationSuccessful = await this.NavigatingNext();
+            this.navigationMessage = '';
 
-        } catch (e) {
-            isNavigationSuccessful = false;
-        }
-        this.navigationMessage = '';
+            if (isNavigationSuccessful) {
+                let currentRoute = this.MS.NavigationService
+                    .getCurrentSelectedPage()
+                    .RoutePageName.toLowerCase();
+                let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
 
-        if (isNavigationSuccessful) {
-            let currentRoute = this.MS.NavigationService
-                .getCurrentSelectedPage()
-                .RoutePageName.toLowerCase();
-            let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
+                // Save view model state
+                if (viewmodelPreviousSave) {
+                    window.sessionStorage.removeItem(currentRoute);
+                }
 
-            // Save view model state
-            if (viewmodelPreviousSave) {
-                window.sessionStorage.removeItem(currentRoute);
+                this.viewmodel = null;
+                this.MS = null;
+                window.sessionStorage.setItem(currentRoute, JSON.stringify(this));
+                this.viewmodel = this;
+                this.MS = (<any>window).MainService;
+                this.MS.NavigationService.NavigateNext();
+                this.NavigatedNext();
             }
-
-            this.viewmodel = null;
-            this.MS = null;
-            window.sessionStorage.setItem(currentRoute, JSON.stringify(this));
-            this.viewmodel = this;
-            this.MS = (<any>window).MainService;
-            this.MS.NavigationService.NavigateNext();
-            this.NavigatedNext();
+        } catch (e) {
+        } finally {
+            this.MS.NavigationService.isCurrentlyNavigating = false;
         }
-
-        this.MS.NavigationService.isCurrentlyNavigating = false;
     }
 
     NavigateBack() {
@@ -157,18 +160,32 @@ export class ViewModelBase {
 
     // Called when object has initiated navigating next
     async NavigatingNext(): Promise<boolean> {
+        for (let index in this.onNext) {
+            let actionToExecute: any = this.onNext[index];
+            let name: string = actionToExecute.name;
+            if (name) {
+                var body = {};
+                for (let prop in actionToExecute) {
+                    var val: string = actionToExecute[prop];
+                    if (JsonCustomParser.isVariable(val)) {
+                        var codeToRun: string = JsonCustomParser.extractVariable(val);
+                        val = eval(codeToRun);
+                    }
+                    if (JsonCustomParser.isPermenantEntryIntoDataStore(actionToExecute[prop])) {
+                        this.MS.DataStore.addToDataStore(prop, val, DataStoreType.Private);
+                    } else {
+                        body[prop] = val;
+                    }
+                }
 
-        // Dont bother doing anything here
+                var response:ActionResponse = await this.MS.HttpService.executeAsync(name, body);
+                if (!response.IsSuccess) {
+                    return false;
+                }
 
-        //for (let actionsToExecute in this.onNext) {
-
-        //    var response = await this.MS.HttpService.executeAsync(actionsToExecute, {});
-        //    if (!response.IsSuccess) {
-        //        return false;
-        //    } else {
-        //        // Store directly into Datastore here 
-        //    }
-        //}
+                this.MS.DataStore.addObjectToDataStore(response,DataStoreType.Private);
+            }
+        }
 
         return true;
     }

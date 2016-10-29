@@ -9,9 +9,9 @@
         "subtitle": "Test Subtitle",
         "onNext": [
           {
-            "name": "Microsoft-TestServiceAction",
+            "name": "Microsoft-TestServiceActionFailed",
             "TargetSchema": "pbist",
-            "subtitle": "$(this.subtitle)"
+            "subtitle": "$(this.subtitle, Keep)"
           }
         ]
       },

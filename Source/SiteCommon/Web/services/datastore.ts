@@ -63,21 +63,18 @@ export class DataStore {
 
     /// This method will be used on startup from the main service
     private loadDataStores() {
-        this.PublicDataStore = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' PublicDataStore');
-        if (!this.PublicDataStore) {
+        let datastore:any = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' datastore');
+        if (!datastore) {
             this.PublicDataStore = new Dictionary<Dictionary<any>>();
-        }
-
-        this.PrivateDataStore = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' PrivateDataStore');
-        if (!this.PrivateDataStore) {
             this.PrivateDataStore = new Dictionary<Dictionary<any>>();
+        } else {
+            this.loadDataStoreFromJson(datastore);
         }
     }
 
 
     private cacheDataStores() {
-        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' PublicDataStore', this.PublicDataStore);
-        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' PrivateDataStore', this.PrivateDataStore);
+        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' datastore', this);
     }
 
 
