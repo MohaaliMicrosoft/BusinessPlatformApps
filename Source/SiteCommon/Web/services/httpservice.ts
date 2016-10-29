@@ -82,11 +82,13 @@ export class HttpService {
                 response = response.response;
             }
 
-            actionResponse = JSON.parse(response);
+            var responseParsed: any = JSON.parse(response);
+            actionResponse = responseParsed;
+            actionResponse.Status = ActionStatus[<string>responseParsed.Status];
 
             this.MS.LoggerService.TrackEndRequest(method, uniqueId, !actionResponse.IsSuccess);
             this.MS.DataStore.loadDataStoreFromJson(actionResponse.DataStore);
-
+            
 
             // Handle any errors here
             if (actionResponse.Status === ActionStatus.Failure || actionResponse.Status === ActionStatus.FailureExpected) {

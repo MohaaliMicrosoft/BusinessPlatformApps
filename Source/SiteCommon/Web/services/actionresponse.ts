@@ -7,8 +7,9 @@ export class ActionResponse {
     DoesResponseContainsCredentials: boolean;
     ExceptionDetail: ActionResponseExceptionDetail;
     IsSuccess: boolean;
-
 }
+
+
 
 export enum ActionStatus {
     Failure,

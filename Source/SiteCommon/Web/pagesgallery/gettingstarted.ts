@@ -20,7 +20,7 @@ export class Gettingstarted extends ViewModelBase {
     async OnLoaded() {
         if (this.isDownload && !this.isEvaluation) {
             let response = await this.MS.HttpService.executeAsync('Microsoft-GetMsiDownloadLink', {});
-            //this.downloadLink = response.response.value;
+            this.downloadLink = response.Body.value;
         }
     }
 }

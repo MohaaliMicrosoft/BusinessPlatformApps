@@ -6,15 +6,14 @@
         "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
         "displayname": "Getting Started",
         "templateName": "Test Property",
-        "subtitle": "Test Subtitle"
-        //"onNext": [
-        //  {
-        //    "name": "Microsoft-TestAction",
-        //    "TargetSchema": "pbist",
-        //    "SCCMUsername": "$(this.username)",
-        //    "SCCMPassword": "$(this.password)"
-        //  }
-        //]
+        "subtitle": "Test Subtitle",
+        "onNext": [
+          {
+            "name": "Microsoft-TestServiceAction",
+            "TargetSchema": "pbist",
+            "subtitle": "$(this.subtitle)"
+          }
+        ]
       },
 
       {
