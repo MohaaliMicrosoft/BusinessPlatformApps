@@ -20,24 +20,16 @@
           "Power BI Pro (to share the template with your organization)",
           "Twitter Account"
         ],
-
-        "pricing": [
-          "Processing 10K tweets a month will cost approximately $60",
-          "Processing 50K tweets a month will cost approximately $165",
-          "Processing 100K tweets a month will cost approximately $235"
-        ],
-
         "subtitle": "'Welcome to the public preview of the brand and campaign management solution template",
         "templateName": "'Brand and Campaign Management for Twitter"
       },
 
       // AzurePage
-
       {
         "name": "$SiteCommon$/pagesgallery/azure-login.html",
         "displayname": "Login",
         "pricingUrl":"Test",
-        "pricingCost": "Cost"
+        "pricingCost": "$('Cost',isSaved=true)"
       }
        
     ],
