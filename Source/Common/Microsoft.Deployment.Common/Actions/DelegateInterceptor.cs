@@ -14,8 +14,7 @@ namespace Microsoft.Deployment.Common.Actions
         public async Task<InterceptorStatus> CanInterceptAsync(IAction actionToExecute, ActionRequest request)
 #pragma warning restore 1998
         {
-            bool impersonationFound = request.DataStore.PublicDataStore.ContainsKey("ImpersonateAction") &&
-            request.DataStore.GetValue("ImpersonateAction") == "true";
+            bool impersonationFound = request.DataStore.KeyExists("ImpersonateAction") && request.DataStore.GetValue("ImpersonateAction") == "true";
 
             if (impersonationFound)
             {
