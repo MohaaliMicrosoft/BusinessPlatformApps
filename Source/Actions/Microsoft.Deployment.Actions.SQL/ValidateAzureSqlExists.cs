@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using System.Dynamic;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -10,28 +12,22 @@ namespace Microsoft.Deployment.Actions.SQL
     [Export(typeof(IAction))]
     public class ValidateAzureSqlExists : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][0]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
-          
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            
+            string server = request.DataStore.GetJson("SqlCredentials")["Server"].ToString();
 
-            string server = request.Message["SqlCredentials"].SelectToken("Server")?.ToString();
-            string user = request.Message["SqlCredentials"].SelectToken("User")?.ToString();
-            string password = request.Message["SqlCredentials"].SelectToken("Password")?.ToString();
-            var database = request.Message["SqlCredentials"].SelectToken("Database")?.ToString();
-
-
-            AzureHttpClient httpClient = new AzureHttpClient(token, subscription);
+            AzureHttpClient httpClient = new AzureHttpClient(azureToken, subscription);
             dynamic payload = new ExpandoObject();
             payload.name = server.Replace(".database.windows.net", "");
             payload.type = "Microsoft.Sql/servers";
 
 
-            HttpResponseMessage response = httpClient.ExecuteWithSubscriptionAsync(HttpMethod.Post, $"/providers/Microsoft.Sql/checkNameAvailability", "2014-04-01-preview", 
-                JsonUtility.GetJsonStringFromObject(payload)).Result;
-            string content = response.Content.ReadAsStringAsync().Result;
+            HttpResponseMessage response = await httpClient.ExecuteWithSubscriptionAsync(HttpMethod.Post, $"/providers/Microsoft.Sql/checkNameAvailability", "2014-04-01-preview", 
+                JsonUtility.GetJsonStringFromObject(payload));
+            string content = await response.Content.ReadAsStringAsync();
             var json =  JsonUtility.GetJObjectFromJsonString(content);
             bool isAvailable = json["available"].ToString().EqualsIgnoreCase("True");
             string reason = json["reason"].ToString();

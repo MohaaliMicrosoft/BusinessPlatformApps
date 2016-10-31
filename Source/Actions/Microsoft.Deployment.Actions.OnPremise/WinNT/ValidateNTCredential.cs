@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.DirectoryServices.AccountManagement;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -9,11 +11,11 @@ namespace Microsoft.Deployment.Actions.OnPremise.WinNT
     [Export(typeof(IAction))]
     public class ValidateNtCredential : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string domain = NTHelper.CleanDomain(request.Message["ImpersonationDomain"][0].ToString());
-            string user = NTHelper.CleanUsername(request.Message["ImpersonationUsername"][0].ToString());
-            string password = request.Message["ImpersonationPassword"][0].ToString();
+            string domain = NTHelper.CleanDomain(request.DataStore.GetValue("ImpersonationDomain"));
+            string user = NTHelper.CleanUsername(request.DataStore.GetValue("ImpersonationUsername"));
+            string password = request.DataStore.GetValue("ImpersonationPassword");
 
             bool isValid;
             ContextType context = Environment.MachineName.EqualsIgnoreCase(domain) ? ContextType.Machine : ContextType.Domain;

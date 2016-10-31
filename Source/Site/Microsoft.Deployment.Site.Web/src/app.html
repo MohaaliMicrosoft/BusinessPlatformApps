@@ -1,7 +1,7 @@
 <template>
     <!--requires-->
-    <require from="SiteCommon/Web/directives/navbar"></require>
-    <require from="SiteCommon/Web/directives/navbuttons"></require>
+    <require from="SiteCommon/Web/controls/navbar"></require>
+    <require from="SiteCommon/Web/controls/navbuttons"></require>
 
     <div class="st-header semiboldFont">
         <span class="powervisuals-glyph boxes-four boxes-stacked st-icon-ms"></span>
@@ -16,7 +16,7 @@
             <div class="st-section">
                 <div class="st-section-wrapper">
                     <router-view></router-view>
-                    <navbuttons if.bind="MS.NavigationService.templateName !== ''" viewmodel.bind="MS.NavigationService.currentViewModel"></navbuttons>
+                    <navbuttons if.bind="MS.NavigationService.appName !== ''" viewmodel.bind="MS.NavigationService.currentViewModel"></navbuttons>
                 </div>
                 <div class="st-footer">
                     <span><a class="st-footer-text" href="mailto:PBISolnTemplates@microsoft.com" target="_top">CONTACT US</a></span>

@@ -1,4 +1,7 @@
 ﻿
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
+
 namespace Microsoft.Deployment.Actions.AzureCustom.Arm
 {
     using System.ComponentModel.Composition;
@@ -10,17 +13,16 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Arm
     [Export(typeof(IAction))]
     public class GetArmDeploymentStatus : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][0]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
+            var deploymentName = request.DataStore.GetValue("DeploymentName");
 
-            var deploymentName = request.Message["DeploymentName"].ToString();
-
-            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, token);
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, azureToken);
             Microsoft.Azure.Management.Resources.ResourceManagementClient client = new ResourceManagementClient(creds);
-            var status = client.Deployments.GetAsync(resourceGroup, deploymentName, new CancellationToken()).Result;
+            var status = await client.Deployments.GetAsync(resourceGroup, deploymentName, new CancellationToken());
 
             return new ActionResponse(ActionStatus.Success, status);
         }

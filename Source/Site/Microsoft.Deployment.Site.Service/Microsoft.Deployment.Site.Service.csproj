@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -131,28 +132,28 @@
       <HintPath>..\packages\Microsoft.Deployment.Actions.ADF.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.ADF.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.AzureCustom">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6148.11914, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Common">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6148.11916, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Custom">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6148.11918, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.OnPremise">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6148.11920, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.SQL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6148.11921, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Common">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.1-dev57\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6148.11832, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
@@ -303,7 +304,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="packages.config" />
+    <Content Include="Global.asax" />
+    <Content Include="index.html" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\ai.1.0.0-build00159.js" />
     <Content Include="Scripts\ai.1.0.0-build00159.min.js" />
@@ -314,6 +319,7 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
+    <Content Include="Template.proj" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -332,10 +338,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\TelemetryController.cs" />
-    <Compile Include="Controllers\TemplatesController.cs" />
+    <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="OptionsHttpMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerActions\TestServiceAction.cs" />
+    <Compile Include="ServerActions\TestServiceActionFailed.cs" />
   </ItemGroup>
+  <Import Project="template.proj" />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
@@ -372,6 +384,10 @@
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

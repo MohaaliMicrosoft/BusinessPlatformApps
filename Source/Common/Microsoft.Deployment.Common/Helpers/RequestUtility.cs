@@ -1,15 +1,15 @@
 ﻿using System.Linq;
-
-using Microsoft.Deployment.Common.Actions;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 
 namespace Microsoft.Deployment.Common.Helpers
 {
     public class RequestUtility
     {
-        public static ActionResponse CallAction(ActionRequest request, string actionName)
+        public static async Task<ActionResponse> CallAction(ActionRequest request, string actionName)
         {
-            var action = request.AllActions.SingleOrDefault(p => p.OperationUniqueName.EqualsIgnoreCase(actionName));
-            return action.ExecuteAction(request);
+            var action = request.ControllerModel.AppFactory.Actions[actionName];
+            return await action.ExecuteActionAsync(request);
         }
     }
 }

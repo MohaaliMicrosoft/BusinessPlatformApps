@@ -5,7 +5,7 @@ var runSequence = require('run-sequence');
 var del = require('del');
 
 gulp.task('Copy-Build-App', function() {
-     return gulp.src('../../App/*/Web/**/*').pipe(gulp.dest('wwwroot/dist/App/'));
+     return gulp.src('../../Apps/**/Web/**/*').pipe(gulp.dest('wwwroot/dist/Apps/'));
 });
 
 gulp.task('Copy-Build-SiteCommon', function () {

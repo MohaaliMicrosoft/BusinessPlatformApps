@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json.Linq;
@@ -15,29 +17,21 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
     [Export(typeof(IActionRequestInterceptor))]
     public class RefreshAzureToken : BaseAction, IActionRequestInterceptor
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string refresh_token = request.Message["Token"][0]["refresh_token"].ToString();
-            string aadTenant = request.Message["AADTenant"][0].ToString();
+            string refreshToken = request.DataStore.GetJson("AzureToken")["refresh_token"].ToString();
+            string aadTenant = request.DataStore.GetValue("AADTenant");
 
             string tokenUrl = string.Format(Constants.AzureTokenUri, aadTenant);
             HttpClient client = new HttpClient();
 
-            var builder = GetTokenUri(refresh_token, Constants.AzureManagementCoreApi, request.WebsiteRootUrl);
+            var builder = GetTokenUri(refreshToken, Constants.AzureManagementCoreApi, request.Info.WebsiteRootUrl);
             var content = new StringContent(builder.ToString());
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-            var response = client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync().Result;
+            var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
 
-            builder = GetTokenUri(refresh_token, Constants.AzureManagementCoreApi, request.WebsiteRootUrl);
-            content = new StringContent(builder.ToString());
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-            var response2 = client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync().Result;
 
-            var primaryResponse = JsonUtility.GetJsonObjectFromJsonString(response);
-            var secondaryResponse = JsonUtility.GetJsonObjectFromJsonString(response2);
-            JArray array = new JArray() { primaryResponse, secondaryResponse };
-
-            var obj = new JObject(new JProperty("Token", array));
+            var obj = new JObject(new JProperty("AzureToken", response));
             return new ActionResponse(ActionStatus.Success, obj);
         }
 
@@ -61,21 +55,31 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
             return builder;
         }
 
-        public InterceptorStatus CanIntercept(IAction actionToExecute, ActionRequest request)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task<InterceptorStatus> CanInterceptAsync(IAction actionToExecute, ActionRequest request)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (request.Message.SelectToken("Token") != null)
-            {
-                return InterceptorStatus.Intercept;
-            }
+            //TODO - fix to ensure it only works when token has expired
+            //if (request.DataStore.GetValue("AzureToken") != null)
+            //{
+            //    return InterceptorStatus.Intercept;
+            //}
             return InterceptorStatus.Skipped;
         }
 
-        public ActionResponse Intercept(IAction actionToExecute, ActionRequest request)
+        /// <summary>
+        /// Update the token (first token found in the data store)
+        /// </summary>
+        /// <param name="actionToExecute"> the action to execute</param>
+        /// <param name="request">the request body</param>
+        /// <returns>the response of the intercept</returns>
+        public async Task<ActionResponse> InterceptAsync(IAction actionToExecute, ActionRequest request)
         {
-            var tokenRefreshResponse = ExecuteAction(request);
+            var tokenRefreshResponse = await this.ExecuteActionAsync(request);
             if (tokenRefreshResponse.Status == ActionStatus.Success)
             {
-                request.Message["Token"] = tokenRefreshResponse.Response["Token"];
+                var datastoreItem = request.DataStore.GetDataStoreItem("AzureToken");
+                request.DataStore.UpdateValue(datastoreItem.DataStoreType,datastoreItem.Route, datastoreItem.Key, JObject.FromObject(tokenRefreshResponse.Body)["AzureToken"]);
             }
 
             return tokenRefreshResponse;

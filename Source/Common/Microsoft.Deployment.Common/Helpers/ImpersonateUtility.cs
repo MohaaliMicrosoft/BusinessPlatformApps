@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 
@@ -49,13 +51,13 @@ namespace Microsoft.Deployment.Common.Helpers
 
         private const int LOGON32_PROVIDER_DEFAULT = 0;
 
-        public delegate ActionResponse ActionDelegate(ActionRequest request);
+        public delegate Task<ActionResponse> ActionDelegate(ActionRequest request);
 
-        public static ActionResponse Execute(ActionDelegate action, ActionRequest request)
+        public static async Task<ActionResponse> ExecuteAsync(ActionDelegate action, ActionRequest request)
         {
-            var domain = NTHelper.CleanDomain(request.Message["ImpersonationDomain"][0].ToString());
-            var userName = NTHelper.CleanUsername(request.Message["ImpersonationUsername"][0].ToString());
-            var password = request.Message["ImpersonationPassword"][0].ToString();
+            var domain = NTHelper.CleanDomain(request.DataStore.GetValue("ImpersonationDomain"));
+            var userName = NTHelper.CleanUsername(request.DataStore.GetValue("ImpersonationUsername"));
+            var password = request.DataStore.GetValue("ImpersonationPassword");
 
             string[] userDomain = WindowsIdentity.GetCurrent().Name.Split('\\');
             if (userDomain.Length != 2)
@@ -63,7 +65,7 @@ namespace Microsoft.Deployment.Common.Helpers
 
             // Just call the method if it's for the same user
             if (userDomain[0].EqualsIgnoreCase(domain) && userDomain[1].EqualsIgnoreCase(userName))
-                return action(request);
+                return await action(request);
 
             IntPtr logonToken = IntPtr.Zero;
             PROFILEINFO profileInfo = new PROFILEINFO();
@@ -88,7 +90,7 @@ namespace Microsoft.Deployment.Common.Helpers
                 {
                     using (WindowsImpersonationContext impersonatedUser = newWindowsIdentity.Impersonate())
                     {
-                        return  action(request);
+                        return await action(request);
                     }
                 }
             }

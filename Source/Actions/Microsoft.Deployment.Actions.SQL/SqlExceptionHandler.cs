@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -12,7 +14,7 @@ namespace Microsoft.Deployment.Actions.SQL
     {
         public Type ExceptionExpected { get; } = typeof(SqlException);
 
-        public ActionResponse HandleException(ActionRequest request,  Exception exception)
+        public async Task<ActionResponse> HandleExceptionAsync(ActionRequest request,  Exception exception)
         {
             SqlException sqlException = exception as SqlException;
             if (sqlException != null)

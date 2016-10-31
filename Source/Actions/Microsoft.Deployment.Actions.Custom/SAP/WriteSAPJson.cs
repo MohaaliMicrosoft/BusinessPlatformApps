@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Newtonsoft.Json;
@@ -11,16 +13,16 @@ namespace Microsoft.Deployment.Actions.Custom.SAP
     [Export(typeof(IAction))]
     public class WriteSAPJson : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var rowBatchSize = request.Message["RowBatchSize"][0].ToString();
-            var sapClient = request.Message["SapClient"][0].ToString();
-            var sapHost = request.Message["SapHost"][0].ToString();
-            var sapLanguage = request.Message["SapLanguage"][0].ToString();
-            var sapRouterString = request.Message["SapRouterString"][0].ToString();
-            var sapSystemId = request.Message["SapSystemId"][0].ToString();
-            var sapSystemNumber = request.Message["SapSystemNumber"][0].ToString();
-            var sqlConnectionString = request.Message["SqlConnectionString"][0].ToString();
+            var rowBatchSize = request.DataStore.GetValue("RowBatchSize");
+            var sapClient = request.DataStore.GetValue("SapClient");
+            var sapHost = request.DataStore.GetValue("SapHost");
+            var sapLanguage = request.DataStore.GetValue("SapLanguage");
+            var sapRouterString = request.DataStore.GetValue("SapRouterString");
+            var sapSystemId = request.DataStore.GetValue("SapSystemId");
+            var sapSystemNumber = request.DataStore.GetValue("SapSystemNumber");
+            var sqlConnectionString = request.DataStore.GetValue("SqlConnectionString");
 
             string jsonDestination = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), JSON_PATH);
             (new FileInfo(jsonDestination)).Directory.Create();
@@ -37,7 +39,7 @@ namespace Microsoft.Deployment.Actions.Custom.SAP
             );
 
             using (StreamWriter file = File.CreateText(jsonDestination))
-            {
+            { 
                 using (JsonTextWriter writer = new JsonTextWriter(file))
                 {
                     config.WriteTo(writer);

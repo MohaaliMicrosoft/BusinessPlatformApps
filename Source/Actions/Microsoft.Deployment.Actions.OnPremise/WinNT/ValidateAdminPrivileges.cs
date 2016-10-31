@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Security.Principal;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -9,7 +11,7 @@ namespace Microsoft.Deployment.Actions.OnPremise.WinNT
     [Export(typeof(IAction))]
     public class ValidateAdminPrivileges : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             WindowsPrincipal current = new WindowsPrincipal(WindowsIdentity.GetCurrent());
 

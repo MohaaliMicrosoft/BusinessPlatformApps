@@ -17,7 +17,6 @@ export class DeploymentService {
 
     async ExecuteActions() {
         this.MS.LoggerService.TrackDeploymentStart();
-
         let lastActionStatus: ActionStatus = ActionStatus.Success;
 
         for (let i = 0; i < this.actions.length && !this.hasError; i++) {
@@ -30,24 +29,24 @@ export class DeploymentService {
             }
 
             this.MS.LoggerService.TrackDeploymentStepStartEvent(i, this.actions[i].OperationName);
-            let response = this.UseImpersonation(i)
-                ? await this.MS.HttpService.ExecuteWithImpersonation(this.actions[i].OperationName, param)
-                : await this.MS.HttpService.Execute(this.actions[i].OperationName, param);
+            let response = await this.MS.HttpService.executeAsync(this.actions[i].OperationName, param);
             this.message = '';
-            this.MS.LoggerService.TrackDeploymentStepStoptEvent(i, this.actions[i].OperationName, response.isSuccess);
-            if (!(response.isSuccess)) {
+
+            this.MS.LoggerService.TrackDeploymentStepStoptEvent(i, this.actions[i].OperationName, response.IsSuccess);
+
+
+            if (!(response.IsSuccess)) {
                 this.hasError = true;
                 break;
             }
 
-            this.MS.DataService.AddObjectToDataStore('Deployment' + i, response.response);
-
-            if (response.responseStatus === ActionStatus.BatchWithState ||
-                response.responseStatus === ActionStatus.BatchNoState) {
+            //this.MS.DataService.AddObjectToDataStore('Deployment' + i, response.response);
+            if (response.Status === ActionStatus.BatchWithState ||
+                response.Status === ActionStatus.BatchNoState) {
                 i = i - 1; // Loop again but dont add parameter back
             }
 
-            lastActionStatus = response.responseStatus;
+            lastActionStatus = response.Status;
         }
 
         if (!this.hasError) {
@@ -60,10 +59,5 @@ export class DeploymentService {
 
         this.MS.LoggerService.TrackDeploymentEnd(!this.hasError);
         this.isFinished = true;
-    }
-
-    UseImpersonation(actionIndex: number): boolean {
-        return this.actions[actionIndex].AdditionalParameters['UseImpersonation'] &&
-            this.MS.UtilityService.UseImpersonation();
     }
 }

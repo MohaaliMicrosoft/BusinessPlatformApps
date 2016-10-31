@@ -4,6 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+
 namespace Microsoft.Deployment.Actions.AzureCustom.Arm
 {
     using System.ComponentModel.Composition;
@@ -11,28 +13,31 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Arm
     using Microsoft.Azure;
     using Microsoft.Azure.Management.Resources;
     using Microsoft.Azure.Management.Resources.Models;
+    using Microsoft.Deployment.Common.ActionModel;
     using Microsoft.Deployment.Common.Actions;
     using Microsoft.Deployment.Common.ErrorCode;
     using Microsoft.Deployment.Common.Helpers;
 
+
     [Export(typeof(IAction))]
     public class DeployArmTemplate : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][0]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
-            var deploymentName = request.Message["DeploymentName"][0].ToString();
+
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
+            var deploymentName = request.DataStore.GetValue("DeploymentName");
 
             // Read from file
-            var armTemplate = request.Message["ArmTemplate"][0].ToString();
-            var armParamTemplate = request.Message["ArmParamTemplate"][0].ToString();
+            var armTemplate = request.DataStore.GetValue("ArmTemplate");
+            var armParamTemplate = request.DataStore.GetValue("ArmParamTemplate");
 
-            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, token);
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription, azureToken);
             ResourceManagementClient client = new ResourceManagementClient(creds);
 
-            var deployment = new Microsoft.Azure.Management.Resources.Models.Deployment()
+            var deployment = new Deployment()
             {
                 Properties = new DeploymentPropertiesExtended()
                 {
@@ -41,7 +46,7 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Arm
                 }
             };
 
-            var validate = client.Deployments.ValidateAsync(resourceGroup, deploymentName, deployment, new CancellationToken()).Result;
+            var validate = await client.Deployments.ValidateAsync(resourceGroup, deploymentName, deployment, new CancellationToken());
             if (!validate.IsValid)
                 return new ActionResponse(
                     ActionStatus.Failure,
@@ -50,7 +55,8 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Arm
                     DefaultErrorCodes.DefaultErrorCode,
                     $"Azure:{validate.Error.Message} Details:{validate.Error.Details}");
 
-            var deploymentItem = client.Deployments.CreateOrUpdateAsync(resourceGroup, deploymentName, deployment, new CancellationToken()).Result;
+            var deploymentItem = await client.Deployments.CreateOrUpdateAsync(resourceGroup, deploymentName, deployment, new CancellationToken());
+
             return new ActionResponse(ActionStatus.Success, deploymentItem);
         }
     }

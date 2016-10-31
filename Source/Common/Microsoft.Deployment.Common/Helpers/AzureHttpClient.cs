@@ -30,7 +30,7 @@ namespace Microsoft.Deployment.Common.Helpers
             this.ResourceGroup = resourceGroup;
         }
 
-        public HttpResponseMessage ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod method, string relativeUrl, string apiVersion, string body, Dictionary<string, string> queryParameters)
+        public async Task<HttpResponseMessage> ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod method, string relativeUrl, string apiVersion, string body, Dictionary<string, string> queryParameters)
         {
             StringBuilder parameters = new StringBuilder();
             parameters.Append("?");
@@ -41,31 +41,31 @@ namespace Microsoft.Deployment.Common.Helpers
 
             string requestUri = Constants.AzureManagementApi + $"/subscriptions/{this.Subscription}/resourceGroups/{this.ResourceGroup}/{relativeUrl}{parameters.ToString()}api-version={apiVersion}";
 
-            return this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
+            return await this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
         }
 
-        public HttpResponseMessage ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod method, string relativeUrl, string apiVersion, string body)
+        public async Task<HttpResponseMessage> ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod method, string relativeUrl, string apiVersion, string body)
         {
             string requestUri = Constants.AzureManagementApi + $"/subscriptions/{this.Subscription}/resourceGroups/{this.ResourceGroup}/{relativeUrl}?api-version={apiVersion}";
 
-            return this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
+            return await this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
         }
 
-        public HttpResponseMessage ExecuteWithSubscriptionAsync(HttpMethod method, string relativeUrl, string apiVersion, string body)
+        public async Task<HttpResponseMessage> ExecuteWithSubscriptionAsync(HttpMethod method, string relativeUrl, string apiVersion, string body)
         {
             string requestUri = Constants.AzureManagementApi + $"/subscriptions/{this.Subscription}/{relativeUrl}?api-version={apiVersion}";
 
-            return this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
+            return await this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
         }
 
-        public HttpResponseMessage ExecuteWebsiteAsync(HttpMethod method, string site, string relativeUrl, string body)
+        public async Task<HttpResponseMessage> ExecuteWebsiteAsync(HttpMethod method, string site, string relativeUrl, string body)
         {
             string requestUri = $"https://{site}{Constants.AzureWebSite}{relativeUrl}";
 
-            return this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
+            return await this.ExecuteGenericRequestWithHeaderAsync(method, requestUri, body);
         }
 
-        public HttpResponseMessage ExecuteGenericRequestWithHeaderAsync(HttpMethod method, string url, string body)
+        public async Task<HttpResponseMessage> ExecuteGenericRequestWithHeaderAsync(HttpMethod method, string url, string body)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -79,11 +79,11 @@ namespace Microsoft.Deployment.Common.Helpers
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.Token);
 
-                return client.SendAsync(message).Result;
+                return await client.SendAsync(message);
             }
         }
 
-        public HttpResponseMessage ExecuteGenericRequestNoHeaderAsync(HttpMethod method, string url, string body)
+        public async Task<HttpResponseMessage> ExecuteGenericRequestNoHeaderAsync(HttpMethod method, string url, string body)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -95,7 +95,7 @@ namespace Microsoft.Deployment.Common.Helpers
                     message.Content = new StringContent(body, Encoding.UTF8, "application/json");
                 }
 
-                return client.SendAsync(message).Result;
+                return await client.SendAsync(message);
             }
         }
 

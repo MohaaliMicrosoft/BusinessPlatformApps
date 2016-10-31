@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 
@@ -8,24 +10,26 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     [Export(typeof(IAction))]
     public class RunLogicAppHistorical : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var token = request.Message["Token"][1]["access_token"].ToString();
-            var subscription = request.Message["SelectedSubscription"][0]["SubscriptionId"].ToString();
-            var resourceGroup = request.Message["SelectedResourceGroup"][0].ToString();
-            var LogicAppName = request.Message["LogicAppNameHistorical"][0].ToString();
+            var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
+            var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
+            var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
+            var location = request.DataStore.GetJson("SelectedLocation")["Name"].ToString();
 
-            AzureHttpClient client = new AzureHttpClient(token, subscription, resourceGroup);
+            var logicAppName = request.DataStore.GetValue("LogicAppNameHistorical");
 
-            var response = client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Post, $"providers/Microsoft.Logic/workflows/{LogicAppName}/triggers/manual/listCallbackUrl", "2016-06-01", string.Empty);
+            AzureHttpClient client = new AzureHttpClient(azureToken, subscription, resourceGroup);
+
+            var response = await client.ExecuteWithSubscriptionAndResourceGroupAsync(HttpMethod.Post, $"providers/Microsoft.Logic/workflows/{logicAppName}/triggers/manual/listCallbackUrl", "2016-06-01", string.Empty);
             if (!response.IsSuccessStatusCode)
             {
                 return new ActionResponse(ActionStatus.Failure);
             }
 
-            var postUrl = JsonUtility.GetJObjectFromJsonString(response.Content.ReadAsStringAsync().Result);
+            var postUrl = JsonUtility.GetJObjectFromJsonString(await response.Content.ReadAsStringAsync());
             
-            response = client.ExecuteGenericRequestNoHeaderAsync(HttpMethod.Post, postUrl["value"].ToString(), string.Empty);
+            response = await client.ExecuteGenericRequestNoHeaderAsync(HttpMethod.Post, postUrl["value"].ToString(), string.Empty);
 
             return new ActionResponse(ActionStatus.Success);
 

@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.Composition;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Helpers;
 
 namespace Microsoft.Deployment.Common.Actions
@@ -6,14 +9,15 @@ namespace Microsoft.Deployment.Common.Actions
     [Export(typeof(IActionRequestInterceptor))]
     public class DelegateInterceptor : IActionRequestInterceptor
     {
-        public InterceptorStatus CanIntercept(IAction actionToExecute, ActionRequest request)
+#pragma warning disable 1998
+        // Defined by the interface
+        public async Task<InterceptorStatus> CanInterceptAsync(IAction actionToExecute, ActionRequest request)
+#pragma warning restore 1998
         {
-            bool? impersonationFound = request.Message
-                .SelectToken("ImpersonateAction")?
-                .ToString()
-                .EqualsIgnoreCase("true");
+            bool impersonationFound = request.DataStore.PublicDataStore.ContainsKey("ImpersonateAction") &&
+            request.DataStore.GetValue("ImpersonateAction") == "true";
 
-            if (impersonationFound.HasValue && impersonationFound.Value)
+            if (impersonationFound)
             {
                 return InterceptorStatus.IntercepAndHandleAction;
             }
@@ -21,9 +25,9 @@ namespace Microsoft.Deployment.Common.Actions
             return InterceptorStatus.Skipped;
         }
 
-        public ActionResponse Intercept(IAction actionToExecute, ActionRequest request)
+        public async Task<ActionResponse> InterceptAsync(IAction actionToExecute, ActionRequest request)
         {
-            return ImpersonateUtility.Execute(actionToExecute.ExecuteAction, request);
+            return await ImpersonateUtility.ExecuteAsync(actionToExecute.ExecuteActionAsync, request);
         }
     }
 }

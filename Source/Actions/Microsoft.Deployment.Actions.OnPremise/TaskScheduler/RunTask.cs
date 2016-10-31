@@ -1,18 +1,21 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.Helpers;
 using Microsoft.Win32.TaskScheduler;
+using Task = Microsoft.Win32.TaskScheduler.Task;
 
 namespace Microsoft.Deployment.Actions.OnPremise.TaskScheduler
 {
     [Export(typeof(IAction))]
     public class RunTask : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            var taskName = request.Message["TaskName"][0].ToString();
+            var taskName = request.DataStore.GetValue("TaskName");
 
             TaskCollection tasks = null;
 

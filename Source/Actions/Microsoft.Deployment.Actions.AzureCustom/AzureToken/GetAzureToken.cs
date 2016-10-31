@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Deployment.Common;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Microsoft.Deployment.Common.ErrorCode;
 using Microsoft.Deployment.Common.Helpers;
@@ -15,29 +17,22 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
     [Export(typeof(IAction))]
     public class GetAzureToken : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string code = request.Message["code"].ToString();
-            var aadTenant = request.Message["AADTenant"][0].ToString();
+            string code = request.DataStore.GetValue("code");
+            var aadTenant = request.DataStore.GetValue("AADTenant");
 
             string tokenUrl = string.Format(Constants.AzureTokenUri, aadTenant);
             HttpClient client = new HttpClient();
 
-            var builder = GetTokenUri(code, Constants.AzureManagementCoreApi, request.WebsiteRootUrl);
+            var builder = GetTokenUri(code, Constants.AzureManagementCoreApi, request.Info.WebsiteRootUrl);
             var content = new StringContent(builder.ToString());
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-            var response = client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync().Result;
-
-            builder = GetTokenUri(code, Constants.AzureManagementCoreApi, request.WebsiteRootUrl);
-            content = new StringContent(builder.ToString());
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-            var response2 = client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync().Result;
+            var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
 
             var primaryResponse = JsonUtility.GetJsonObjectFromJsonString(response);
-            var secondaryResponse = JsonUtility.GetJsonObjectFromJsonString(response2);
-            JArray array = new JArray() { primaryResponse, secondaryResponse };
 
-            var obj = new JObject(new JProperty("Token", array));
+            var obj = new JObject(new JProperty("AzureToken", primaryResponse));
 
             if (primaryResponse.SelectToken("error") != null)
             {
@@ -46,7 +41,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
                     primaryResponse.SelectToken("error_description")?.ToString());
             }
 
-            return new ActionResponse(ActionStatus.Success, obj);
+            request.DataStore.AddToDataStore("AzureToken", primaryResponse);
+
+            return new ActionResponse(ActionStatus.Success, obj, true);
         }
 
         private static StringBuilder GetTokenUri(string code, string uri, string rootUrl)

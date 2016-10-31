@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.Actions;
 using Newtonsoft.Json.Linq;
 using Simple.CredentialManager;
@@ -10,10 +12,10 @@ namespace Microsoft.Deployment.Actions.OnPremise.CredentialManager
     [Export(typeof(IAction))]
     public class CredentialManagerRead : BaseAction
     {
-        public override ActionResponse ExecuteAction(ActionRequest request)
+        public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string targetName = request.Message["CredentialTarget"].ToString();
-            string userName = request.Message["CredentialUsername"].ToString();
+            string targetName = request.DataStore.GetValue("CredentialTarget");
+            string userName = request.DataStore.GetValue("CredentialUsername");
 
             Credential c = new Credential(userName)
             {
