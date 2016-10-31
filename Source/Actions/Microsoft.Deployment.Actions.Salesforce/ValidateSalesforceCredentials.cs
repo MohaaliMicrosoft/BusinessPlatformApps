@@ -15,10 +15,10 @@ namespace Microsoft.Deployment.Actions.Salesforce
 
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string sfUsername = request.DataStore.GetValue("Salesforce", "SalesforceUser");
-            string sfPassword = request.DataStore.GetValue("Salesforce", "SalesforcePassword");
-            string sfToken = request.DataStore.GetValue("Salesforce", "SalesforceToken");
-            string sfTestUrl = request.DataStore.GetValue("Salesforce", "SalesforceUrl");
+            string sfUsername = request.DataStore.GetValue("SalesforceUser");
+            string sfPassword = request.DataStore.GetValue("SalesforcePassword");
+            string sfToken = request.DataStore.GetValue("SalesforceToken");
+            string sfTestUrl = request.DataStore.GetValue("SalesforceUrl");
 
             SoapClient binding = new SoapClient("Soap");
             LoginResult lr;

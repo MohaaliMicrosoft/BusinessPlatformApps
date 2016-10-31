@@ -33,9 +33,9 @@ namespace Microsoft.Deployment.Actions.Salesforce
             string connString = request.DataStore.GetValue("SqlConnectionString");
             string schema = "dbo";
 
-            string sfUsername = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceUser")?.ToString();
-            string sfPassword = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforcePassword")?.ToString();
-            string sfToken = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceToken")?.ToString();
+            string sfUsername = request.DataStore.GetValue("SalesforceUser");
+            string sfPassword = request.DataStore.GetValue("SalesforcePassword");
+            string sfToken = request.DataStore.GetValue("SalesforceToken");
 
             string postDeploymentPipelineType = request.DataStore.GetValue("postDeploymentPipelineType");
             string pipelineFrequency = request.DataStore.GetValue("pipelineFrequency");

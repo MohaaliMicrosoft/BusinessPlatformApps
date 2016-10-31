@@ -50,7 +50,7 @@ export class ViewModelBase {
                 }
                 
 
-                this[propertyName] = parameters[propertyName];
+                this[propertyName] = val;
             }
         }
 
@@ -163,11 +163,12 @@ export class ViewModelBase {
     }
 
     // Called when object is validating user input
-    async OnValidate() {
+    async OnValidate(): Promise<boolean> {
         this.isValidated = false;
         this.showValidation = false;
         this.MS.ErrorService.Clear();
         this.isValidated = await this.executeActions(this.onValidate);
+        return 
     }
 
     // Called when object has initiated navigating next

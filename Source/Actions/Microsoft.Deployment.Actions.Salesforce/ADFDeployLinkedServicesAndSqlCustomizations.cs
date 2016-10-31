@@ -30,9 +30,9 @@ namespace Microsoft.Deployment.Actions.Salesforce
             var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
             var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
 
-            string sfUsername = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceUser")?.ToString();
-            string sfPassword = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforcePassword")?.ToString();
-            string sfToken = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceToken")?.ToString();
+            string sfUsername = request.DataStore.GetValue("SalesforceUser");
+            string sfPassword = request.DataStore.GetValue("SalesforcePassword");
+            string sfToken = request.DataStore.GetValue("SalesforceToken");
 
             string fullServerUrl = request.DataStore.GetValue("SalesforceBaseUrl");
             string connString = request.DataStore.GetValue("SqlConnectionString");
