@@ -26,10 +26,10 @@
                 continue;
             }
 
-            let param: string = resultSplit[index].trim();;
-            
-            let datastoreKeep: boolean = resultSplit[index] === 'Keep';
-            if (datastoreKeep) {
+            let param: string = resultSplit[index].trim().toLowerCase();
+            let paramSplit = param.split('=');
+
+            if (paramSplit[0] === 'issaved' && paramSplit[1] === 'true') {
                 return true;
             }
         }
