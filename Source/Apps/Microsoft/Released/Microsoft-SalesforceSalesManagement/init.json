@@ -1,0 +1,13 @@
+﻿{
+  "Install": {
+    "Pages": [
+      {
+        "name": "$SiteCommon$/pagesgallery/salesforce-login.html",
+        "displayname": "Salesforce",
+        "salesforceObjects": "$('Account')"
+      }
+
+    ],
+    "Actions": []
+  }
+}
