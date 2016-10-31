@@ -116,14 +116,21 @@ export class LoggerService {
     }
 
     GetPropertiesForTelemtry(): any {
+
         let obj: any = {};
-        obj.TemplateName = this.MS.NavigationService.appName;
+        obj.AppName = this.MS.NavigationService.appName;
         obj.FullUrl = window.location.href;
         obj.Origin = window.location.origin;
         obj.Host = window.location.host;
         obj.HostName = window.location.hostname;
         obj.PageNumber = this.MS.NavigationService.index;
-        obj.Page = JSON.stringify(this.MS.NavigationService.pages[this.MS.NavigationService.index]);
+        if (this.MS.NavigationService.getCurrentSelectedPage()) {
+            obj.Route = this.MS.NavigationService.getCurrentSelectedPage().RoutePageName;
+            obj.PageName = this.MS.NavigationService.getCurrentSelectedPage().PageName;
+            obj.PageModuleId = this.MS.NavigationService.getCurrentSelectedPage().Path.replace(/\\/g, "/");
+            obj.PageDisplayName = this.MS.NavigationService.getCurrentSelectedPage().DisplayName;
+        }
+     
         obj.RootSource = - this.MS.HttpService.isOnPremise ? 'MSI' : 'WEB';
         return obj;
     }

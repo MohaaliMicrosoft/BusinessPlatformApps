@@ -20,6 +20,8 @@ export class ViewModelBase {
 
     
     onNext: any[] = [];
+    onValidate: any[] = [];
+
     navigationMessage: string = '';
     useDefaultValidateButton: boolean = false;
 
@@ -151,17 +153,34 @@ export class ViewModelBase {
     }
 
     // Called when object is validating user input
-    OnValidate() {
+    async OnValidate() {
         this.isValidated = false;
         this.showValidation = false;
-        this.MS.ErrorService.details = '';
-        this.MS.ErrorService.message = '';
+        this.MS.ErrorService.Clear();
+        this.isValidated = await this.executeActions(this.onValidate);
     }
 
     // Called when object has initiated navigating next
     async NavigatingNext(): Promise<boolean> {
-        for (let index in this.onNext) {
-            let actionToExecute: any = this.onNext[index];
+        return await this.executeActions(this.onNext);
+    }
+
+    // Called when object has navigated next -only simple cleanup logic should go here
+    NavigatedNext() {
+    }
+
+    async attached() {
+        await this.OnLoaded();
+    }
+
+    // Called when the view model is attached completely
+    async OnLoaded() {
+
+    }
+
+    private async executeActions(actions:any[]):Promise<boolean> {
+        for (let index in actions) {
+            let actionToExecute: any = actions[index];
             let name: string = actionToExecute.name;
             if (name) {
                 var body = {};
@@ -178,28 +197,15 @@ export class ViewModelBase {
                     }
                 }
 
-                var response:ActionResponse = await this.MS.HttpService.executeAsync(name, body);
+                var response: ActionResponse = await this.MS.HttpService.executeAsync(name, body);
                 if (!response.IsSuccess) {
                     return false;
                 }
 
-                this.MS.DataStore.addObjectToDataStore(response,DataStoreType.Private);
+                this.MS.DataStore.addObjectToDataStore(response, DataStoreType.Private);
             }
         }
 
         return true;
-    }
-
-    // Called when object has navigated next -only simple cleanup logic should go here
-    NavigatedNext() {
-    }
-
-    async attached() {
-        await this.OnLoaded();
-    }
-
-    // Called when the view model is attached completely
-    async OnLoaded() {
-
     }
 }
