@@ -29,7 +29,6 @@ export class SqlServer extends ViewModelBase {
     username: string = '';
     validateWindowsCredentials: boolean = false;
     validationTextBox: string = '';
-
     useImpersonation:boolean = false;
 
     constructor() {
@@ -49,12 +48,8 @@ export class SqlServer extends ViewModelBase {
         this.isWindowsAuth = this.auth.toLowerCase() === 'windows';
     }
 
-    onDatabaseChange() {
-    }
 
-    async OnValidate() {
-        super.OnValidate();
-
+    async OnValidate():Promise<boolean> {
         this.sqlServer = this.sqlServer.toLowerCase();
         if (this.sqlInstance === 'ExistingSql') {
                 let databasesResponse = await this.GetDatabases();
@@ -83,9 +78,15 @@ export class SqlServer extends ViewModelBase {
                 }
             }
         }
+
+        return super.OnValidate();
+
     }
 
     async NavigatingNext(): Promise<boolean> {
+        if (!super.NavigatedNext()) {
+            return false;
+        }
         let body = this.GetBody(true);
         let response = null;
 
@@ -114,17 +115,6 @@ export class SqlServer extends ViewModelBase {
         return false;
     }
 
-    private async CreateDatabaseServer() {
-        this.navigationMessage = 'Creating a new SQL database, this may take 2-3 minutes';
-        let body = this.GetBody(true);
-        body['SqlCredentials']['Database'] = this.newSqlDatabase;
-        return await this.MS.HttpService.executeAsync('Microsoft-CreateAzureSql', body);
-    }
-
-    private async ValidateAzureServerIsAvailable() {
-        let body = this.GetBody(false);
-        return await this.MS.HttpService.executeAsync('Microsoft-ValidateAzureSqlExists', body);
-    }
 
     private async GetDatabases() {
         let body = this.GetBody(true);
@@ -137,7 +127,6 @@ export class SqlServer extends ViewModelBase {
     }
 
     private GetBody(withDatabase: boolean) {
-        super.OnValidate();
         let body = {};
         body['SqlCredentials'] = {};
         body['SqlCredentials']['Server'] = this.getSqlServer();
@@ -162,5 +151,17 @@ export class SqlServer extends ViewModelBase {
             sqlServer += this.azureSqlSuffix;
         }
         return sqlServer;
+    }
+
+    private async CreateDatabaseServer() {
+        this.navigationMessage = 'Creating a new SQL database, this may take 2-3 minutes';
+        let body = this.GetBody(true);
+        body['SqlCredentials']['Database'] = this.newSqlDatabase;
+        return await this.MS.HttpService.executeAsync('Microsoft-CreateAzureSql', body);
+    }
+
+    private async ValidateAzureServerIsAvailable() {
+        let body = this.GetBody(false);
+        return await this.MS.HttpService.executeAsync('Microsoft-ValidateAzureSqlExists', body);
     }
 }

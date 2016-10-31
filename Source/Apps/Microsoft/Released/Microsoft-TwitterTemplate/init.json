@@ -28,10 +28,24 @@
       {
         "name": "$SiteCommon$/pagesgallery/azure-login.html",
         "displayname": "Login",
-        "pricingUrl":"Test",
+        "pricingUrl": "Test",
         "pricingCost": "$('Cost',isSaved=true)"
+      },
+
+      // SQL Server Page
+      {
+        "name": "$SiteCommon$/pagesgallery/sql-server.html",
+        "displayname": "Source",
+        "isAzureSql": true,
+        "showAzureSql": false,
+        "showNewSqlOption": "true",
+        "subtitle": "Set up a connection to SQL so we can bring in your Twitter data.",
+        "title": "Connect to your SQL Database",
+        "sqlInstance": "NewSql",
+        "newSqlDatabase": "$(this.MS.UtilityService.GetUniqueId(10))"
       }
-       
+
+
     ],
     "Actions": []
   }
