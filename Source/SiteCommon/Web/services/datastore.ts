@@ -1,5 +1,6 @@
-﻿import {Dictionary} from '../base/Dictionary'
-import MainService from './mainservice';
+﻿import {Dictionary} from "../base/Dictionary"
+import MainService from "./mainservice";
+
 
 export class DataStore {
     PublicDataStore: Dictionary<Dictionary<any>>;
@@ -63,7 +64,7 @@ export class DataStore {
 
     /// This method will be used on startup from the main service
     private loadDataStores() {
-        let datastore:any = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + ' datastore');
+        let datastore:any = this.MS.UtilityService.GetItem(this.MS.NavigationService.appName + " datastore");
         if (!datastore) {
             this.PublicDataStore = new Dictionary<Dictionary<any>>();
             this.PrivateDataStore = new Dictionary<Dictionary<any>>();
@@ -74,7 +75,7 @@ export class DataStore {
 
 
     private cacheDataStores() {
-        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + ' datastore', this);
+        this.MS.UtilityService.SaveItem(this.MS.NavigationService.appName + " datastore", this);
     }
 
 

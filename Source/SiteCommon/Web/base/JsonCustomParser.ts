@@ -1,6 +1,7 @@
 ﻿export class JsonCustomParser {
 
-    public static isVariable(value: string):boolean {
+    public static isVariable(value: string): boolean {
+        value = value.toString();
         if (value.startsWith('$(') && value.endsWith(')')) {
             return true;
         } else {

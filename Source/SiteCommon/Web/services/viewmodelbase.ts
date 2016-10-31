@@ -1,7 +1,7 @@
 ﻿import MainService from './mainservice';
-import {JsonCustomParser} from "../base/JsonCustomParser";
-import {DataStoreType} from "./datastore";
-import {ActionResponse} from "./actionresponse";
+import { JsonCustomParser } from "../base/JsonCustomParser";
+import { DataStoreType } from "./datastore";
+import { ActionResponse } from "./actionresponse";
 
 export class ViewModelBase {
     isActivated: boolean = false;
@@ -18,7 +18,7 @@ export class ViewModelBase {
     showBack: boolean = true;
     showNext: boolean = true;
 
-    
+
     onNext: any[] = [];
     onValidate: any[] = [];
 
@@ -27,7 +27,7 @@ export class ViewModelBase {
 
     viewmodel: ViewModelBase;
 
-    parametersLoaded:boolean = false;
+    parametersLoaded: boolean = false;
 
     constructor() {
         this.MS = (<any>window).MainService;
@@ -35,11 +35,22 @@ export class ViewModelBase {
     }
 
     loadParameters() {
-          // Load the parameters from the additionalParamters section
+        // Load the parameters from the additionalParamters section
         if (!this.parametersLoaded) {
             var parameters = this.MS.NavigationService.getCurrentSelectedPage().Parameters;
 
             for (let propertyName in parameters) {
+                var val: string = parameters[propertyName];
+                if (JsonCustomParser.isVariable(val)) {
+                    var codeToRun: string = JsonCustomParser.extractVariable(val);
+                    val = eval(codeToRun);
+
+                    if (JsonCustomParser.isPermenantEntryIntoDataStore(parameters[propertyName])) {
+                        this.MS.DataStore.addToDataStore(propertyName, val, DataStoreType.Private);
+                    }
+                }
+                
+
                 this[propertyName] = parameters[propertyName];
             }
         }
@@ -138,7 +149,7 @@ export class ViewModelBase {
         this.isActivated = true;
     }
 
-   
+
     ///////////////////////////////////////////////////////////////////////
     /////////////////// Methods to override ///////////////////////////////
     ///////////////////////////////////////////////////////////////////////
@@ -178,7 +189,7 @@ export class ViewModelBase {
 
     }
 
-    private async executeActions(actions:any[]):Promise<boolean> {
+    private async executeActions(actions: any[]): Promise<boolean> {
         for (let index in actions) {
             let actionToExecute: any = actions[index];
             let name: string = actionToExecute.name;
@@ -189,12 +200,13 @@ export class ViewModelBase {
                     if (JsonCustomParser.isVariable(val)) {
                         var codeToRun: string = JsonCustomParser.extractVariable(val);
                         val = eval(codeToRun);
+
+                        if (JsonCustomParser.isPermenantEntryIntoDataStore(actionToExecute[prop])) {
+                            this.MS.DataStore.addToDataStore(prop, val, DataStoreType.Private);
+                        }
                     }
-                    if (JsonCustomParser.isPermenantEntryIntoDataStore(actionToExecute[prop])) {
-                        this.MS.DataStore.addToDataStore(prop, val, DataStoreType.Private);
-                    } else {
-                        body[prop] = val;
-                    }
+
+                    body[prop] = val;
                 }
 
                 var response: ActionResponse = await this.MS.HttpService.executeAsync(name, body);

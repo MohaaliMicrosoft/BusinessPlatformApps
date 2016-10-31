@@ -9,8 +9,6 @@ export class ActionResponse {
     IsSuccess: boolean;
 }
 
-
-
 export enum ActionStatus {
     Failure,
     FailureExpected,
@@ -25,5 +23,5 @@ export class ActionResponseExceptionDetail {
     FriendlyMessageCode: string;
     FriendlyErrorMessage: string;
     AdditionalDetailsErrorMessage: string;
-    ExceptionCaught:any;
+    ExceptionCaught: any;
 }

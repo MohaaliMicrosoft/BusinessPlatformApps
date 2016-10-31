@@ -53,6 +53,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Apps", "..\Apps\", "{46648F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Deployment.Site.Web.Tests", "Microsoft.Deployment.Site.Web.Tests\Microsoft.Deployment.Site.Web.Tests.csproj", "{42C76457-AD8D-49BC-B512-B803F22AF80B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B28BB976-B0FF-44CD-B042-125A3EA4545C} = {B28BB976-B0FF-44CD-B042-125A3EA4545C}
+		{398721F5-390C-434D-94DA-6AC281CC7318} = {398721F5-390C-434D-94DA-6AC281CC7318}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Site", "Site", "{F327489A-0309-4383-8C06-8F6C8E72CFD5}"
 EndProject
