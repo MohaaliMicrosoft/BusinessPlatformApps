@@ -60,7 +60,7 @@ export class HttpService {
         return responseParsed;
     }
 
-    async executeAsync(method, content): Promise<ActionResponse> {
+    async executeAsync(method, content = {}): Promise<ActionResponse> {
         this.isServiceBusy = true;
         var actionResponse: ActionResponse = null;
 

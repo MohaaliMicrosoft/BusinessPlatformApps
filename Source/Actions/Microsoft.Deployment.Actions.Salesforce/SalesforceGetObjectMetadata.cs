@@ -19,12 +19,11 @@ namespace Microsoft.Deployment.Actions.Salesforce
 
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
-            string sfUsername = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceUser")?.ToString();
-            string sfPassword = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforcePassword")?.ToString();
-            string sfToken = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceToken")?.ToString();
-            string objects = request.DataStore.GetJson("Salesforce")[0].SelectToken("ObjectTables")?.ToString();
-            string sfTestUrl = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceUrl")?.ToString();
-
+            string objects = request.DataStore.GetValue("ObjectTables");
+            string sfUsername = request.DataStore.GetValue("SalesforceUser");
+            string sfPassword = request.DataStore.GetValue("SalesforcePassword");
+            string sfToken = request.DataStore.GetValue("SalesforceToken");
+            string sfTestUrl = request.DataStore.GetValue("SalesforceUrl");
             List<string> sfObjects = objects.Split(',').ToList();
 
             SoapClient binding = new SoapClient("Soap");

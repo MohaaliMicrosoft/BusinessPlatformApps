@@ -103,6 +103,10 @@
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Azure.Management.DataFactories, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.Management.DataFactories.4.11.0\lib\net45\Microsoft.Azure.Management.DataFactories.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Azure.ResourceManager">
       <HintPath>..\packages\Microsoft.Azure.Management.Resources.2.20.1-preview\lib\net40\Microsoft.Azure.ResourceManager.dll</HintPath>
       <Private>True</Private>
@@ -148,12 +152,16 @@
       <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Deployment.Actions.Salesforce, Version=1.0.6148.38706, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Salesforce.1.3.3-dev201610312125\lib\net452\Microsoft.Deployment.Actions.Salesforce.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6148.11921, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6148.11832, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610310633\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6148.33666, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201610311840\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
@@ -310,6 +318,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
+    <Content Include="PartnerServiceWSDL\partner.xml" />
     <Content Include="Scripts\ai.1.0.0-build00159.js" />
     <Content Include="Scripts\ai.1.0.0-build00159.min.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />

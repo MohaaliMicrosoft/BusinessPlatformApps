@@ -38,9 +38,9 @@ namespace Microsoft.Deployment.Actions.Salesforce
             string pipelineEnd = request.DataStore.GetValue("pipelineEnd");
             string connString = request.DataStore.GetValue("SqlConnectionString");
 
-            string sfUsername = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceUser")?.ToString();
-            string sfPassword = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforcePassword")?.ToString();
-            string sfToken = request.DataStore.GetJson("Salesforce")[0].SelectToken("SalesforceToken")?.ToString();
+            string sfUsername = request.DataStore.GetValue("SalesforceUser");
+            string sfPassword = request.DataStore.GetValue("SalesforcePassword");
+            string sfToken = request.DataStore.GetValue("SalesforceToken");
 
             if (!string.IsNullOrWhiteSpace(postDeploymentPipelineType))
             {
