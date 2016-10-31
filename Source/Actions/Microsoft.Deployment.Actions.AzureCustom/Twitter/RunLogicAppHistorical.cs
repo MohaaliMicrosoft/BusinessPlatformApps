@@ -15,8 +15,6 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
             var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
             var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
-            var location = request.DataStore.GetJson("SelectedLocation")["Name"].ToString();
-
             var logicAppName = request.DataStore.GetValue("LogicAppNameHistorical");
 
             AzureHttpClient client = new AzureHttpClient(azureToken, subscription, resourceGroup);

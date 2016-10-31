@@ -13,6 +13,14 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
+
+            var cognitiveServiceKey = request.DataStore.GetValue("CognitiveServiceKey");
+
+            if (cognitiveServiceKey != string.Empty)
+            {
+                return new ActionResponse(ActionStatus.Success);
+            }
+
             var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
             var subscription = request.DataStore.GetJson("SelectedSubscription")["SubscriptionId"].ToString();
             var resourceGroup = request.DataStore.GetValue("SelectedResourceGroup");
@@ -26,9 +34,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             {
                 var subscriptionKeys = JsonUtility.GetJObjectFromJsonString(await response.Content.ReadAsStringAsync());
 
-                JObject cognitiveServiceKey = new JObject();
-                cognitiveServiceKey.Add("CognitiveServiceKey", subscriptionKeys["key1"].ToString());  
-                return new ActionResponse(ActionStatus.Success, cognitiveServiceKey, true);
+                JObject newCognitiveServiceKey = new JObject();
+                newCognitiveServiceKey.Add("CognitiveServiceKey", subscriptionKeys["key1"].ToString());  
+                return new ActionResponse(ActionStatus.Success, newCognitiveServiceKey, true);
             }
 
             return new ActionResponse(ActionStatus.Failure);
