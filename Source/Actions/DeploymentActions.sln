@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Deployment.Action
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Deployment.Actions.Test", "Microsoft.Deployment.Actions.Test\Microsoft.Deployment.Actions.Test.csproj", "{EDCB1AFD-917C-41B9-8748-F2769BA6DA16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Deployment.Actions.Salesforce", "Microsoft.Deployment.Actions.Salesforce\Microsoft.Deployment.Actions.Salesforce.csproj", "{5BD9A308-4DF3-4402-99B6-BDA9945E025E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,14 @@ Global
 		{EDCB1AFD-917C-41B9-8748-F2769BA6DA16}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDCB1AFD-917C-41B9-8748-F2769BA6DA16}.Release|x64.ActiveCfg = Release|Any CPU
 		{EDCB1AFD-917C-41B9-8748-F2769BA6DA16}.Release|x64.Build.0 = Release|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Debug|x64.Build.0 = Debug|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Release|x64.ActiveCfg = Release|Any CPU
+		{5BD9A308-4DF3-4402-99B6-BDA9945E025E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
