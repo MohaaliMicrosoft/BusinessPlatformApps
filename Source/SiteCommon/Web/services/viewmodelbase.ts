@@ -18,7 +18,6 @@ export class ViewModelBase {
     showBack: boolean = true;
     showNext: boolean = true;
 
-
     onNext: any[] = [];
     onValidate: any[] = [];
 
@@ -172,7 +171,7 @@ export class ViewModelBase {
     }
 
     // Called when object has initiated navigating next
-    async NavigatingNext(): Promise<boolean> {
+    public async NavigatingNext(): Promise<boolean> {
         return await this.executeActions(this.onNext);
     }
 

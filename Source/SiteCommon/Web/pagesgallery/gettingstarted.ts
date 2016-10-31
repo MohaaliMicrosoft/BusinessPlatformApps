@@ -1,4 +1,4 @@
-import { ViewModelBase } from '../services/viewmodelbase';
+import {ViewModelBase} from '../services/viewmodelbase';
 
 export class Gettingstarted extends ViewModelBase {
     architectureDiagram: string = '';

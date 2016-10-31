@@ -1,4 +1,4 @@
-import { ViewModelBase } from '../services/viewmodelbase';
+import {ViewModelBase} from '../services/viewmodelbase';
 import {ActionResponse} from "../services/actionresponse";
 import {DataStoreType} from "../services/datastore";
 

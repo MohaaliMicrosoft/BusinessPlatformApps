@@ -7,8 +7,8 @@ export class DataStore {
     PrivateDataStore: Dictionary<Dictionary<any>>;
     private MS: MainService;
 
-    CurrentRoutePage: string;
-    DeploymentIndex: string;
+    CurrentRoutePage: string ='';
+    DeploymentIndex: string = '';
 
     constructor(MainService) {
         this.MS = MainService;

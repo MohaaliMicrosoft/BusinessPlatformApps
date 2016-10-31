@@ -29,10 +29,16 @@
 
         "subtitle": "'Welcome to the public preview of the brand and campaign management solution template",
         "templateName": "'Brand and Campaign Management for Twitter"
-      }
+      },
 
       // AzurePage
 
+      {
+        "name": "$SiteCommon$/pagesgallery/azure-login.html",
+        "displayname": "Login",
+        "pricingUrl":"Test",
+        "pricingCost": "Cost"
+      }
        
     ],
     "Actions": []

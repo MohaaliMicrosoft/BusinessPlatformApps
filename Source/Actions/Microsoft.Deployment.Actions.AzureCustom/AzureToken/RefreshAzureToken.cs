@@ -30,16 +30,8 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var response = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
 
-            builder = GetTokenUri(refreshToken, Constants.AzureManagementCoreApi, request.Info.WebsiteRootUrl);
-            content = new StringContent(builder.ToString());
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-            var response2 = await client.PostAsync(new Uri(tokenUrl), content).Result.Content.ReadAsStringAsync();
 
-            var primaryResponse = JsonUtility.GetJsonObjectFromJsonString(response);
-            var secondaryResponse = JsonUtility.GetJsonObjectFromJsonString(response2);
-            JArray array = new JArray() { primaryResponse, secondaryResponse };
-
-            var obj = new JObject(new JProperty("AzureToken", array));
+            var obj = new JObject(new JProperty("AzureToken", response));
             return new ActionResponse(ActionStatus.Success, obj);
         }
 
@@ -67,10 +59,11 @@ namespace Microsoft.Deployment.Actions.AzureCustom.AzureToken
         public async Task<InterceptorStatus> CanInterceptAsync(IAction actionToExecute, ActionRequest request)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            if (request.DataStore.GetValue("AzureToken") != null)
-            {
-                return InterceptorStatus.Intercept;
-            }
+            //TODO - fix to ensure it only works when token has expired
+            //if (request.DataStore.GetValue("AzureToken") != null)
+            //{
+            //    return InterceptorStatus.Intercept;
+            //}
             return InterceptorStatus.Skipped;
         }
 

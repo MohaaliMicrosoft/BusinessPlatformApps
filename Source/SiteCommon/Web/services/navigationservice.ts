@@ -45,6 +45,7 @@ export class NavigationService {
         }
 
         this.UpdateIndex();
+        this.MS.DataStore.CurrentRoutePage = this.pages[this.index].RoutePageName.toLowerCase();
         this.MS.LoggerService.TrackPageView(this.GetCurrentRoutePath(), window.location.href);
     }
 
