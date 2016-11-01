@@ -7,6 +7,7 @@ using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.AppLoad;
 using Microsoft.Deployment.Common.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Deployment.Actions.Test.TestHelpers;
 
 namespace Microsoft.Deployment.Actions.Test
 {
@@ -25,6 +26,7 @@ namespace Microsoft.Deployment.Actions.Test
             };
 
             Controller = new CommonController(model);
+            Credential.Load();
         }
 
         public static ActionResponse ExecuteAction(string actionName, DataStore datastore)
@@ -33,6 +35,14 @@ namespace Microsoft.Deployment.Actions.Test
             info.ActionName = actionName;
             info.AppName = "TestApp";
             return Controller.ExecuteAction(info, new ActionRequest() { DataStore = datastore }).Result;
+        }
+
+        public static async  Task<ActionResponse> ExecuteActionAsync(string actionName, DataStore datastore)
+        {
+            UserInfo info = new UserInfo();
+            info.ActionName = actionName;
+            info.AppName = "TestApp";
+            return await Controller.ExecuteAction(info, new ActionRequest() { DataStore = datastore });
         }
     }
 }

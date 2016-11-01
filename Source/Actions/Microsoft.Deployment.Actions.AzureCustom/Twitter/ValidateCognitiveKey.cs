@@ -19,10 +19,11 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             Dictionary<string, string> customHeader = new Dictionary<string, string>();
             customHeader.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
 
+            HttpClientUtility client = new HttpClientUtility();
             //Request body
-            var result = client.ExecuteGenericAsync(HttpMethod.Post, $"https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment", "", "", customHeader).Result;
+            var result = await client.ExecuteGenericAsync(HttpMethod.Post, $"https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment", "", "", customHeader);
 
-            var responseString = result.Content.ReadAsStringAsync().Result;
+            var responseString = await result.Content.ReadAsStringAsync();
 
             if (result.StatusCode == HttpStatusCode.BadRequest)
             {
