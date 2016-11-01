@@ -18,7 +18,16 @@
         "showAllWriteableDatabases": false,
         "showLogInAsCurrentUser": true,
         "subtitle": "Set up a connection to your SCCM database so we can bring in your data. The credentials used to connect to SCCM will be used to create a scheduled task to pull data from SCCM.",
-        "validateWindowsCredentials": true
+        "validateWindowsCredentials": true,
+        "onNext": [
+          {
+            "name": "Microsoft-CheckSCCMVersion"
+          },
+          {
+            "name": "Microsoft-ValidatePowerShellVersion"
+          }
+        ]
+
       },
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
