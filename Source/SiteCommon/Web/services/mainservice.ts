@@ -12,9 +12,6 @@ import { DataStore } from './DataStore';
 import { UtilityService } from './utilityservice';
 import { ViewModelBase } from './viewmodelbase';
 
-
-
-
 @inject(Router, HttpClient)
 export default class MainService {
     Router: Router;
@@ -28,14 +25,16 @@ export default class MainService {
     UtilityService: UtilityService;
     appName: string;
     templateData: any;
+    experienceType: string;
 
     constructor(router, httpClient) {
         this.Router = router;
         (<any>window).MainService = this;
-    
+
 
         this.UtilityService = new UtilityService(this);
         this.appName = this.UtilityService.GetQueryParameter('name');
+        this.experienceType = this.UtilityService.GetQueryParameter('type');
 
         this.ErrorService = new ErrorService(this);
         this.HttpService = new HttpService(this, httpClient);
@@ -57,16 +56,35 @@ export default class MainService {
         this.DeploymentService = new DeploymentService(this);
     }
 
-
     // Uninstall or any other types go here
     async init() {
+        let pages: string = '';
+        let actions: string = '';
+
         if (this.appName && this.appName !== '') {
-            this.templateData = await this.HttpService.getApp(this.appName);
-            if (this.templateData && this.templateData['Pages']) {
-                this.NavigationService.init(this.templateData['Pages']);
+            switch (this.experienceType) {
+                case "install": {
+                    pages = 'Pages';
+                    actions = 'Actions';
+                    break;
+                }
+                case "uninstall": {
+                    pages = 'UninstallPages';
+                    actions = 'UninstallActions';
+                    break;
+                }
+                default: {
+                    pages = 'Pages';
+                    actions = 'Actions';
+                    break;
+                }
             }
-            if (this.templateData && this.templateData['Actions']) {
-                this.DeploymentService.actions = this.templateData['Actions'];
+            this.templateData = await this.HttpService.getApp(this.appName);
+            if (this.templateData && this.templateData[pages]) {
+                this.NavigationService.init(this.templateData[pages]);
+            }
+            if (this.templateData && this.templateData[actions]) {
+                this.DeploymentService.actions = this.templateData[actions];
             }
         }
     }
