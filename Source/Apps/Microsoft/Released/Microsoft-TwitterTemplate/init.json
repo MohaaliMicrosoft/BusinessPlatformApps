@@ -27,7 +27,7 @@
       // AzurePage
       {
         "name": "$SiteCommon$/pagesgallery/azure-login.html",
-        "displayname": "Login",
+        "displayname": "Logingibberish",
         "pricingUrl": "Test",
         "pricingCost": "$('Cost',isSaved=true)"
       },
