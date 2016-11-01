@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Deployment.Common.Helpers
 {
@@ -12,7 +9,7 @@ namespace Microsoft.Deployment.Common.Helpers
         private readonly List<Tuple<string,string,string>> parameter = new List<Tuple<string, string, string>>();
         public void AddParameter(string name, string type, string value)
         {
-            this.parameter.Add(new Tuple<string, string, string>(name,type,value));
+            this.parameter.Add(new Tuple<string, string, string>(name, type, value));
         }
 
         public void AddStringParam(string name, string value)
