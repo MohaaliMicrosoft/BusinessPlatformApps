@@ -21,7 +21,7 @@ export class Salesforce extends ViewModelBase {
         this.showValidation = false;
     }
 
-    async OnValidate() {
+    async OnValidate(): Promise<boolean> {
         super.OnValidate();
 
         this.MS.DataStore.addToDataStore('SalesfoceUser', this.salesforceUsername, DataStoreType.Public);
@@ -40,5 +40,7 @@ export class Salesforce extends ViewModelBase {
         else {
             this.MS.ErrorService.message = salesforceLoginResponse.Body.Message;
         }
+
+        return super.OnValidate();
     }
 }

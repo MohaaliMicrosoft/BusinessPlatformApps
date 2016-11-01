@@ -42,9 +42,14 @@
         "subtitle": "Set up a connection to SQL so we can bring in your Twitter data.",
         "title": "Connect to your SQL Database",
         "sqlInstance": "NewSql",
-        "newSqlDatabase": "$(this.MS.UtilityService.GetUniqueId(10))"
-      }
+        "newSqlDatabase": "twitterDB"
+      },
 
+      // Twitter Page
+      {
+        "name": "$SiteCommon$/pagesgallery/twitter.html",
+        "displayname": "Twitter"
+      }
 
     ],
     "Actions": []
