@@ -14,6 +14,8 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
+            HttpClientUtility client = new HttpClientUtility();
+
             //Request headers
             var subscriptionKey = request.DataStore.GetValue("subscriptionKey");
             Dictionary<string, string> customHeader = new Dictionary<string, string>();
