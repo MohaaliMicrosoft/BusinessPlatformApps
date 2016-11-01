@@ -87,7 +87,7 @@
 
     <div class="st-float" if.bind="showDatabases">
         <p>Database:</p>
-        <select class="btn btn-default dropdown-toggle st-input" change.delegate="onDatabaseChange()" disabled.bind="MS.HttpService.isServiceBusy" value.bind="database">
+        <select class="btn btn-default dropdown-toggle st-input" disabled.bind="MS.HttpService.isServiceBusy" value.bind="database">
             <option repeat.for="database of databases">${database}</option>
         </select>
     </div>
