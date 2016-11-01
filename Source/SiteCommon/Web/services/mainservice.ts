@@ -12,6 +12,8 @@ import { DataStore } from './DataStore';
 import { UtilityService } from './utilityservice';
 import { ViewModelBase } from './viewmodelbase';
 
+import {ExperienceType} from '../base/ExperienceType';
+
 @inject(Router, HttpClient)
 export default class MainService {
     Router: Router;
@@ -63,12 +65,12 @@ export default class MainService {
 
         if (this.appName && this.appName !== '') {
             switch (this.experienceType) {
-                case "install": {
+                case ExperienceType.install: {
                     pages = 'Pages';
                     actions = 'Actions';
                     break;
                 }
-                case "uninstall": {
+                case ExperienceType.uninstall: {
                     pages = 'UninstallPages';
                     actions = 'UninstallActions';
                     break;
