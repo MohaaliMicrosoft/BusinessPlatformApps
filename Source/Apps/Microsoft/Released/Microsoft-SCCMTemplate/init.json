@@ -9,6 +9,22 @@
         ]
       },
       {
+        "name": "$SiteCommon$/pagesgallery/sql-server.html",
+        "displayname": "Source",
+        "hideSqlAuth": true,
+        "title": "Connect to your System Center Configuration Manager database",
+        "showAzureSql": false,
+        "loginAsCurrentUser": true,
+        "showAllWriteableDatabases": false,
+        "showLogInAsCurrentUser": true,
+        "subtitle": "Set up a connection to your SCCM database so we can bring in your data. The credentials used to connect to SCCM will be used to create a scheduled task to pull data from SCCM.",
+        "validateWindowsCredentials": true
+      },
+      {
+        "name": "$SiteCommon$/pagesgallery/sql-server.html",
+        "displayname": "Target"
+      },
+      {
         "name": "customize.html",
         "displayname": "Customize"
       },
@@ -17,6 +33,50 @@
         "displayname": "Progress"
       }
     ],
-    "Actions": []
+    "Actions": [
+      {
+        "name": "Microsoft-DeploySQLScripts",
+        "displayname": "Deploy DB scripts",
+        "SqlServerIndex": "1",
+        "SqlScriptsFolder": "Service/Database/NoETL",
+        "UseImpersonation": true
+      },
+      {
+        "name": "Microsoft-SetConfigValueInSql",
+        "displayname": "Deploy DB Configuration",
+        "SqlServerIndex": "1",
+        "SqlConfigTable": "pbist_sccm.[configuration]",
+        "UseImpersonation": true
+      },
+      {
+        "name": "Microsoft-InstallSqlTools",
+        "displayname": "Installing SQL Tools"
+      },
+      {
+        "name": "Microsoft-InstallSCCM",
+        "displayname": "Copy dataload scripts"
+      },
+      {
+        "name": "Microsoft-AddLogonAsBatchPermission",
+        "displayname": "Grant permission for logging as a batch job"
+      },
+      {
+        "name": "Microsoft-CreateTask",
+        "displayname": "Schedule tasks"
+      },
+      {
+        "name": "Microsoft-RunTask",
+        "displayname": "Run tasks"
+      },
+      {
+        "name": "Microsoft-GetDataPullStatus",
+        "displayname": "Waiting for data to come in",
+        "FinishedActionName": "Microsoft-GetTaskStatus",
+        "IsWaiting": true,
+        "SqlServerIndex": 1,
+        "TargetSchema": "pbist_sccm",
+        "UseImpersonation": true
+      }
+    ]
   }
 }
