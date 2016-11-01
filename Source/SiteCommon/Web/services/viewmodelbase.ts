@@ -64,13 +64,13 @@ export class ViewModelBase {
 
         try {
             this.MS.NavigationService.isCurrentlyNavigating = true;
-            let isNavigationSuccessful: boolean = true;
 
+            let isNavigationSuccessful: boolean =  await this.NavigatingNext();
+            let isExtendedNavigationSuccessful: boolean = await this.executeActions(this.onNext);
 
-            isNavigationSuccessful = await this.NavigatingNext();
             this.navigationMessage = '';
 
-            if (isNavigationSuccessful) {
+            if (isNavigationSuccessful && isExtendedNavigationSuccessful) {
                 let currentRoute = this.MS.NavigationService
                     .getCurrentSelectedPage()
                     .RoutePageName.toLowerCase();
@@ -129,9 +129,11 @@ export class ViewModelBase {
         this.isActivated = false;
         this.loadParameters();
         this.MS.UtilityService.SaveItem('Current Page', window.location.href);
-        var nav = navigationInstruction.route.replace('/', '');
-        this.MS.UtilityService.SaveItem('Current Route', nav);
-        let viewmodelPreviousSave = window.sessionStorage.getItem(nav);
+        let currentRoute = this.MS.NavigationService
+            .getCurrentSelectedPage()
+            .RoutePageName.toLowerCase();
+        this.MS.UtilityService.SaveItem('Current Route', currentRoute);
+        let viewmodelPreviousSave = window.sessionStorage.getItem(currentRoute);
 
         // Restore view model state
         if (viewmodelPreviousSave) {
@@ -168,16 +170,16 @@ export class ViewModelBase {
         this.showValidation = false;
         this.MS.ErrorService.Clear();
         this.isValidated = await this.executeActions(this.onValidate);
-        return 
+        return true;
     }
 
     // Called when object has initiated navigating next
     public async NavigatingNext(): Promise<boolean> {
-        return await this.executeActions(this.onNext);
+        return true;
     }
 
     // Called when object has navigated next -only simple cleanup logic should go here
-    NavigatedNext() {
+    NavigatedNext():void {
     }
 
     async attached() {

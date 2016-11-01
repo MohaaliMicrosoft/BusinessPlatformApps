@@ -1,6 +1,7 @@
 ﻿import { ViewModelBase } from '../services/viewmodelbase';
 import {DataStoreType} from "../services/datastore";
 import {SqlServerValidationUtility} from "../base/sql-server-validation-utility";
+import {ActionResponse} from "../services/actionresponse";
 
 export class SqlServer extends ViewModelBase {
     subtitle: string = '';
@@ -84,11 +85,9 @@ export class SqlServer extends ViewModelBase {
     }
 
     async NavigatingNext(): Promise<boolean> {
-        if (!super.NavigatedNext()) {
-            return false;
-        }
+
         let body = this.GetBody(true);
-        let response = null;
+        let response:ActionResponse = null;
 
         if (this.sqlInstance === 'ExistingSql') {
             response = await this.MS.HttpService.executeAsync('Microsoft-GetSqlConnectionString', body);
@@ -96,8 +95,8 @@ export class SqlServer extends ViewModelBase {
             response = await this.CreateDatabaseServer();
         }
 
-        if (response.isSuccess) {
-            this.MS.DataStore.addToDataStore('SqlConnectionString', response.response.value, DataStoreType.Private);
+        if (response.IsSuccess) {
+            this.MS.DataStore.addToDataStore('SqlConnectionString', response.Body.value, DataStoreType.Private);
             this.MS.DataStore.addToDataStore('Server', this.getSqlServer(), DataStoreType.Public);
             this.MS.DataStore.addToDataStore('Database', this.database, DataStoreType.Public);
             this.MS.DataStore.addToDataStore('Username', this.username, DataStoreType.Public);

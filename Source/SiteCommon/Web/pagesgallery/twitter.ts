@@ -1,5 +1,6 @@
 import {DataStoreType} from "../services/datastore";
 import {ViewModelBase} from "../services/viewmodelbase";
+import {ActionStatus} from "../services/actionresponse";
 
 export class Twitter extends ViewModelBase {
     authToken: any = {};
@@ -32,8 +33,11 @@ export class Twitter extends ViewModelBase {
             } else {
                 // Do existing flow
                 let response = await this.MS.HttpService.executeAsync('Microsoft-VerifyTwitterConnection', {});
-                this.MS.ErrorService.details = '';
-                this.MS.ErrorService.message = '';
+                if (response.Status === ActionStatus.FailureExpected) {
+                    this.MS.ErrorService.details = '';
+                    this.MS.ErrorService.message = '';
+                }
+
                 if (response.IsSuccess) {
                     this.isAuthenticated = true;
                     this.isValidated = true;
