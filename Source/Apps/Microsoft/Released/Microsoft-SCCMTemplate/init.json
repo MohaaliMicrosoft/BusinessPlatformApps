@@ -4,9 +4,22 @@
       {
         "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
         "displayname": "Getting Started",
-        "architectureDiagram": "dist/Apps/Microsoft/Released/Microsoft-SalesforceSalesManagement/Web/Images/SCCMArchitectureDiagram.png",
+        "architectureDiagram": "dist/Apps/Microsoft/Released/Microsoft-SCCMTemplate/Web/Images/SCCMArchitectureDiagram.png",
         "features": [
-        ]
+          "Scalable and extensible solution with minimum set up and maintenance considerations",
+          "Data pulled daily from System Center Configuration Manager & stored in a SQL database optimized for reporting",
+          "Import data into powerful Power BI reports"
+        ],
+        "requirements": [
+          "System Center 2012 Configuration Manager R2 SP1 or later. Read access to System Center Configuration Manager database is required.",
+          "Destination database: Azure SQL database or SQL Server database (SQL Server 2008 R2 SP3 or later).",
+          "For the machine where the installation is run, Microsoft .NET Framework 4.5 or later & PowerShell version 3.0 or later.",
+          "Power BI Desktop (latest version)",
+          "Power BI Pro (to share the template with your organization)"
+        ],
+        "subtitle": "Welcome to the public preview of the System Center Configuration Manager solution template.",
+        "templateName": "System Center Configuration Manager",
+        "isDownload": "$('!this.MS.HttpService.isOnPremise')"
       },
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
@@ -27,11 +40,21 @@
             "name": "Microsoft-ValidatePowerShellVersion"
           }
         ]
-
       },
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
-        "displayname": "Target"
+        "displayname": "Target",
+        "checkSqlVersion": true,
+        "title": "Connect to your SQL database",
+        "subtitle": "Set up a connection to your target database so we can transfer your data.",
+        "onNext": [
+          {
+            "name": "Microsoft-CredentialManagerWrite",
+            "CredentialTarget": "$('pbi_sccm', isSaved=true)",
+            "CredentialUsername": "$(this.username, isSaved=true)",
+            "CredentialPassword": "$(this.password, isSaved=true)"
+          }
+        ]
       },
       {
         "name": "customize.html",
