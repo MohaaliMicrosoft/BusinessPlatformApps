@@ -1,0 +1,22 @@
+﻿{
+  "Install": {
+    "Pages": [
+      {
+        "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
+        "displayname": "Getting Started",
+        "architectureDiagram": "dist/Apps/Microsoft/Released/Microsoft-SalesforceSalesManagement/Web/Images/SCCMArchitectureDiagram.png",
+        "features": [
+        ]
+      },
+      {
+        "name": "customize.html",
+        "displayname": "Customize"
+      },
+      {
+        "name": "$SiteCommon$/pagesgallery/progress.html",
+        "displayname": "Progress"
+      }
+    ],
+    "Actions": []
+  }
+}
