@@ -1,0 +1,117 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageaccountname": {
+      "defaultValue": "ststorage",
+      "type": "string"
+    },
+
+    "sitename": {
+      "defaultValue": "stsite",
+      "type": "string"
+    },
+
+    "AppHostingPlan": {
+      "defaultValue": "STHostingPlan",
+      "type": "string"
+    },
+
+    "resourcegroup": {
+      "defaultValue": "stresourcegroup",
+      "type": "string"
+    },
+
+    "subscription": {
+      "defaultValue": "idrequired",
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y",
+        "capacity": 0
+      },
+      "kind": "",
+      "name": "[parameters('AppHostingPlan')]",
+      "apiVersion": "2015-08-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('AppHostingPlan')]",
+        "numberOfWorkers": 0
+      },
+      "resources": [ ],
+      "dependsOn": [ ]
+    },
+
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "Storage",
+      "name": "[parameters('storageaccountname')]",
+      "apiVersion": "2016-01-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "kind": "functionapp",
+      "name": "[parameters('sitename')]",
+      "apiVersion": "2015-08-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('sitename')]",
+        "hostNames": [
+          "[concat(parameters('sitename'), '.azurewebsites.net')]"
+        ],
+        "enabledHostNames": [
+          "[concat(parameters('sitename'), '.azurewebsites.net')]",
+          "[concat(parameters('sitename'), 'scm.azurewebsites.net')]"
+        ],
+        "hostNameSslStates": [
+          {
+            "name": "[concat('TweetProcessingFunction',parameters('sitename'),'.azurewebsites.net')]",
+            "sslState": 0,
+            "thumbprint": null,
+            "ipBasedSslState": 0
+          },
+          {
+            "name": "[concat('TweetProcessingFunction',parameters('sitename'),'.scm.azurewebsites.net')]",
+            "sslState": 0,
+            "thumbprint": null,
+            "ipBasedSslState": 0
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('AppHostingPlan'))]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-03-01",
+          "name": "appsettings",
+          "type": "config",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('sitename'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageaccountname'))]"
+          ],
+          "properties": {
+            "FUNCTIONS_EXTENSION_VERSION": "latest"
+          }
+        }
+      ],
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms',parameters('AppHostingPlan'))]"
+      ]
+    }
+  ]
+}

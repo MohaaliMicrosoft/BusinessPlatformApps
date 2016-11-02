@@ -9,9 +9,9 @@ namespace Microsoft.Deployment.Common.ActionModel
 {
     public class ActionResponseExceptionDetail
     {
-        public Exception ExceptionCaught;
+        public Exception ExceptionCaught = null;
 
-        public string LogLocation { get; set; }
+        public string LogLocation { get; set; }  = string.Empty;
 
         public string FriendlyMessageCode { get; set; }
 
@@ -28,6 +28,6 @@ namespace Microsoft.Deployment.Common.ActionModel
             }
         }
 
-        public string AdditionalDetailsErrorMessage { get; set; }
+        public string AdditionalDetailsErrorMessage { get; set; } = string.Empty;
     }
 }

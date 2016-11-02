@@ -11,6 +11,7 @@ export class ProgressViewModel extends ViewModelBase {
     sqlServerIndex: number = 0;
     successMessage: string = 'All done! You can now download your Power BI report and start exploring your data.';
     targetSchema: string = '';
+    filename: string = 'report.pbix';
 
     constructor() {
         super();
@@ -19,17 +20,20 @@ export class ProgressViewModel extends ViewModelBase {
 
     async OnLoaded() {
         if (!this.MS.DeploymentService.isFinished) {
-            await this.MS.DeploymentService.ExecuteActions();
+            // Run all actions
+            let sucess:boolean = await this.MS.DeploymentService.ExecuteActions();
+
+            if (!sucess) {
+                return;
+            }
 
             let body: any = {};
-            body.FileName = 'SalesManagementReport.pbix';
-            this.showCounts = true;
+            body.FileName = this.filename;
             let response = await this.MS.HttpService.executeAsync('Microsoft-WranglePBI', body);
             if (response.IsSuccess) {
                 this.pbixDownloadLink = response.Body.value;
                 this.isPbixReady = true;
             }
-
             this.QueryRecordCounts();
         }
     }
@@ -44,14 +48,12 @@ export class ProgressViewModel extends ViewModelBase {
 
             let response = await this.MS.HttpService.executeAsync('Microsoft-GetDataPullStatus', body);
             if (response.IsSuccess) {
-                this.isDataPullDone = response.Body.isFinished;
                 this.recordCounts = response.Body.status;
                 this.sliceStatus = response.Body.slices;
-                if (this.finishedActionName !== '') {
-                    this.QueryRecordCounts();
-                } else {
-                    this.isDataPullDone = true;
-                }
+
+                this.isDataPullDone = response.Body.isFinished;
+                this.QueryRecordCounts();
+
             } else {
                 this.MS.DeploymentService.hasError = true;
             }
