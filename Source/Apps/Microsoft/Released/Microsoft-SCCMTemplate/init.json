@@ -19,7 +19,7 @@
         ],
         "subtitle": "Welcome to the public preview of the System Center Configuration Manager solution template.",
         "templateName": "System Center Configuration Manager",
-        "isDownload": "$('!this.MS.HttpService.isOnPremise')"
+        "isDownload": "$(!this.MS.HttpService.isOnPremise)"
       },
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
