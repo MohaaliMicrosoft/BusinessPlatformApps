@@ -136,32 +136,32 @@
       <HintPath>..\packages\Microsoft.Deployment.Actions.ADF.1.3.1-dev72\lib\net452\Microsoft.Deployment.Actions.ADF.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6149.5129, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.AzureCustom, Version=1.0.6150.42236, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.AzureCustom.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.AzureCustom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6149.5132, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Common, Version=1.0.6150.42238, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Common.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6149.5133, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Custom, Version=1.0.6150.42240, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Custom.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.Custom.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6149.5135, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.OnPremise, Version=1.0.6150.42242, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.OnPremise.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.OnPremise.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.Salesforce, Version=1.0.6149.5137, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.Salesforce.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.Salesforce.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.Salesforce, Version=1.0.6150.42244, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.Salesforce.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.Salesforce.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6149.5137, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Actions.SQL, Version=1.0.6150.42244, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Actions.SQL.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Actions.SQL.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6149.5044, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201611010246\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+    <Reference Include="Microsoft.Deployment.Common, Version=1.0.6150.42139, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201611022323\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
