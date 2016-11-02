@@ -72,9 +72,9 @@ namespace Microsoft.Deployment.Actions.AzureCustom.Twitter
             obj.connectionStrings[1].Type = 2;
             obj.location = location;
 
-            var appSettingCreated = client.ExecuteGenericRequestWithHeaderAsync(HttpMethod.Post, @"https://web1.appsvcux.ext.azure.com/websites/api/Websites/UpdateConfigConnectionStrings",
+            var appSettingCreated = await client.ExecuteGenericRequestWithHeaderAsync(HttpMethod.Post, @"https://web1.appsvcux.ext.azure.com/websites/api/Websites/UpdateConfigConnectionStrings",
             JsonUtility.GetJsonStringFromObject(obj));
-            response = appSettingCreated.Content.ReadAsStringAsync().Result;
+            response = appSettingCreated.Content.ReadAsStringAsync();
             if (!appSettingCreated.IsSuccessStatusCode)
             {
                 return new ActionResponse(ActionStatus.Failure, JsonUtility.GetJObjectFromJsonString(response),
