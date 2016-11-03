@@ -59,7 +59,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Deployment.Common">
-      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201611022309\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Deployment.Common.1.3.3-dev201611032140\lib\net452\Microsoft.Deployment.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -115,6 +115,7 @@
     <Compile Include="CredentialManager\CredentialManagerWrite.cs" />
     <Compile Include="GetDataPullStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskScheduler\RemoveTask.cs" />
     <Compile Include="TaskScheduler\CreateTask.cs" />
     <Compile Include="TaskScheduler\GetTaskStatus.cs" />
     <Compile Include="TaskScheduler\RunTask.cs" />

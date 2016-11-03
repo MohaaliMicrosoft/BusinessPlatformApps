@@ -22,7 +22,7 @@ namespace Microsoft.Deployment.Common.Tags
 
         public object ProcessTag(JToken innerJson, JToken entireJson, Dictionary<string, UIPage> allPages, Dictionary<string, IAction> allActions, App app, List<TagReturn> childObjects)
         {
-            var val = innerJson.Children()["Guid"].First();
+            var val = innerJson["Guid"];
 
             app.MsiGuid = Guid.Parse(val.ToString());
 

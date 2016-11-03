@@ -23,9 +23,9 @@ namespace Microsoft.Deployment.Actions.Test.CommonActions
         public void RunSalesforceCredentialValidation()
         {
             DataStore dataStore = new DataStore();
-            dataStore.AddToDataStore("SalesforceUser", "cat@catinc.com", DataStoreType.Public);
-            dataStore.AddToDataStore("SalesforcePassword", "P@ssword.123", DataStoreType.Private);
-            dataStore.AddToDataStore("SalesforceToken", "5jxocWhvDfVxJd0SoOj3zM38", DataStoreType.Private);
+            dataStore.AddToDataStore("SalesforceUser", "", DataStoreType.Public);
+            dataStore.AddToDataStore("SalesforcePassword", "", DataStoreType.Private);
+            dataStore.AddToDataStore("SalesforceToken", "", DataStoreType.Private);
             dataStore.AddToDataStore("SalesforceUrl", "https://login.salesforce.com/", DataStoreType.Public);
 
             var result = TestHarness.ExecuteAction("Microsoft-ValidateSalesforceCredentials", dataStore);

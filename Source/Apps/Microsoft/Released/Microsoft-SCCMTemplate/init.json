@@ -1,8 +1,8 @@
 ﻿{
+  "MSI": {
+    "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
+  },
   "Install": {
-    "MSI": {
-      "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
-    },
     "Pages": [
       {
         "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
@@ -115,9 +115,6 @@
     ]
   },
   "Uninstall": {
-    "MSI": {
-      "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
-    },
     "Pages": [
       {
         "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
