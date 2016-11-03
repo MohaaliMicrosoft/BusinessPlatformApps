@@ -41,5 +41,16 @@ namespace Microsoft.Deployment.Actions.Test.ActionsTest
             var result = TestHarness.ExecuteAction("Microsoft-RemoveTask", dataStore);
             Assert.IsTrue(result.IsSuccess);
         }
+
+        [TestClass]
+        public class OnPremiseTests
+        {
+            [TestMethod]
+            public async Task GetCurrentUserDoesNotFailTest()
+            {
+                var response = await TestHarness.ExecuteActionAsync("Microsoft-GetCurrentUserAndDomain", new DataStore());
+                Assert.IsTrue(response.IsSuccess);
+            }
+        }
     }
 }

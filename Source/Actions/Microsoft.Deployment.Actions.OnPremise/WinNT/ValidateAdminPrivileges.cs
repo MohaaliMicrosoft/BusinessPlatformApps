@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.Composition;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using Microsoft.Deployment.Common.ActionModel;
-using Microsoft.Deployment.Common.Actions;
-using Microsoft.Deployment.Common.Helpers;
-
-namespace Microsoft.Deployment.Actions.OnPremise.WinNT
+﻿namespace Microsoft.Deployment.Actions.OnPremise.WinNT
 {
+    using Microsoft.Deployment.Common.ActionModel;
+    using Microsoft.Deployment.Common.Actions;
+    using Microsoft.Deployment.Common.Helpers;
+    using System.ComponentModel.Composition;
+    using System.Security.Principal;
+    using System.Threading.Tasks;
+
     // Should not run impersonated
     [Export(typeof(IAction))]
     public class ValidateAdminPrivileges : BaseAction

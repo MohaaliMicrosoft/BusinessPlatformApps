@@ -35,14 +35,6 @@
             </select>
         </div>
 
-        <div class="st-float" if.bind="isWindowsAuth && showLogInAsCurrentUser">
-            <div class="st-label-wrapper">
-                <label class="st-label">
-                    <input type="checkbox" tabindex="-1" change.delegate="Invalidate()" checked.bind="logInAsCurrentUser" disabled.bind="MS.HttpService.isServiceBusy">
-                    <span class="smallFontSize">Log in as current user?</span>
-                </label>
-            </div>
-        </div>
 
         <div class="st-float" if.bind="!isWindowsAuth || showCredsWhenWindowsAuth || isAzureSql">
             <p class="st-text" if.bind="!logInAsCurrentUser">
