@@ -119,6 +119,7 @@
     <Compile Include="TaskScheduler\GetTaskStatus.cs" />
     <Compile Include="TaskScheduler\RunTask.cs" />
     <Compile Include="WinNT\AddLogonAsBatchPermission.cs" />
+    <Compile Include="WinNT\GetCurrentUserAndDomain.cs" />
     <Compile Include="WinNT\ValidateAdminPrivileges.cs" />
     <Compile Include="WinNT\ValidateNTCredential.cs" />
     <Compile Include="WinNT\ValidateSecurityOptions.cs" />
