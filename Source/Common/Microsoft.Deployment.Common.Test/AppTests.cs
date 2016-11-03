@@ -63,7 +63,7 @@ namespace Microsoft.Deployment.Common.Test
         [TestMethod]
         public void TestActionsWithObjectTypes()
         {
-            AppFactory appFactory = new AppFactory();
+            AppFactory appFactory = new AppFactory(true);
             Assert.IsTrue(appFactory.Apps.Count > 0);
 
             var result = appFactory.Actions["Microsoft-MockAction"].ExecuteActionAsync(null).Result;
@@ -77,7 +77,7 @@ namespace Microsoft.Deployment.Common.Test
         [TestMethod]
         public void TestActionWithCommonController()
         {
-            AppFactory factory = new AppFactory();
+            AppFactory factory = new AppFactory(true);
             CommonControllerModel model = new CommonControllerModel()
             {
                 AppFactory = factory
