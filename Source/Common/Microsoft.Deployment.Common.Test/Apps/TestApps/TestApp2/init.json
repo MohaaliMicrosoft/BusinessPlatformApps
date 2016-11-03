@@ -1,5 +1,8 @@
 {
   "Install": {
+    "MSI": {
+      "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
+    },
     "Pages": [
       {
         "name": "gettingStarted.html",
@@ -18,6 +21,9 @@
     "Actions": [
       {
         "name": "Microsoft-MockAction"
+      },
+      {
+        "name": "Microsoft-MockFailedAction"
       }
     ]
   },

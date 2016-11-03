@@ -1,6 +1,7 @@
 ﻿import MainService from './mainservice';
 import { ActionResponse } from './actionresponse';
 import { ActionStatus } from './actionresponse';
+import {DataStoreType} from "./datastore";
 
 export class DeploymentService {
     MS: MainService;
@@ -15,11 +16,13 @@ export class DeploymentService {
         this.MS = MainService;
     }
 
-    async ExecuteActions() {
+    async ExecuteActions():Promise<boolean> {
         this.MS.LoggerService.TrackDeploymentStart();
         let lastActionStatus: ActionStatus = ActionStatus.Success;
+        this.MS.DataStore.DeploymentIndex = '';
 
         for (let i = 0; i < this.actions.length && !this.hasError; i++) {
+            this.MS.DataStore.DeploymentIndex = i.toString();
             this.executingIndex = i;
             this.executingAction = this.actions[i];
 
@@ -40,7 +43,7 @@ export class DeploymentService {
                 break;
             }
 
-            //this.MS.DataService.AddObjectToDataStore('Deployment' + i, response.response);
+            this.MS.DataStore.addObjectToDataStore(response.Body, DataStoreType.Private);
             if (response.Status === ActionStatus.BatchWithState ||
                 response.Status === ActionStatus.BatchNoState) {
                 i = i - 1; // Loop again but dont add parameter back
@@ -49,6 +52,7 @@ export class DeploymentService {
             lastActionStatus = response.Status;
         }
 
+        this.MS.DataStore.DeploymentIndex = '';
         if (!this.hasError) {
             this.executingAction = {};
             this.executingIndex++;
@@ -59,5 +63,7 @@ export class DeploymentService {
 
         this.MS.LoggerService.TrackDeploymentEnd(!this.hasError);
         this.isFinished = true;
+
+        return !this.hasError;
     }
 }

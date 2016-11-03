@@ -37,21 +37,7 @@ export class ViewModelBase {
         // Load the parameters from the additionalParamters section
         if (!this.parametersLoaded) {
             var parameters = this.MS.NavigationService.getCurrentSelectedPage().Parameters;
-
-            for (let propertyName in parameters) {
-                var val: string = parameters[propertyName];
-                if (JsonCustomParser.isVariable(val)) {
-                    var codeToRun: string = JsonCustomParser.extractVariable(val);
-                    val = eval(codeToRun);
-
-                    if (JsonCustomParser.isPermenantEntryIntoDataStore(parameters[propertyName])) {
-                        this.MS.DataStore.addToDataStore(propertyName, val, DataStoreType.Private);
-                    }
-                }
-                
-
-                this[propertyName] = val;
-            }
+            this.loadVariables(this, parameters);
         }
 
         this.parametersLoaded = true;
@@ -65,7 +51,7 @@ export class ViewModelBase {
         try {
             this.MS.NavigationService.isCurrentlyNavigating = true;
 
-            let isNavigationSuccessful: boolean =  await this.NavigatingNext();
+            let isNavigationSuccessful: boolean = await this.NavigatingNext();
             let isExtendedNavigationSuccessful: boolean = await this.executeActions(this.onNext);
 
             this.navigationMessage = '';
@@ -179,7 +165,7 @@ export class ViewModelBase {
     }
 
     // Called when object has navigated next -only simple cleanup logic should go here
-    NavigatedNext():void {
+    NavigatedNext(): void {
     }
 
     async attached() {
@@ -188,7 +174,6 @@ export class ViewModelBase {
 
     // Called when the view model is attached completely
     async OnLoaded() {
-
     }
 
     private async executeActions(actions: any[]): Promise<boolean> {
@@ -197,19 +182,7 @@ export class ViewModelBase {
             let name: string = actionToExecute.name;
             if (name) {
                 var body = {};
-                for (let prop in actionToExecute) {
-                    var val: string = actionToExecute[prop];
-                    if (JsonCustomParser.isVariable(val)) {
-                        var codeToRun: string = JsonCustomParser.extractVariable(val);
-                        val = eval(codeToRun);
-
-                        if (JsonCustomParser.isPermenantEntryIntoDataStore(actionToExecute[prop])) {
-                            this.MS.DataStore.addToDataStore(prop, val, DataStoreType.Private);
-                        }
-                    }
-
-                    body[prop] = val;
-                }
+                this.loadVariables(body, actionToExecute);
 
                 var response: ActionResponse = await this.MS.HttpService.executeAsync(name, body);
                 if (!response.IsSuccess) {
@@ -221,5 +194,25 @@ export class ViewModelBase {
         }
 
         return true;
+    }
+
+    private loadVariables(objToChange, obj: any) {
+        for (let propertyName in obj) {
+            let val: string = obj[propertyName];
+            if (JsonCustomParser.isVariable(val)) {
+                const codeToRun = JsonCustomParser.extractVariable(val);
+                val = eval(codeToRun);
+
+                if (JsonCustomParser.isPermenantEntryIntoDataStore(obj[propertyName])) {
+                    this.MS.DataStore.addToDataStore(propertyName, val, DataStoreType.Private);
+                }
+            }
+            
+            objToChange[propertyName] = val;
+
+            if (val && typeof (val) === 'object') {
+                this.loadVariables(objToChange[propertyName], val);
+            }
+        }
     }
 }

@@ -4,6 +4,8 @@
 
     <!-- Progress -->
     <div class="st-float st-text st-text-progress">
+        
+        <!-- Base Experience -->
         <div class="st-progress" if.bind="(showCounts && !MS.DeploymentService.isFinished) || !showCounts" repeat.for="action of MS.DeploymentService.actions">
             <span class="glyphicon pbi-glyph-circlering st-icon-progress"></span>
             <span class="powervisuals-glyph checkmark st-icon-progress st-icon-progress-check" if.bind="MS.DeploymentService.executingIndex > $index"></span>
@@ -18,6 +20,11 @@
             <span class="powervisuals-glyph checkmark st-icon-progress st-icon-progress-check"></span>
             <span class="semiboldFont st-progress-text">${successMessage}</span>
         </div>
+
+        
+        
+        
+        <!-- Get Status -->
         <ul class="smallFontSize st-tabs" if.bind="recordCounts && recordCounts.length > 0 && !MS.DeploymentService.hasError">
             <li class="st-import" repeat.for="recordCount of recordCounts">
                 <span class="glyphicon glyph-small pbi-glyph-circlering st-icon st-loader-check" if.bind="isDataPullDone"></span>
@@ -26,7 +33,9 @@
                 <span>${recordCount.EntityName} (${recordCount.Count} <span if.bind="recordCount.Count==1">Row</span><span if.bind="recordCount.Count!=1">Rows</span>)</span>
             </li>
         </ul>
+        
 
+        <!-- Get Slice Status -->
         <ul class="smallFontSize st-tabs" if.bind="sliceStatus && sliceStatus.length > 0 && !MS.DeploymentService.hasError">
             <li class="st-import" repeat.for="slice of sliceStatus">
                 <span class="glyphicon glyph-small pbi-glyph-circlering st-icon st-loader-check" if.bind="isDataPullDone"></span>
@@ -49,4 +58,6 @@
             <span>Getting your Power BI file ready...</span>
         </div>
     </div>
+    
+
 </template>

@@ -35,11 +35,16 @@ namespace Microsoft.Deployment.Common.AppLoad
         public Dictionary<string, IAction> Actions { get; } = new Dictionary<string, IAction>();
         public Dictionary<string, App> Apps { get; } = new Dictionary<string, App>();
 
+        public bool SkipError { get; set; }
+
         public string SiteCommonPath { get; set; }
         public string AppPath { get; private set; }
 
-        public AppFactory()
+        public AppFactory(bool skipError = false)
         {
+            // This field is used to skip any issues during load - this is usually for Build/Test scenarios
+            this.SkipError = skipError;
+
             this.SetAppsPath();
             this.LoadBinaries();
             this.LoadAllPages();
@@ -60,7 +65,9 @@ namespace Microsoft.Deployment.Common.AppLoad
                 {
                     Name = dir.Name,
                     AppFilePath = dir.FullName,
-                    AppRelativeFilePath = dir.FullName.Substring(dir.FullName.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal))
+                    AppRelativeFilePath =
+                        dir.FullName.Substring(dir.FullName.IndexOf("\\" + Constants.AppsPath + "\\",
+                            StringComparison.Ordinal))
                 };
 
                 this.Apps.Add(dir.Name, app);
@@ -99,16 +106,23 @@ namespace Microsoft.Deployment.Common.AppLoad
             {
                 if (Directory.Exists(Path.Combine(dir.FullName, Constants.AppsWebPath)))
                 {
-                    string[] htmlPages = Directory.GetFiles(Path.Combine(dir.FullName, Constants.AppsWebPath), "*.html", SearchOption.AllDirectories);
-                    string relativeUrl = Constants.AppsPath + Path.Combine(dir.FullName.Replace(this.AppPath, ""), Constants.AppsWebPath);
-                    IEnumerable<string> relativeFilePaths = htmlPages.Select(p => p.Substring(p.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal)));
+                    string[] htmlPages = Directory.GetFiles(Path.Combine(dir.FullName, Constants.AppsWebPath), "*.html",
+                        SearchOption.AllDirectories);
+                    string relativeUrl = Constants.AppsPath +
+                                         Path.Combine(dir.FullName.Replace(this.AppPath, ""), Constants.AppsWebPath);
+                    IEnumerable<string> relativeFilePaths =
+                        htmlPages.Select(
+                            p => p.Substring(p.IndexOf("\\" + Constants.AppsPath + "\\", StringComparison.Ordinal)));
                     this.AddPages(dir.Name, relativeFilePaths);
                 }
             }
 
-            string[] htmlPagesCommon = Directory.GetFiles(Path.Combine(this.SiteCommonPath, Constants.AppsWebPath), "*.html", SearchOption.AllDirectories);
+            string[] htmlPagesCommon = Directory.GetFiles(Path.Combine(this.SiteCommonPath, Constants.AppsWebPath),
+                "*.html", SearchOption.AllDirectories);
             string relativeUrlCommon = Path.Combine(Constants.SiteCommonPath, Constants.AppsWebPath);
-            IEnumerable<string> relativeFilePathsCommon = htmlPagesCommon.Select(p => p.Substring(p.IndexOf("\\" + Constants.SiteCommonPath + "\\", StringComparison.Ordinal)));
+            IEnumerable<string> relativeFilePathsCommon =
+                htmlPagesCommon.Select(
+                    p => p.Substring(p.IndexOf("\\" + Constants.SiteCommonPath + "\\", StringComparison.Ordinal)));
             this.AddPages("$SiteCommon$", relativeFilePathsCommon);
         }
 
@@ -116,7 +130,8 @@ namespace Microsoft.Deployment.Common.AppLoad
         {
             foreach (var file in files)
             {
-                string userGeneratedPath = file.Substring(file.IndexOf($"\\{Constants.AppsWebPath}\\", StringComparison.Ordinal) + 5);
+                string userGeneratedPath =
+                    file.Substring(file.IndexOf($"\\{Constants.AppsWebPath}\\", StringComparison.Ordinal) + 5);
                 userGeneratedPath = Path.Combine(appName, userGeneratedPath);
 
                 this.allPages.Add(userGeneratedPath,
@@ -173,7 +188,7 @@ namespace Microsoft.Deployment.Common.AppLoad
                 {
                     foreach (var child in root.Children())
                     {
-                        this.ParseTag(child, obj, app, null, false);
+                        this.ParseTag(child, obj, app, null);
                     }
                 }
             }
@@ -182,45 +197,62 @@ namespace Microsoft.Deployment.Common.AppLoad
         //get children under root
         //get tag - and check if we need to recurse under him
 
-        private object ParseTag(JToken obj, JObject root, App app, List<TagReturn> tagReturn, bool recurse)
+        private object ParseTag(JToken obj, JObject root, App app, List<TagReturn> tagReturn)
         {
-            List<TagReturn> result = new List<TagReturn>();
             if (tagReturn == null)
             {
                 tagReturn = new List<TagReturn>();
             }
 
-            var handler = this.AllTagHandlers.Where(t => t.Tag == obj.Path.Split('.').Last()).First();
-            recurse = handler.Recurse;
+            var handler = this.AllTagHandlers.FirstOrDefault(t => t.Tag == obj.Path.Split('.').Last());
 
-            if (recurse && obj.HasValues && obj.Children().First().Children().Any())
+            if (handler != null)
             {
-                foreach (var child in obj.Children())
+                if (handler.Recurse && obj.HasValues && obj.Children().Any())
                 {
-                    result = (List<TagReturn>)this.ParseTag(child, root, app, tagReturn, recurse);
-                }
-            }
-
-            foreach (var tag in this.AllTagHandlers)
-            {
-                if (tag.Tag.Equals(obj.Path.Split('.').Last(), StringComparison.OrdinalIgnoreCase))
-                {
-                    if (obj.Children().Any() && obj.Children().First().Type == JTokenType.Array)
+                    foreach (var child in obj.Children())
                     {
-                        result = (List<TagReturn>)tag.ProcessTag(obj.Children().First(), root, this.allPages, this.Actions, app, tagReturn as List<TagReturn>);
-                    }
-                    else
-                    {
-                        result = (List<TagReturn>)tag.ProcessTag(obj.Value<JToken>(), root, this.allPages, this.Actions, app, tagReturn as List<TagReturn>);
+                        this.ParseTag(child, root, app, tagReturn);
                     }
                 }
+
+                this.ProcessTag(obj, root, app, tagReturn, handler);
             }
 
-            if (result != null)
-            {
-                tagReturn.AddRange(result);
-            }
             return tagReturn;
+        }
+
+        private void ProcessTag(JToken obj, JObject root, App app, List<TagReturn> tagReturn, ITagHandler handler)
+        {
+            JToken tokenToProcess = null;
+
+            if (obj.Children().Any() && obj.Children().First().Type == JTokenType.Array)
+            {
+                tokenToProcess = obj.Children().First();
+            }
+            else
+            {
+                tokenToProcess = obj.Value<JToken>();
+            }
+
+            try
+            {
+                List<TagReturn> result =
+                    (List<TagReturn>) handler.ProcessTag(tokenToProcess, root, this.allPages, this.Actions, app,
+                        tagReturn);
+                if (result != null)
+                {
+                    tagReturn.AddRange(result);
+                }
+            }
+            catch (Exception)
+            {
+                // Swallow if skip set
+                if (!this.SkipError)
+                {
+                    throw;
+                }
+            }
         }
     }
 }

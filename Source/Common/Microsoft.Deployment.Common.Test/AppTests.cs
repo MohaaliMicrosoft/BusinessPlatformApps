@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Deployment.Common.ActionModel;
 using Microsoft.Deployment.Common.AppLoad;
@@ -14,7 +15,8 @@ namespace Microsoft.Deployment.Common.Test
         [TestMethod]
         public void GetApps()
         {
-            AppFactory appFactory = new AppFactory();
+
+            AppFactory appFactory = new AppFactory(true);
             Assert.IsTrue(appFactory.Apps.Count > 0);
         }
 
@@ -22,7 +24,7 @@ namespace Microsoft.Deployment.Common.Test
         public void DataStoreRetrievalTest()
         {
             DataStore store = new DataStore();
-            store.PrivateDataStore = new Dictionary<string,Dictionary<string,JToken>>();
+            store.PrivateDataStore = new Dictionary<string, Dictionary<string, JToken>>();
             store.PublicDataStore = new Dictionary<string, Dictionary<string, JToken>>();
 
             store.PrivateDataStore.Add("TestRoute", new Dictionary<string, JToken>()
@@ -38,7 +40,7 @@ namespace Microsoft.Deployment.Common.Test
                 {"TestObject2","TestValue2" }
             });
 
-            Assert.IsTrue(store.GetAllValues("TestObject").Count()  == 2);
+            Assert.IsTrue(store.GetAllValues("TestObject").Count() == 2);
             Assert.IsTrue(store.GetAllValues("TestObject2").Count() == 2);
             Assert.IsTrue(store.GetAllValues("password").Count() == 1);
             Assert.IsTrue(store.GetAllDataStoreItems("password").First().DataStoreType == DataStoreType.Private);
@@ -84,7 +86,7 @@ namespace Microsoft.Deployment.Common.Test
             UserInfo info = new UserInfo();
             info.ActionName = "Microsoft-MockAction";
             info.AppName = "TestApp";
-            var result = commonController.ExecuteAction(info, new ActionRequest() {DataStore = new DataStore()}).Result;
+            var result = commonController.ExecuteAction(info, new ActionRequest() { DataStore = new DataStore() }).Result;
             Assert.IsTrue(result.Status == ActionStatus.Success);
         }
     }
