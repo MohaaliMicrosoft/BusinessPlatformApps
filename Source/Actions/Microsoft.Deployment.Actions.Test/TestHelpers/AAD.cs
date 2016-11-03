@@ -41,5 +41,17 @@ namespace Microsoft.Deployment.Actions.Test.TestHelpers
         }
 
         private static DataStore DataStoreWithToken { get; set; }
+
+        public static async Task<DataStore> GetUserTokenFromPopup()
+        {
+            AuthenticationContext context = new AuthenticationContext("https://login.windows.net/" + Credential.Instance.AAD.TenantId);
+            var token = await context.AcquireTokenAsync(Constants.AzureManagementCoreApi, Constants.MicrosoftClientId, new Uri("https://unittest/redirect.html"), new PlatformParameters(PromptBehavior.Auto));
+            dynamic tokenObj = new ExpandoObject();
+            tokenObj.access_token = token.AccessToken;
+
+            DataStore datastore = new DataStore();
+            datastore.AddToDataStore("AzureToken", JObject.FromObject(tokenObj), DataStoreType.Private);
+            return datastore;
+        }
     }
 }

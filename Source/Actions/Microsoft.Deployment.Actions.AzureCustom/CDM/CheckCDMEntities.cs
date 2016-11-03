@@ -20,14 +20,32 @@ namespace Microsoft.Deployment.Actions.AzureCustom.CDM
     using System.Net.Http;
 
     [Export(typeof(IAction))]
-    public class GetCDMEntities : BaseAction
+    public class CheckCDMEntities : BaseAction
     {
         public override async Task<ActionResponse> ExecuteActionAsync(ActionRequest request)
         {
             var azureToken = request.DataStore.GetJson("AzureToken")["access_token"].ToString();
-            AzureHttpClient client = new AzureHttpClient(azureToken);
-            var response = client.ExecuteGenericRequestWithHeaderAsync(HttpMethod.Get, "providers/Microsoft.PowerApps/entities", "");
+            var environId = request.DataStore.GetValue("environId").ToString();
+            var userEntity = request.DataStore.GetValue("userEntity").ToString();
 
+            int indexFrom = environId.IndexOf("Legacy-") + "Legacy-".Length;
+            int indexTo = environId.Length;
+
+            var namespaceID = environId.Substring(indexFrom, indexTo - indexFrom);
+
+            AzureHttpClient client = new AzureHttpClient(azureToken);
+
+            var response = await client.ExecuteGenericRequestWithHeaderAsync(HttpMethod.Get, $"https://management.azure.com/providers/Microsoft.CommonDataModel/environments/{environId}/namespaces/{namespaceID}/entities?api-version=2016-11-01&$expand=namespace", "{}");
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseParsed = JsonUtility.GetJsonObjectFromJsonString(responseString);
+
+            foreach (var obj in responseParsed["value"])
+            {
+                if(userEntity == obj["name"].ToString())
+                {
+                    return new ActionResponse(ActionStatus.FailureExpected);
+                }
+            }
             return new ActionResponse(ActionStatus.Success);
         }
     }

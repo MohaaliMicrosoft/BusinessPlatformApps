@@ -82,6 +82,7 @@
       <Link>Properties\SharedVersion.cs</Link>
     </Compile>
     <Compile Include="ActionsTest\AzureCommonTests.cs" />
+    <Compile Include="ActionsTest\CDMTests.cs" />
     <Compile Include="ActionsTest\TestActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\SalesforceSOAP\Reference.cs">

@@ -19,10 +19,15 @@ namespace Microsoft.Deployment.Actions.Test.ActionsTest
         [TestMethod]
         public async Task GetAzureToken()
         {
+            DataStore dataStore = new DataStore();
+
             var datastore = await AAD.GetTokenWithDataStore();
             var result = await TestHarness.ExecuteActionAsync("Microsoft-GetAzureSubscriptions", datastore);
             Assert.IsTrue(result.IsSuccess);
             var responseBody = JObject.FromObject(result.Body);
+
+
+
         }
     }
 }
