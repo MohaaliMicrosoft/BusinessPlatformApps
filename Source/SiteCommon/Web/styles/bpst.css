@@ -200,6 +200,11 @@ ul {
     width: 300px;
 }
 
+.st-input[disabled] {
+    border-color:inherit;
+}
+
+
 .st-input-column {
     float: left;
     margin-right: 10px;

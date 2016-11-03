@@ -21,17 +21,22 @@
         "templateName": "System Center Configuration Manager",
         "isDownload": "$(!this.MS.HttpService.isOnPremise)"
       },
+
+      {
+        "name": "$SiteCommon$/pagesgallery/windows-auth.html",
+        "displayname": "Login",
+        "subtitle":  "Specify your windows credentials to create a recurring schedule. The credentials you specify will be used to also connect to the SCCM database" 
+      },
+
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
         "displayname": "Source",
         "hideSqlAuth": true,
         "title": "Connect to your System Center Configuration Manager database",
         "showAzureSql": false,
-        "loginAsCurrentUser": true,
         "showAllWriteableDatabases": false,
-        "showLogInAsCurrentUser": true,
-        "subtitle": "Set up a connection to your SCCM database so we can bring in your data. The credentials used to connect to SCCM will be used to create a scheduled task to pull data from SCCM.",
-        "validateWindowsCredentials": true,
+
+        "subtitle": "Set up a connection to your SCCM database so we can bring in your data.",
         "onNext": [
           {
             "name": "Microsoft-CheckSCCMVersion"
@@ -41,6 +46,7 @@
           }
         ]
       },
+
       {
         "name": "$SiteCommon$/pagesgallery/sql-server.html",
         "displayname": "Target",
@@ -56,10 +62,12 @@
           }
         ]
       },
+
       {
         "name": "customize.html",
         "displayname": "Customize"
       },
+
       {
         "name": "$SiteCommon$/pagesgallery/progress.html",
         "displayname": "Progress"

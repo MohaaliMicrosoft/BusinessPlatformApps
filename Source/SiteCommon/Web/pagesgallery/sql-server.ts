@@ -15,14 +15,13 @@ export class SqlServer extends ViewModelBase {
     hideSqlAuth: boolean = false;
     isAzureSql: boolean = false;
     isWindowsAuth: boolean = true;
-    logInAsCurrentUser: boolean = false;
+   
     newSqlDatabase: string = null;
     password: string = '';
     passwordConfirmation: string = '';
     showAllWriteableDatabases: boolean = true;
     showAzureSql: boolean = true;
-    showLogInAsCurrentUser: boolean = false;
-    showCredsWhenWindowsAuth: boolean = false;
+
     showDatabases: boolean = false;
     showNewSqlOption: boolean = false;
     sqlInstance: string = 'ExistingSql';
@@ -30,6 +29,7 @@ export class SqlServer extends ViewModelBase {
     username: string = '';
     validateWindowsCredentials: boolean = false;
     validationTextBox: string = '';
+
     useImpersonation: boolean = false;
 
     constructor() {
@@ -51,6 +51,10 @@ export class SqlServer extends ViewModelBase {
 
 
     async OnValidate(): Promise<boolean> {
+        if (!super.OnValidate()) {
+            return false;
+        }
+
         this.sqlServer = this.sqlServer.toLowerCase();
         if (this.sqlInstance === 'ExistingSql') {
             let databasesResponse = await this.GetDatabases();
@@ -58,11 +62,9 @@ export class SqlServer extends ViewModelBase {
                 this.databases = databasesResponse.Body.value;
                 this.isValidated = true;
                 this.showDatabases = true;
-                this.showValidation = true;
             } else {
                 this.isValidated = false;
                 this.showDatabases = false;
-                this.showValidation = false;
             }
         } else if (this.sqlInstance === 'NewSql') {
             let newSqlError: string = SqlServerValidationUtility.validateAzureSQLCreate(this.sqlServer, this.username, this.password, this.passwordConfirmation);
@@ -72,16 +74,13 @@ export class SqlServer extends ViewModelBase {
                 let databasesResponse = await this.ValidateAzureServerIsAvailable();
                 if ((databasesResponse.IsSuccess)) {
                     this.isValidated = true;
-                    this.showValidation = true;
                 } else {
                     this.isValidated = false;
-                    this.showValidation = false;
                 }
             }
         }
 
-        return super.OnValidate();
-
+        return this.isValidated;
     }
 
     async NavigatingNext(): Promise<boolean> {
@@ -95,7 +94,7 @@ export class SqlServer extends ViewModelBase {
             response = await this.CreateDatabaseServer();
         }
 
-        if (!response.IsSuccess) {
+        if (!response || !response.IsSuccess) {
             return false;
         }
 
@@ -103,8 +102,6 @@ export class SqlServer extends ViewModelBase {
         this.MS.DataStore.addToDataStore('Server', this.getSqlServer(), DataStoreType.Public);
         this.MS.DataStore.addToDataStore('Database', this.database, DataStoreType.Public);
         this.MS.DataStore.addToDataStore('Username', this.username, DataStoreType.Public);
-
-        let isProperVersion: boolean = true;
 
         if (this.checkSqlVersion) {
             let responseVersion = await this.MS.HttpService.executeAsync('Microsoft-CheckSQLVersion', {});
