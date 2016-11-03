@@ -1,5 +1,8 @@
 ﻿{
   "Install": {
+    "MSI": {
+      "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
+    },
     "Pages": [
       {
         "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
@@ -116,6 +119,21 @@
         "SqlServerIndex": 1,
         "TargetSchema": "pbist_sccm",
         "UseImpersonation": true
+      }
+    ]
+  },
+  "Uninstall": {
+    "MSI": {
+      "Guid": "2F142293-C7B5-4C57-8FFE-75F636688C9B"
+    },
+    "Pages": [
+      {
+        "name": "$SiteCommon$/pagesgallery/gettingstarted.html",
+        "displayname": "Uninstall",
+        "architectureDiagram": "dist/Apps/Microsoft/Released/Microsoft-SCCMTemplate/Web/Images/SCCMArchitectureDiagram.png",
+        "subtitle": "Uninstal SCCM template",
+        "templateName": "System Center Configuration Manager",
+        "isDownload": "$(!this.MS.HttpService.isOnPremise)"
       }
     ]
   }
