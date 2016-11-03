@@ -18,6 +18,9 @@
     "Actions": [
       {
         "name": "Microsoft-MockAction"
+      },
+      {
+        "name": "Microsoft-MockFailedAction"
       }
     ]
   },
